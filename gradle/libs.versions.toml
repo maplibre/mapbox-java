@@ -3,7 +3,7 @@ junit = "4.13.2"
 hamcrestJunit = "2.0.0.0"
 mockito = "5.11.0"
 supportAnnotation = "1.7.1"
-okhttp3Mockwebserver = "3.12.7"
+okhttp3Mockwebserver = "4.12.0"
 gson = "2.10.1"
 
 gradleNexus = "1.3.0"
