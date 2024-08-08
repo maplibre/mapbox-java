@@ -2,7 +2,7 @@
 junit = "4.13.2"
 hamcrestJunit = "2.0.0.0"
 mockito = "5.11.0"
-supportAnnotation = "1.7.1"
+supportAnnotation = "1.8.0"
 okhttp3Mockwebserver = "3.12.7"
 gson = "2.10.1"
 
