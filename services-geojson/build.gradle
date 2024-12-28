@@ -1,5 +1,9 @@
 apply plugin: 'java-library'
 
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+
 dependencies {
   // Gson
   api libs.gson
@@ -9,4 +13,31 @@ dependencies {
 
   // Test Dependencies
   testImplementation libs.okhttp3Mockwebserver
+
+          // Test Dependencies
+        testImplementation libs.junit
+        testImplementation libs.hamcrestJunit
+        testImplementation libs.mockito
 }
+
+
+//    apply plugin: 'java'
+//    apply plugin: 'idea'
+//    apply from: "${rootDir}/gradle/checkstyle.gradle"
+//
+//    // Fixes issue with test resources not being found inside Intellij
+//    idea {
+//        module {
+//            testOutputDir = file('build/resources/test')
+//        }
+//    }
+//
+
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//
+//    dependencies {
+
+//    }

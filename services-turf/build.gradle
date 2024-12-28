@@ -1,4 +1,20 @@
-apply plugin: 'java-library'
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+//    alias(libs.plugins.android.library)
+    id("java-library")
+}
+
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
 
 dependencies {
   api project(":services-geojson")

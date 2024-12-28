@@ -1,108 +1,106 @@
 import java.time.Duration
 
-buildscript {
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2' }
-        google()
-        mavenCentral()
-    }
-}
 
 plugins {
-    alias libs.plugins.gradle.nexus
+//    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+//    alias(libs.plugins.android.library) apply false
+//    alias(libs.plugins.androidLibrary) apply false
+//    alias(libs.plugins.compose.compiler) apply false
+    //    alias libs.plugins.gradle.nexus
 }
+//
+//apply from: file("${rootDir}/gradle/artifact-settings.gradle")
+//
+//
+//tasks.withType(JavaCompile) {
+//    options.encoding = 'UTF-8'
+//    options.compilerArgs += ['-Xlint:all', '-Xlint:unchecked']
+//}
 
-apply from: file("${rootDir}/gradle/artifact-settings.gradle")
+//subprojects {
+//    apply plugin: 'java'
+//    apply plugin: 'idea'
+//    apply from: "${rootDir}/gradle/checkstyle.gradle"
+//
+//    // Fixes issue with test resources not being found inside Intellij
+//    idea {
+//        module {
+//            testOutputDir = file('build/resources/test')
+//        }
+//    }
+//
+//    sourceCompatibility = JavaVersion.VERSION_1_7
+//    targetCompatibility = JavaVersion.VERSION_1_7
+//
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//
+//    dependencies {
+//        // Test Dependencies
+//        testImplementation libs.junit
+//        testImplementation libs.hamcrestJunit
+//        testImplementation libs.mockito
+//    }
+//}
 
+//def TESTABLE_MODULES = ["services-geojson", "services-turf"]
+//def RELEASE_MODULES = ["services-geojson", "services-turf"]
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs += ['-Xlint:all', '-Xlint:unchecked']
-}
+//subprojects { subproject ->
+//    tasks.withType(Jar) { jarTask ->
+//        if (!jarTask.name.endsWith("sourcesJar")) {
+//            jarTask.exclude("**/*.java")
+//        }
+//    }
+//
+//    if (TESTABLE_MODULES.contains(subproject.name)) {
+//        afterEvaluate { project ->
+//            project.apply from: "${rootDir}/gradle/jacoco.gradle"
+//            // project.apply from: "${rootDir}/gradle/checkstyle.gradle"
+//        }
+//    }
+//
+//    if (RELEASE_MODULES.contains(subproject.name)) {
+//        project.logger.info("Applying gradle publish plugin to ${subproject.name}")
+//        subproject.apply from: "${rootDir}/gradle/publish.gradle"
+//    }
+//
+//    task sourcesJar(type: Jar, dependsOn: classes) {
+//        archiveClassifier.set('sources')
+//        from sourceSets.main.allSource
+//    }
+//
+//    task javadocJar(type: Jar, dependsOn: javadoc) {
+//        archiveClassifier.set('javadoc')
+//        from javadoc.destinationDir
+//    }
+//
+//    artifacts {
+//        archives sourcesJar
+//        archives javadocJar
+//    }
+//}
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply from: "${rootDir}/gradle/checkstyle.gradle"
+//apply from: "${rootDir}/gradle/publish-root.gradle"
 
-    // Fixes issue with test resources not being found inside Intellij
-    idea {
-        module {
-            testOutputDir = file('build/resources/test')
-        }
-    }
+//defaultTasks('clean', 'build')
 
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        // Test Dependencies
-        testImplementation libs.junit
-        testImplementation libs.hamcrestJunit
-        testImplementation libs.mockito
-    }
-}
-
-def TESTABLE_MODULES = ["services-geojson", "services-turf"]
-def RELEASE_MODULES = ["services-geojson", "services-turf"]
-
-subprojects { subproject ->
-    tasks.withType(Jar) { jarTask ->
-        if (!jarTask.name.endsWith("sourcesJar")) {
-            jarTask.exclude("**/*.java")
-        }
-    }
-
-    if (TESTABLE_MODULES.contains(subproject.name)) {
-        afterEvaluate { project ->
-            project.apply from: "${rootDir}/gradle/jacoco.gradle"
-            // project.apply from: "${rootDir}/gradle/checkstyle.gradle"
-        }
-    }
-
-    if (RELEASE_MODULES.contains(subproject.name)) {
-        project.logger.info("Applying gradle publish plugin to ${subproject.name}")
-        subproject.apply from: "${rootDir}/gradle/publish.gradle"
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        archiveClassifier.set('sources')
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        archiveClassifier.set('javadoc')
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-}
-
-apply from: "${rootDir}/gradle/publish-root.gradle"
-
-defaultTasks('clean', 'build')
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            useStaging = !project.ext.isSnapshot
-            stagingProfileId = sonatypeStagingProfileId
-            username = ossrhUsername
-            password = ossrhPassword
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-        }
-    }
-    transitionCheckOptions {
-        maxRetries = 120
-        delayBetween = Duration.ofSeconds(10)
-    }
-}
+//nexusPublishing {
+//    repositories {
+//        sonatype {
+//            useStaging = !project.ext.isSnapshot
+//            stagingProfileId = sonatypeStagingProfileId
+//            username = ossrhUsername
+//            password = ossrhPassword
+//            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+//            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+//        }
+//    }
+//    transitionCheckOptions {
+//        maxRetries = 120
+//        delayBetween = Duration.ofSeconds(10)
+//    }
+//}
