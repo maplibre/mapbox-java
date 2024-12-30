@@ -1,0 +1,9 @@
+Changes:
+
+- `models/LineIntersectsResult` moved to `TurfMisc.LineIntersectsResult` (sub class)
+- `@FloatRange` annotation is removed and replaced by `check` calls
+- Fix previous ignored `TurfTransformationTest`
+
+Breaking:
+
+Removed depreacted function `TufAssertions.getCoord(Feature)`.
