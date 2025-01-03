@@ -1,23 +1,38 @@
-apply plugin: 'java-library'
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
+//    alias(libs.plugins.android.library)
+    id("java-library")
+}
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
 
 
 dependencies {
-  // Gson
-  api libs.gson
+    implementation libs.kotlinx.serialization.json
 
-  // Annotations
-  compileOnly libs.supportAnnotation
+    // Gson
+    api libs.gson
 
-  // Test Dependencies
-  testImplementation libs.okhttp3Mockwebserver
+    // Annotations
+    compileOnly libs.supportAnnotation
 
-          // Test Dependencies
-        testImplementation libs.junit
-        testImplementation libs.hamcrestJunit
-        testImplementation libs.mockito
+    // Test Dependencies
+    testImplementation libs.okhttp3Mockwebserver
+
+    // Test Dependencies
+    testImplementation libs.junit
+    testImplementation libs.hamcrestJunit
+    testImplementation libs.mockito
 }
 
 

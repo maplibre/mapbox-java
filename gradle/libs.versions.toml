@@ -1,6 +1,7 @@
 [versions]
 kotlin = "2.1.0"
 agp = "8.3.2"
+kotlinxSerializationJson = "1.7.3"
 junit = "4.13.2"
 hamcrestJunit = "2.0.0.0"
 mockito = "5.11.0"
@@ -11,6 +12,7 @@ gson = "2.10.1"
 gradleNexus = "1.3.0"
 
 [libraries]
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 hamcrestJunit = { group = "org.hamcrest", name = "hamcrest-junit", version.ref = "hamcrestJunit" }
@@ -23,3 +25,4 @@ gson  = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 gradle-nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradleNexus" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

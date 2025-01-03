@@ -108,7 +108,7 @@ object TurfConversion {
     @JvmStatic
     @JvmOverloads
     fun lengthToRadians(distance: Double, units: String = TurfConstants.UNIT_DEFAULT): Double {
-        check(distance >= 0) { "Distance must be greater than or equal to 0" }
+        require(distance >= 0) { "Distance must be greater than or equal to 0" }
         return distance / factors[units]!! //TODO fabi755
     }
 

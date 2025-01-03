@@ -71,7 +71,7 @@ public final class PolylineUtils {
       while (temp >= 0x1f);
       lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
 
-      path.add(Point.fromLngLat(lng / factor, lat / factor));
+      path.add(new Point(lng / factor, lat / factor, null, null));
     }
 
     return path;
@@ -96,8 +96,8 @@ public final class PolylineUtils {
     double factor = Math.pow(10, precision);
 
     for (final Point point : path) {
-      long lat = Math.round(point.latitude() * factor);
-      long lng = Math.round(point.longitude() * factor);
+      long lat = Math.round(point.getLatitude() * factor);
+      long lng = Math.round(point.getLongitude() * factor);
 
       long varLat = lat - lastLat;
       long varLng = lng - lastLng;
@@ -207,8 +207,8 @@ public final class PolylineUtils {
    * @return square of the distance between two input points
    */
   private static double getSqDist(Point p1, Point p2) {
-    double dx = p1.longitude() - p2.longitude();
-    double dy = p1.latitude() - p2.latitude();
+    double dx = p1.getLongitude() - p2.getLongitude();
+    double dy = p1.getLatitude() - p2.getLatitude();
     return dx * dx + dy * dy;
   }
 
@@ -222,18 +222,18 @@ public final class PolylineUtils {
    *   other two input points
    */
   private static double getSqSegDist(Point point, Point p1, Point p2) {
-    double horizontal = p1.longitude();
-    double vertical = p1.latitude();
-    double diffHorizontal = p2.longitude() - horizontal;
-    double diffVertical = p2.latitude() - vertical;
+    double horizontal = p1.getLongitude();
+    double vertical = p1.getLatitude();
+    double diffHorizontal = p2.getLongitude() - horizontal;
+    double diffVertical = p2.getLatitude() - vertical;
 
     if (diffHorizontal != 0 || diffVertical != 0) {
-      double total = ((point.longitude() - horizontal) * diffHorizontal + (point.latitude()
+      double total = ((point.getLongitude() - horizontal) * diffHorizontal + (point.getLatitude()
         - vertical) * diffVertical) / (diffHorizontal * diffHorizontal + diffVertical
         * diffVertical);
       if (total > 1) {
-        horizontal = p2.longitude();
-        vertical = p2.latitude();
+        horizontal = p2.getLongitude();
+        vertical = p2.getLatitude();
 
       } else if (total > 0) {
         horizontal += diffHorizontal * total;
@@ -241,8 +241,8 @@ public final class PolylineUtils {
       }
     }
 
-    diffHorizontal = point.longitude() - horizontal;
-    diffVertical = point.latitude() - vertical;
+    diffHorizontal = point.getLongitude() - horizontal;
+    diffVertical = point.getLatitude() - vertical;
 
     return diffHorizontal * diffHorizontal + diffVertical * diffVertical;
   }

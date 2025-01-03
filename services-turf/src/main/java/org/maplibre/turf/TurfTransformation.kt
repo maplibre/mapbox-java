@@ -35,7 +35,7 @@ object TurfTransformation {
         steps: Int = DEFAULT_STEPS,
         @TurfUnitCriteria units: String = TurfConstants.UNIT_DEFAULT
     ): Polygon {
-        check(steps >= 1) { "Steps must be greater than 0" }
+        require(steps >= 1) { "Steps must be greater than 0" }
 
         val coordinates = (0 until steps)
             .map { value -> destination(center, radius, value * 360.0 / steps, units) }

@@ -136,8 +136,8 @@ object TurfMisc {
         stopDist: Double,
         @TurfUnitCriteria units: String
     ): LineString {
-        check(startDist >= 0) { "startDist must be greater than or equal 0" }
-        check(stopDist > 0) { "stopDist must be greater than 0" }
+        require(startDist >= 0) { "startDist must be greater than or equal 0" }
+        require(stopDist > 0) { "stopDist must be greater than 0" }
 
         val coordinates = line.coordinates()
 

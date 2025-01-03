@@ -27,7 +27,7 @@ public final class CoordinateShifterManager {
 
     @Override
     public List<Double> unshiftPoint(Point point) {
-      return point.coordinates();
+      return point.getCoordinates();
     }
 
     @Override
