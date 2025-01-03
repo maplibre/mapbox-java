@@ -16,17 +16,17 @@ class TurfTransformationTest {
 
         assertThrows(IllegalStateException::class.java) {
             circle(
-                center = featureIn.geometry() as Point,
+                center = featureIn.geometry as Point,
                 steps = -1,
-                radius = featureIn.getNumberProperty("radius").toDouble()
+                radius = featureIn.getDoubleProperty("radius")!!
             )
         }
 
         assertThrows(IllegalStateException::class.java) {
             circle(
-                center = featureIn.geometry() as Point,
+                center = featureIn.geometry as Point,
                 steps = 0,
-                radius = featureIn.getNumberProperty("radius").toDouble()
+                radius = featureIn.getDoubleProperty("radius")!!
             )
         }
     }
@@ -35,12 +35,12 @@ class TurfTransformationTest {
     fun pointToCircle() {
         val featureIn = Feature.fromJson(loadJsonFixture(CIRCLE_IN))
         val polygon = circle(
-            center = featureIn.geometry() as Point,
-            radius = featureIn.getNumberProperty("radius").toDouble()
+            center = featureIn.geometry as Point,
+            radius = featureIn.getDoubleProperty("radius")!!
         )
 
         val featureOut = Feature.fromJson(loadJsonFixture(CIRCLE_OUT))
-        compareJson(featureOut.geometry()!!.toJson(), polygon.toJson())
+        compareJson(featureOut.geometry!!.toJson(), polygon.toJson())
     }
 
     companion object {

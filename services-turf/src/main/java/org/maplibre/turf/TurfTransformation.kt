@@ -1,6 +1,5 @@
 package org.maplibre.turf
 
-import androidx.annotation.IntRange
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
 import org.maplibre.turf.TurfConstants.TurfUnitCriteria
@@ -40,6 +39,6 @@ object TurfTransformation {
         val coordinates = (0 until steps)
             .map { value -> destination(center, radius, value * 360.0 / steps, units) }
 
-        return Polygon.fromLngLats(listOf(coordinates + coordinates.first()))
+        return Polygon(listOf(coordinates + coordinates.first()))
     }
 }

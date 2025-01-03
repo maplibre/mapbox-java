@@ -28,8 +28,8 @@ object TurfJoins {
      */
     @JvmStatic
     fun inside(point: Point, polygon: Polygon): Boolean {
-        val coordinates = polygon.coordinates()
-        return inside(point, MultiPolygon.fromLngLats(listOf(coordinates)))
+        val coordinates = polygon.coordinates
+        return inside(point, MultiPolygon(listOf(coordinates)))
     }
 
     /**
@@ -46,7 +46,7 @@ object TurfJoins {
      */
     @JvmStatic
     fun inside(point: Point, multiPolygon: MultiPolygon): Boolean {
-        return multiPolygon.coordinates().any { poly ->
+        return multiPolygon.coordinates.any { poly ->
             // check if it is in the outer ring first
             if (inRing(point, poly.first())) {
                 // check for the point in any of the holes
@@ -73,19 +73,19 @@ object TurfJoins {
         points: FeatureCollection,
         polygons: FeatureCollection
     ): FeatureCollection {
-        val inPolygonFeatures = polygons.features()?.flatMap { polygonFeature ->
-            val polygon = polygonFeature.geometry() as Polygon
-            points.features()?.mapNotNull { pointFeature ->
-                val point = pointFeature.geometry() as Point
+        val inPolygonFeatures = polygons.features.flatMap { polygonFeature ->
+            val polygon = polygonFeature.geometry as Polygon
+            points.features.mapNotNull { pointFeature ->
+                val point = pointFeature.geometry as Point
                 if (inside(point, polygon)) {
-                    Feature.fromGeometry(point)
+                    Feature(point)
                 } else {
                     null
                 }
-            } ?: emptyList()
-        } ?: emptyList()
+            }
+        }
 
-        return FeatureCollection.fromFeatures(inPolygonFeatures)
+        return FeatureCollection(inPolygonFeatures)
     }
 
     // pt is [x,y] and ring is [[x,y], [x,y],..]
@@ -95,12 +95,12 @@ object TurfJoins {
         var i = 0
         var j = ring.size - 1
         while (i < ring.size) {
-            val xi = ring[i].longitude()
-            val yi = ring[i].latitude()
-            val xj = ring[j].longitude()
-            val yj = ring[j].latitude()
-            val intersect = ((yi > pt.latitude()) != (yj > pt.latitude()))
-                    && (pt.longitude() < (xj - xi) * (pt.latitude() - yi) / (yj - yi) + xi)
+            val xi = ring[i].longitude
+            val yi = ring[i].latitude
+            val xj = ring[j].longitude
+            val yj = ring[j].latitude
+            val intersect = ((yi > pt.latitude) != (yj > pt.latitude))
+                    && (pt.longitude < (xj - xi) * (pt.latitude - yi) / (yj - yi) + xi)
             if (intersect) {
                 isInside = !isInside
             }

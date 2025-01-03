@@ -1,6 +1,7 @@
 package org.maplibre.turf
 
 import com.google.gson.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.maplibre.geojson.BoundingBox
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
@@ -53,10 +54,10 @@ object TurfMeasurement {
      */
     @JvmStatic
     fun bearing(point1: Point, point2: Point): Double {
-        val lon1 = degreesToRadians(point1.longitude())
-        val lon2 = degreesToRadians(point2.longitude())
-        val lat1 = degreesToRadians(point1.latitude())
-        val lat2 = degreesToRadians(point2.latitude())
+        val lon1 = degreesToRadians(point1.longitude)
+        val lon2 = degreesToRadians(point2.longitude)
+        val lat1 = degreesToRadians(point1.latitude)
+        val lat2 = degreesToRadians(point2.latitude)
         val value1 = sin(lon2 - lon1) * cos(lat2)
         val value2 = cos(lat1) * sin(lat2) - (sin(lat1) * cos(lat2) * cos(lon2 - lon1))
 
@@ -86,8 +87,8 @@ object TurfMeasurement {
     ): Point {
         require(bearing in -180.0..180.0) { "Bearing must be between -180 and 180 degrees" }
 
-        val longitude1 = degreesToRadians(point.longitude())
-        val latitude1 = degreesToRadians(point.latitude())
+        val longitude1 = degreesToRadians(point.longitude)
+        val latitude1 = degreesToRadians(point.latitude)
         val bearingRad = degreesToRadians(bearing)
 
         val radians = lengthToRadians(distance, units)
@@ -100,7 +101,7 @@ object TurfMeasurement {
             cos(radians) - sin(latitude1) * sin(latitude2)
         )
 
-        return Point.fromLngLat(
+        return Point(
             radiansToDegrees(longitude2),
             radiansToDegrees(latitude2)
         )
@@ -125,10 +126,10 @@ object TurfMeasurement {
         point1: Point, point2: Point,
         @TurfUnitCriteria units: String = TurfConstants.UNIT_DEFAULT
     ): Double {
-        val difLat = degreesToRadians((point2.latitude() - point1.latitude()))
-        val difLon = degreesToRadians((point2.longitude() - point1.longitude()))
-        val lat1 = degreesToRadians(point1.latitude())
-        val lat2 = degreesToRadians(point2.latitude())
+        val difLat = degreesToRadians((point2.latitude - point1.latitude))
+        val difLon = degreesToRadians((point2.longitude - point1.longitude))
+        val lat1 = degreesToRadians(point1.latitude)
+        val lat2 = degreesToRadians(point2.latitude)
 
         val value = sin(difLat / 2).pow(2.0) + sin(difLon / 2).pow(2.0) * cos(lat1) * cos(lat2)
 
@@ -151,7 +152,7 @@ object TurfMeasurement {
     fun length(
         lineString: LineString,
         @TurfUnitCriteria units: String
-    ): Double = length(lineString.coordinates(), units)
+    ): Double = length(lineString.coordinates, units)
 
     /**
      * Takes a [MultiLineString] and measures its length in the specified units.
@@ -168,7 +169,7 @@ object TurfMeasurement {
         multiLineString: MultiLineString,
         @TurfUnitCriteria units: String
     ): Double {
-        return multiLineString.coordinates()
+        return multiLineString.coordinates
             .sumOf { points -> length(points, units) }
     }
 
@@ -188,7 +189,7 @@ object TurfMeasurement {
         polygon: Polygon,
         @TurfUnitCriteria units: String
     ): Double {
-        return polygon.coordinates()
+        return polygon.coordinates
             .sumOf { points -> length(points, units) }
     }
 
@@ -207,7 +208,7 @@ object TurfMeasurement {
         multiPolygon: MultiPolygon,
         @TurfUnitCriteria units: String
     ): Double {
-        return multiPolygon.coordinates()
+        return multiPolygon.coordinates
             .flatten()
             .sumOf { points -> length(points, units) }
     }
@@ -266,7 +267,7 @@ object TurfMeasurement {
         distance: Double,
         @TurfUnitCriteria units: String
     ): Point {
-        return along(line.coordinates(), distance, units)
+        return along(line.coordinates, distance, units)
     }
 
     /**
@@ -388,13 +389,13 @@ object TurfMeasurement {
      * @since 4.8.0
      */
     fun bbox(geoJson: GeoJson): DoubleArray {
-        val boundingBox = geoJson.bbox()
+        val boundingBox = geoJson.bbox
         if (boundingBox != null) {
             return doubleArrayOf(
-                boundingBox.west(),
-                boundingBox.south(),
-                boundingBox.east(),
-                boundingBox.north()
+                boundingBox.west,
+                boundingBox.south,
+                boundingBox.east,
+                boundingBox.north
             )
         }
 
@@ -446,16 +447,16 @@ object TurfMeasurement {
             is MultiPolygon -> bbox(geometry)
 
             is GeometryCollection -> {
-                val points = geometry.geometries().flatMap { geo ->
+                val points = geometry.geometries.flatMap { geo ->
                     val bbox = bbox(geo)
                     listOf(
-                        Point.fromLngLat(bbox[0], bbox[1]),
-                        Point.fromLngLat(bbox[2], bbox[1]),
-                        Point.fromLngLat(bbox[2], bbox[3]),
-                        Point.fromLngLat(bbox[0], bbox[3])
+                        Point(bbox[0], bbox[1]),
+                        Point(bbox[2], bbox[1]),
+                        Point(bbox[2], bbox[3]),
+                        Point(bbox[0], bbox[3])
                     )
                 }
-                bbox(MultiPoint.fromLngLats(points))
+                bbox(MultiPoint(points))
             }
 
             else -> throw RuntimeException(("Unknown geometry class: " + geometry.javaClass))
@@ -464,10 +465,10 @@ object TurfMeasurement {
 
     private fun bboxCalculator(resultCoords: List<Point>): DoubleArray {
         return doubleArrayOf(
-            resultCoords.minOf { c -> c.longitude() },
-            resultCoords.minOf { c -> c.latitude() },
-            resultCoords.maxOf { c -> c.longitude() },
-            resultCoords.maxOf { c -> c.latitude() },
+            resultCoords.minOf { c -> c.longitude },
+            resultCoords.minOf { c -> c.latitude },
+            resultCoords.maxOf { c -> c.longitude },
+            resultCoords.maxOf { c -> c.latitude },
         )
     }
 
@@ -487,18 +488,18 @@ object TurfMeasurement {
     @JvmOverloads
     fun bboxPolygon(
         boundingBox: BoundingBox,
-        properties: JsonObject? = null,
+        properties: Map<String, JsonElement>? = null,
         id: String? = null
     ): Feature {
-        return Feature.fromGeometry(
-            Polygon.fromLngLats(
+        return Feature(
+            Polygon(
                 listOf(
                     listOf(
-                        Point.fromLngLat(boundingBox.west(), boundingBox.south()),
-                        Point.fromLngLat(boundingBox.east(), boundingBox.south()),
-                        Point.fromLngLat(boundingBox.east(), boundingBox.north()),
-                        Point.fromLngLat(boundingBox.west(), boundingBox.north()),
-                        Point.fromLngLat(boundingBox.west(), boundingBox.south())
+                        Point(boundingBox.west, boundingBox.south),
+                        Point(boundingBox.east, boundingBox.south),
+                        Point(boundingBox.east, boundingBox.north),
+                        Point(boundingBox.west, boundingBox.north),
+                        Point(boundingBox.west, boundingBox.south)
                     )
                 )
             ), properties, id
@@ -519,18 +520,18 @@ object TurfMeasurement {
     @JvmOverloads
     fun bboxPolygon(
         bbox: DoubleArray,
-        properties: JsonObject? = null,
+        properties: Map<String, JsonElement>? = null,
         id: String? = null
     ): Feature {
-        return Feature.fromGeometry(
-            Polygon.fromLngLats(
+        return Feature(
+            Polygon(
                 listOf(
                     listOf(
-                        Point.fromLngLat(bbox[0], bbox[1]),
-                        Point.fromLngLat(bbox[2], bbox[1]),
-                        Point.fromLngLat(bbox[2], bbox[3]),
-                        Point.fromLngLat(bbox[0], bbox[3]),
-                        Point.fromLngLat(bbox[0], bbox[1])
+                        Point(bbox[0], bbox[1]),
+                        Point(bbox[2], bbox[1]),
+                        Point(bbox[2], bbox[3]),
+                        Point(bbox[0], bbox[3]),
+                        Point(bbox[0], bbox[1])
                     )
                 )
             ), properties, id
@@ -546,7 +547,7 @@ object TurfMeasurement {
      */
     @JvmStatic
     fun envelope(geoJson: GeoJson): Polygon? {
-        return bboxPolygon(bbox(geoJson)).geometry() as Polygon?
+        return bboxPolygon(bbox(geoJson)).geometry as Polygon?
     }
 
     /**
@@ -560,29 +561,29 @@ object TurfMeasurement {
     @JvmStatic
     fun square(boundingBox: BoundingBox): BoundingBox {
         val horizontalDistance = distance(
-            boundingBox.southwest(),
-            Point.fromLngLat(boundingBox.east(), boundingBox.south())
+            boundingBox.southwest,
+            Point(boundingBox.east, boundingBox.south)
         )
         val verticalDistance = distance(
-            Point.fromLngLat(boundingBox.west(), boundingBox.south()),
-            Point.fromLngLat(boundingBox.west(), boundingBox.north())
+            Point(boundingBox.west, boundingBox.south),
+            Point(boundingBox.west, boundingBox.north)
         )
 
         if (horizontalDistance >= verticalDistance) {
-            val verticalMidpoint = (boundingBox.south() + boundingBox.north()) / 2
-            return BoundingBox.fromLngLats(
-                boundingBox.west(),
-                verticalMidpoint - ((boundingBox.east() - boundingBox.west()) / 2),
-                boundingBox.east(),
-                verticalMidpoint + ((boundingBox.east() - boundingBox.west()) / 2)
+            val verticalMidpoint = (boundingBox.south + boundingBox.north) / 2
+            return BoundingBox(
+                boundingBox.west,
+                verticalMidpoint - ((boundingBox.east - boundingBox.west) / 2),
+                boundingBox.east,
+                verticalMidpoint + ((boundingBox.east - boundingBox.west) / 2)
             )
         } else {
-            val horizontalMidpoint = (boundingBox.west() + boundingBox.east()) / 2
-            return BoundingBox.fromLngLats(
-                horizontalMidpoint - ((boundingBox.north() - boundingBox.south()) / 2),
-                boundingBox.south(),
-                horizontalMidpoint + ((boundingBox.north() - boundingBox.south()) / 2),
-                boundingBox.north()
+            val horizontalMidpoint = (boundingBox.west + boundingBox.east) / 2
+            return BoundingBox(
+                horizontalMidpoint - ((boundingBox.north - boundingBox.south) / 2),
+                boundingBox.south,
+                horizontalMidpoint + ((boundingBox.north - boundingBox.south) / 2),
+                boundingBox.north
             )
         }
     }
@@ -597,7 +598,7 @@ object TurfMeasurement {
     @JvmStatic
     fun area(feature: Feature): Double {
         //TODO: make it more sense here to throw exception or return `null`?
-        return feature.geometry()?.let { geometry -> area(geometry) } ?: 0.0
+        return feature.geometry?.let { geometry -> area(geometry) } ?: 0.0
     }
 
     /**
@@ -609,9 +610,8 @@ object TurfMeasurement {
      */
     @JvmStatic
     fun area(featureCollection: FeatureCollection): Double {
-        return featureCollection.features()
-            ?.sumOf { feature -> area(feature) }
-            ?: 0.0
+        return featureCollection.features
+            .sumOf { feature -> area(feature) }
     }
 
     /**
@@ -628,9 +628,9 @@ object TurfMeasurement {
 
     private fun calculateArea(geometry: Geometry): Double {
         return when (geometry) {
-            is Polygon -> polygonArea(geometry.coordinates())
+            is Polygon -> polygonArea(geometry.coordinates)
             is MultiPolygon ->
-                geometry.coordinates().sumOf { coordinates -> polygonArea(coordinates) }
+                geometry.coordinates.sumOf { coordinates -> polygonArea(coordinates) }
             else ->
                 // Area should be 0 for case Point, MultiPoint, LineString and MultiLineString
                 0.0
@@ -671,23 +671,27 @@ object TurfMeasurement {
 
         if (coordsLength > 2) {
             for (i in 0 until coordsLength) {
-                if (i == coordsLength - 2) { // i = N-2
-                    lowerIndex = coordsLength - 2
-                    middleIndex = coordsLength - 1
-                    upperIndex = 0
-                } else if (i == coordsLength - 1) { // i = N-1
-                    lowerIndex = coordsLength - 1
-                    middleIndex = 0
-                    upperIndex = 1
-                } else { // i = 0 to N-3
-                    lowerIndex = i
-                    middleIndex = i + 1
-                    upperIndex = i + 2
+                when (i) {
+                    coordsLength - 2 -> { // i = N-2
+                        lowerIndex = coordsLength - 2
+                        middleIndex = coordsLength - 1
+                        upperIndex = 0
+                    }
+                    coordsLength - 1 -> { // i = N-1
+                        lowerIndex = coordsLength - 1
+                        middleIndex = 0
+                        upperIndex = 1
+                    }
+                    else -> { // i = 0 to N-3
+                        lowerIndex = i
+                        middleIndex = i + 1
+                        upperIndex = i + 2
+                    }
                 }
                 p1 = coordinates[lowerIndex]
                 p2 = coordinates[middleIndex]
                 p3 = coordinates[upperIndex]
-                total += (rad(p3.longitude()) - rad(p1.longitude())) * sin(rad(p2.latitude()))
+                total += (rad(p3.longitude) - rad(p1.longitude)) * sin(rad(p2.latitude))
             }
             total = total * EARTH_RADIUS * EARTH_RADIUS / 2
         }
@@ -712,10 +716,10 @@ object TurfMeasurement {
     @JvmOverloads
     fun center(
         feature: Feature,
-        properties: JsonObject? = null,
+        properties: Map<String, JsonElement>? = null,
         id: String? = null
     ): Feature {
-        return center(FeatureCollection.fromFeature(feature), properties, id)
+        return center(FeatureCollection(feature), properties, id)
     }
 
     /**
@@ -733,14 +737,14 @@ object TurfMeasurement {
     @JvmOverloads
     fun center(
         featureCollection: FeatureCollection,
-        properties: JsonObject? = null,
+        properties: Map<String, JsonElement>? = null,
         id: String? = null
     ): Feature {
         val ext = bbox(featureCollection)
         val finalCenterLongitude = (ext[0] + ext[2]) / 2
         val finalCenterLatitude = (ext[1] + ext[3]) / 2
-        return Feature.fromGeometry(
-            Point.fromLngLat(finalCenterLongitude, finalCenterLatitude),
+        return Feature(
+            Point(finalCenterLongitude, finalCenterLatitude),
             properties, id
         )
     }

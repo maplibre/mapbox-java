@@ -46,7 +46,7 @@ object TurfMeta {
      */
     @JvmStatic
     fun coordAll(multiPoint: MultiPoint): List<Point> {
-        return multiPoint.coordinates()
+        return multiPoint.coordinates
     }
 
     /**
@@ -60,7 +60,7 @@ object TurfMeta {
      */
     @JvmStatic
     fun coordAll(lineString: LineString): List<Point> {
-        return lineString.coordinates()
+        return lineString.coordinates
     }
 
     /**
@@ -76,7 +76,7 @@ object TurfMeta {
      */
     @JvmStatic
     fun coordAll(polygon: Polygon, excludeWrapCoord: Boolean): List<Point> {
-        return polygon.coordinates()
+        return polygon.coordinates
             .map { coords -> coords.dropLast(if (excludeWrapCoord) 1 else 0) }
             .flatten()
     }
@@ -93,7 +93,7 @@ object TurfMeta {
      */
     @JvmStatic
     fun coordAll(multiLineString: MultiLineString): List<Point> {
-        return multiLineString.coordinates().flatten()
+        return multiLineString.coordinates.flatten()
     }
 
     /**
@@ -113,7 +113,7 @@ object TurfMeta {
         multiPolygon: MultiPolygon,
         excludeWrapCoord: Boolean
     ): List<Point> {
-        return multiPolygon.coordinates()
+        return multiPolygon.coordinates
             .flatten()
             .map { coords -> coords.dropLast(if (excludeWrapCoord) 1 else 0) }
             .flatten()
@@ -136,7 +136,7 @@ object TurfMeta {
         feature: Feature,
         excludeWrapCoord: Boolean
     ): List<Point> {
-        return feature.geometry()?.let { geometry ->
+        return feature.geometry?.let { geometry ->
             coordAllFromSingleGeometry(geometry, excludeWrapCoord)
         } ?: emptyList()
     }
@@ -159,14 +159,13 @@ object TurfMeta {
         featureCollection: FeatureCollection,
         excludeWrapCoord: Boolean
     ): List<Point> {
-        return featureCollection.features()
-            ?.mapNotNull { feature ->
-                feature.geometry()?.let { geometry ->
+        return featureCollection.features
+            .mapNotNull { feature ->
+                feature.geometry?.let { geometry ->
                     coordAllFromSingleGeometry(geometry, excludeWrapCoord)
                 }
             }
-            ?.flatten()
-            ?: emptyList()
+            .flatten()
     }
 
     /**
@@ -190,10 +189,10 @@ object TurfMeta {
                 listOf(geometry)
 
             is MultiPoint ->
-                geometry.coordinates()
+                geometry.coordinates
 
             is LineString ->
-                geometry.coordinates()
+                geometry.coordinates
 
             is MultiLineString ->
                 coordAll(geometry)
@@ -205,7 +204,7 @@ object TurfMeta {
                 coordAll(geometry, excludeWrapCoord)
 
             is GeometryCollection -> {
-                geometry.geometries()
+                geometry.geometries
                     .map { geometryItem ->
                         coordAllFromSingleGeometry(geometryItem, excludeWrapCoord)
                     }
@@ -229,7 +228,7 @@ object TurfMeta {
      */
     @JvmStatic
     fun getCoord(feature: Feature): Point {
-        return (feature.geometry() as? Point)
+        return feature.geometry as? Point
             ?: throw TurfException("A Feature with a Point geometry is required.")
     }
 }

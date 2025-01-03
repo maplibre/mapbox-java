@@ -25,7 +25,7 @@ class TurfMetaTest {
         val resultList = coordAll(pointGeometry)
 
         assertEquals(resultList.size.toDouble(), 1.0, DELTA)
-        assertEquals(resultList[0], Point.fromLngLat(0.0, 0.0))
+        assertEquals(resultList[0], Point(0.0, 0.0))
     }
 
     @Test
@@ -35,8 +35,8 @@ class TurfMetaTest {
         val resultList = coordAll(lineStringGeometry)
 
         assertEquals(resultList.size.toDouble(), 2.0, DELTA)
-        assertEquals(resultList[0], Point.fromLngLat(0.0, 0.0))
-        assertEquals(resultList[1], Point.fromLngLat(1.0, 1.0))
+        assertEquals(resultList[0], Point(0.0, 0.0))
+        assertEquals(resultList[1], Point(1.0, 1.0))
     }
 
     @Test
@@ -46,10 +46,10 @@ class TurfMetaTest {
         val resultList = coordAll(polygonGeometry, false)
 
         assertEquals(resultList.size.toDouble(), 4.0, DELTA)
-        assertEquals(resultList[0], Point.fromLngLat(0.0, 0.0))
-        assertEquals(resultList[1], Point.fromLngLat(1.0, 1.0))
-        assertEquals(resultList[2], Point.fromLngLat(0.0, 1.0))
-        assertEquals(resultList[3], Point.fromLngLat(0.0, 0.0))
+        assertEquals(resultList[0], Point(0.0, 0.0))
+        assertEquals(resultList[1], Point(1.0, 1.0))
+        assertEquals(resultList[2], Point(0.0, 1.0))
+        assertEquals(resultList[3], Point(0.0, 0.0))
     }
 
     @Test
@@ -59,9 +59,9 @@ class TurfMetaTest {
         val resultList = coordAll(polygonGeometry, true)
 
         assertEquals(resultList.size.toDouble(), 3.0, DELTA)
-        assertEquals(resultList[0], Point.fromLngLat(0.0, 0.0))
-        assertEquals(resultList[1], Point.fromLngLat(1.0, 1.0))
-        assertEquals(resultList[2], Point.fromLngLat(0.0, 1.0))
+        assertEquals(resultList[0], Point(0.0, 0.0))
+        assertEquals(resultList[1], Point(1.0, 1.0))
+        assertEquals(resultList[2], Point(0.0, 1.0))
     }
 
     @Test
@@ -72,10 +72,10 @@ class TurfMetaTest {
         val resultList = coordAll(multiPolygonGeometry, false)
 
         assertEquals(resultList.size.toDouble(), 4.0, DELTA)
-        assertEquals(resultList[0], Point.fromLngLat(0.0, 0.0))
-        assertEquals(resultList[1], Point.fromLngLat(1.0, 1.0))
-        assertEquals(resultList[2], Point.fromLngLat(0.0, 1.0))
-        assertEquals(resultList[3], Point.fromLngLat(0.0, 0.0))
+        assertEquals(resultList[0], Point(0.0, 0.0))
+        assertEquals(resultList[1], Point(1.0, 1.0))
+        assertEquals(resultList[2], Point(0.0, 1.0))
+        assertEquals(resultList[3], Point(0.0, 0.0))
     }
 
     @Test
@@ -83,7 +83,7 @@ class TurfMetaTest {
         val jsonFeature = "{type: 'Feature', geometry: {type: 'Point', coordinates: [1, 2]}}"
         assertEquals(
             getCoord(Feature.fromJson(jsonFeature)),
-            Point.fromLngLat(1.0, 2.0)
+            Point(1.0, 2.0)
         )
     }
 
@@ -92,69 +92,69 @@ class TurfMetaTest {
         val multipolygonJson =
             "{type: 'MultiPolygon', coordinates: [[[[0, 0], [1, 1], [0, 1], [0, 0]]]]}"
         val lineStringJson = "{type: 'LineString', coordinates: [[0, 0], [1, 1]]}"
-        val featureCollection = FeatureCollection.fromFeatures(
+        val featureCollection = FeatureCollection(
             listOf(
-                Feature.fromGeometry(MultiPolygon.fromJson(multipolygonJson)),
-                Feature.fromGeometry(LineString.fromJson(lineStringJson))
+                Feature(MultiPolygon.fromJson(multipolygonJson)),
+                Feature(LineString.fromJson(lineStringJson))
             )
         )
         assertNotNull(featureCollection)
         assertEquals(5, coordAll(featureCollection, true).size.toLong())
-        assertEquals(0.0, coordAll(featureCollection, true)[0].latitude(), DELTA)
-        assertEquals(0.0, coordAll(featureCollection, true)[0].longitude(), DELTA)
-        assertEquals(1.0, coordAll(featureCollection, true)[4].latitude(), DELTA)
-        assertEquals(1.0, coordAll(featureCollection, true)[4].longitude(), DELTA)
+        assertEquals(0.0, coordAll(featureCollection, true)[0].latitude, DELTA)
+        assertEquals(0.0, coordAll(featureCollection, true)[0].longitude, DELTA)
+        assertEquals(1.0, coordAll(featureCollection, true)[4].latitude, DELTA)
+        assertEquals(1.0, coordAll(featureCollection, true)[4].longitude, DELTA)
     }
 
     @Test
     fun coordAllSingleFeature() {
         val lineStringJson = "{type: 'LineString', coordinates: [[0, 0], [1, 1]]}"
-        val featureCollection = FeatureCollection.fromFeature(
-            Feature.fromGeometry(LineString.fromJson(lineStringJson))
+        val featureCollection = FeatureCollection(
+            Feature(LineString.fromJson(lineStringJson))
         )
         assertNotNull(featureCollection)
         assertEquals(2, coordAll(featureCollection, true).size.toLong())
-        assertEquals(0.0, coordAll(featureCollection, true)[0].latitude(), DELTA)
-        assertEquals(0.0, coordAll(featureCollection, true)[0].longitude(), DELTA)
-        assertEquals(1.0, coordAll(featureCollection, true)[1].latitude(), DELTA)
-        assertEquals(1.0, coordAll(featureCollection, true)[1].longitude(), DELTA)
+        assertEquals(0.0, coordAll(featureCollection, true)[0].latitude, DELTA)
+        assertEquals(0.0, coordAll(featureCollection, true)[0].longitude, DELTA)
+        assertEquals(1.0, coordAll(featureCollection, true)[1].latitude, DELTA)
+        assertEquals(1.0, coordAll(featureCollection, true)[1].longitude, DELTA)
     }
 
     @Test
     fun coordAllGeometryCollection() {
         val points = listOf(
-            Point.fromLngLat(1.0, 2.0),
-            Point.fromLngLat(2.0, 3.0)
+            Point(1.0, 2.0),
+            Point(2.0, 3.0)
         )
-        val lineString = LineString.fromLngLats(points)
+        val lineString = LineString(points)
         val geometries = listOf(
             points[0],
             lineString
         )
 
-        val bbox = BoundingBox.fromLngLats(1.0, 2.0, 3.0, 4.0)
-        val geometryCollection = GeometryCollection.fromGeometries(geometries, bbox)
+        val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
+        val geometryCollection = GeometryCollection(geometries, bbox)
 
-        val featureCollection = FeatureCollection.fromFeature(
-            Feature.fromGeometry(geometryCollection)
+        val featureCollection = FeatureCollection(
+            Feature(geometryCollection)
         )
 
         assertNotNull(featureCollection)
         assertNotNull(coordAll(featureCollection, true))
         assertEquals(3, coordAll(featureCollection, true).size.toLong())
-        assertEquals(1.0, coordAll(featureCollection, true)[0].longitude(), DELTA)
-        assertEquals(2.0, coordAll(featureCollection, true)[0].latitude(), DELTA)
+        assertEquals(1.0, coordAll(featureCollection, true)[0].longitude, DELTA)
+        assertEquals(2.0, coordAll(featureCollection, true)[0].latitude, DELTA)
     }
 
     @Test
     fun wrongFeatureGeometryForGetCoordThrowsException() {
         assertThrows(TurfException::class.java) {
             getCoord(
-                Feature.fromGeometry(
-                    LineString.fromLngLats(
+                Feature(
+                    LineString(
                         listOf(
-                            Point.fromLngLat(0.0, 9.0),
-                            Point.fromLngLat(0.0, 10.0)
+                            Point(0.0, 9.0),
+                            Point(0.0, 10.0)
                         )
                     )
                 )

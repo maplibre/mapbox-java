@@ -1,9 +1,9 @@
 package org.maplibre.turf
 
-import androidx.annotation.FloatRange
-import com.google.gson.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
+import org.maplibre.geojson.GeometryCollection
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.MultiLineString
 import org.maplibre.geojson.MultiPoint
@@ -143,9 +143,9 @@ object TurfConversion {
     @JvmStatic
     fun explode(featureCollection: FeatureCollection): FeatureCollection {
         val points = TurfMeta.coordAll(featureCollection, true)
-            .map { point -> Feature.fromGeometry(point) }
+            .map { point -> Feature(point) }
 
-        return FeatureCollection.fromFeatures(points)
+        return FeatureCollection(points)
     }
 
     /**
@@ -159,9 +159,9 @@ object TurfConversion {
     @JvmStatic
     fun explode(feature: Feature): FeatureCollection {
         val points = TurfMeta.coordAll(feature, true)
-            .map { point -> Feature.fromGeometry(point) }
+            .map { point -> Feature(point) }
 
-        return FeatureCollection.fromFeatures(points)
+        return FeatureCollection(points)
     }
 
     /**
@@ -175,12 +175,11 @@ object TurfConversion {
      */
     @JvmStatic
     @JvmOverloads
-    fun polygonToLine(feature: Feature, properties: JsonObject? = null): Feature {
-        return (feature.geometry() as? Polygon)?.let { polygon ->
+    fun polygonToLine(feature: Feature, properties: Map<String, JsonElement>? = null): Feature {
+        return (feature.geometry as? Polygon)?.let { polygon ->
             polygonToLine(
                 polygon,
-                properties
-                    ?: feature.properties().takeIf { feature.type() == "Feature" }
+                properties ?: feature.properties
             )
         } ?: throw TurfException("Feature's geometry must be Polygon")
     }
@@ -196,8 +195,8 @@ object TurfConversion {
      */
     @JvmStatic
     @JvmOverloads
-    fun polygonToLine(polygon: Polygon, properties: JsonObject? = null): Feature? {
-        return coordsToLine(polygon.coordinates(), properties)
+    fun polygonToLine(polygon: Polygon, properties: Map<String, JsonElement>? = null): Feature? {
+        return coordsToLine(polygon.coordinates, properties)
     }
 
     /**
@@ -215,12 +214,12 @@ object TurfConversion {
     @JvmOverloads
     fun polygonToLine(
         multiPolygon: MultiPolygon,
-        properties: JsonObject? = null
+        properties: Map<String, JsonElement>? = null
     ): FeatureCollection {
-        val features = multiPolygon.coordinates()
-            .map { polygonCoordinates -> coordsToLine(polygonCoordinates, properties) }
+        val features = multiPolygon.coordinates
+            .mapNotNull { polygonCoordinates -> coordsToLine(polygonCoordinates, properties) }
 
-        return FeatureCollection.fromFeatures(features)
+        return FeatureCollection(features)
     }
 
     /**
@@ -239,30 +238,30 @@ object TurfConversion {
     @JvmOverloads
     fun multiPolygonToLine(
         feature: Feature,
-        properties: JsonObject? = null
+        properties: Map<String, JsonElement>? = null
     ): FeatureCollection {
-        return (feature.geometry() as? MultiPolygon)?.let { multiPolygon ->
+        return (feature.geometry as? MultiPolygon)?.let { multiPolygon ->
             polygonToLine(
                 multiPolygon,
                 properties
-                    ?: feature.properties().takeIf { feature.type() == "Feature" }
+                    ?: feature.properties
             )
         } ?: throw TurfException("Feature's geometry must be MultiPolygon")
     }
 
-    private fun coordsToLine(coordinates: List<List<Point>>, properties: JsonObject?): Feature? {
+    private fun coordsToLine(coordinates: List<List<Point>>, properties: Map<String, JsonElement>?): Feature? {
         return when {
             coordinates.isEmpty() ->
                 null
 
             coordinates.size == 1 -> {
-                val lineString = LineString.fromLngLats(coordinates[0])
-                return Feature.fromGeometry(lineString, properties)
+                val lineString = LineString(coordinates[0])
+                return Feature(lineString, properties)
             }
 
             else -> {
-                val multiLineString = MultiLineString.fromLngLats(coordinates)
-                return Feature.fromGeometry(multiLineString, properties)
+                val multiLineString = MultiLineString(coordinates)
+                return Feature(multiLineString, properties)
             }
         }
     }
@@ -293,7 +292,7 @@ object TurfConversion {
      */
     @JvmStatic
     fun combine(originalFeatureCollection: FeatureCollection): FeatureCollection {
-        val features = originalFeatureCollection.features()
+        val features = originalFeatureCollection.features
         if (features == null) {
             throw TurfException("Your FeatureCollection is null.")
         } else if (features.size == 0) {
@@ -304,31 +303,32 @@ object TurfConversion {
         val lineStringList = mutableListOf<LineString>()
         val polygonList = mutableListOf<Polygon>()
         features.forEach { feature ->
-            when (val geometry = feature.geometry()) {
+            when (val geometry = feature.geometry) {
                 is Point -> pointList.add(geometry)
-                is MultiPoint -> pointList.addAll(geometry.coordinates())
+                is MultiPoint -> pointList.addAll(geometry.coordinates)
                 is LineString -> lineStringList.add(geometry)
-                is MultiLineString -> lineStringList.addAll(geometry.lineStrings())
+                is MultiLineString -> lineStringList.addAll(geometry.lineStrings)
                 is Polygon -> polygonList.add(geometry)
-                is MultiPolygon -> polygonList.addAll(geometry.polygons())
+                is MultiPolygon -> polygonList.addAll(geometry.polygons)
+                else -> {}
             }
         }
 
         val combinedFeatures = mutableListOf<Feature>()
         if (pointList.isNotEmpty()) {
-            combinedFeatures.add(Feature.fromGeometry(MultiPoint.fromLngLats(pointList)))
+            combinedFeatures.add(Feature(MultiPoint(pointList)))
         }
         if (lineStringList.isNotEmpty()) {
-            combinedFeatures.add(Feature.fromGeometry(MultiLineString.fromLineStrings(lineStringList)))
+            combinedFeatures.add(Feature(MultiLineString.fromLineStrings(lineStringList)))
         }
         if (polygonList.isNotEmpty()) {
-            combinedFeatures.add(Feature.fromGeometry(MultiPolygon.fromPolygons(polygonList)))
+            combinedFeatures.add(Feature(MultiPolygon.fromPolygons(polygonList)))
         }
 
         return if (combinedFeatures.isEmpty()) {
             originalFeatureCollection
         } else {
-            FeatureCollection.fromFeatures(combinedFeatures)
+            FeatureCollection(combinedFeatures)
         }
     }
 }

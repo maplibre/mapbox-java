@@ -106,10 +106,10 @@ class TurfConversionTest {
     @Test
     fun combinePointsToMultiPoint() {
         val pointFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(Point.fromLngLat(-2.46, 27.6835)),
-                    Feature.fromGeometry(Point.fromLngLat(41.83, 7.3624))
+                    Feature(Point(-2.46, 27.6835)),
+                    Feature(Point(41.83, 7.3624))
                 )
             )
 
@@ -117,26 +117,26 @@ class TurfConversionTest {
         assertNotNull(featureCollectionWithNewMultiPointObject)
 
         val multiPoint =
-            featureCollectionWithNewMultiPointObject.features()!![0].geometry() as MultiPoint?
+            featureCollectionWithNewMultiPointObject.features[0].geometry as MultiPoint?
         assertNotNull(multiPoint)
 
-        assertEquals(-2.46, multiPoint!!.coordinates()[0].longitude(), DELTA)
-        assertEquals(27.6835, multiPoint.coordinates()[0].latitude(), DELTA)
-        assertEquals(41.83, multiPoint.coordinates()[1].longitude(), DELTA)
-        assertEquals(7.3624, multiPoint.coordinates()[1].latitude(), DELTA)
+        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
+        assertEquals(41.83, multiPoint.coordinates[1].longitude, DELTA)
+        assertEquals(7.3624, multiPoint.coordinates[1].latitude, DELTA)
     }
 
     @Test
     fun combinePointAndMultiPointToMultiPoint() {
         val pointAndMultiPointFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(Point.fromLngLat(-2.46, 27.6835)),
-                    Feature.fromGeometry(
-                        MultiPoint.fromLngLats(
+                    Feature(Point(-2.46, 27.6835)),
+                    Feature(
+                        MultiPoint(
                             listOf(
-                                Point.fromLngLat(41.83, 7.3624),
-                                Point.fromLngLat(100.0, 101.0)
+                                Point(41.83, 7.3624),
+                                Point(100.0, 101.0)
                             )
                         )
                     )
@@ -148,35 +148,35 @@ class TurfConversionTest {
 
         assertNotNull(combinedFeatureCollection)
 
-        val multiPoint = combinedFeatureCollection.features()!![0].geometry() as MultiPoint?
+        val multiPoint = combinedFeatureCollection.features[0].geometry as MultiPoint?
         assertNotNull(multiPoint)
 
-        assertEquals(-2.46, multiPoint!!.coordinates()[0].longitude(), DELTA)
-        assertEquals(27.6835, multiPoint.coordinates()[0].latitude(), DELTA)
-        assertEquals(41.83, multiPoint.coordinates()[1].longitude(), DELTA)
-        assertEquals(7.3624, multiPoint.coordinates()[1].latitude(), DELTA)
-        assertEquals(100.0, multiPoint.coordinates()[2].longitude(), DELTA)
-        assertEquals(101.0, multiPoint.coordinates()[2].latitude(), DELTA)
+        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
+        assertEquals(41.83, multiPoint.coordinates[1].longitude, DELTA)
+        assertEquals(7.3624, multiPoint.coordinates[1].latitude, DELTA)
+        assertEquals(100.0, multiPoint.coordinates[2].longitude, DELTA)
+        assertEquals(101.0, multiPoint.coordinates[2].latitude, DELTA)
     }
 
     @Test
     fun combineTwoLineStringsToMultiLineString() {
         val lineStringFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(-11.25, 55.7765),
-                                Point.fromLngLat(41.1328, 22.91792)
+                                Point(-11.25, 55.7765),
+                                Point(41.1328, 22.91792)
                             )
                         )
                     ),
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(3.8671, 19.3111),
-                                Point.fromLngLat(20.742, -20.3034)
+                                Point(3.8671, 19.3111),
+                                Point(20.742, -20.3034)
                             )
                         )
                     )
@@ -187,44 +187,44 @@ class TurfConversionTest {
         assertNotNull(featureCollectionWithNewMultiLineStringObject)
 
         val multiLineString =
-            featureCollectionWithNewMultiLineStringObject.features()!![0].geometry() as MultiLineString?
+            featureCollectionWithNewMultiLineStringObject.features[0].geometry as MultiLineString?
         assertNotNull(multiLineString)
 
         // Checking the first LineString in the MultiLineString
-        assertEquals(-11.25, multiLineString!!.coordinates()[0][0].longitude(), DELTA)
-        assertEquals(55.7765, multiLineString.coordinates()[0][0].latitude(), DELTA)
+        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString in the MultiLineString
-        assertEquals(41.1328, multiLineString.coordinates()[0][1].longitude(), DELTA)
-        assertEquals(22.91792, multiLineString.coordinates()[0][1].latitude(), DELTA)
+        assertEquals(41.1328, multiLineString.coordinates[0][1].longitude, DELTA)
+        assertEquals(22.91792, multiLineString.coordinates[0][1].latitude, DELTA)
     }
 
     @Test
     fun combineLineStringAndMultiLineStringToMultiLineString() {
         val lineStringFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(-11.25, 55.7765),
-                                Point.fromLngLat(41.1328, 22.91792)
+                                Point(-11.25, 55.7765),
+                                Point(41.1328, 22.91792)
                             )
                         )
                     ),
-                    Feature.fromGeometry(
+                    Feature(
                         MultiLineString.fromLineStrings(
                             listOf(
-                                LineString.fromLngLats(
+                                LineString(
                                     listOf(
-                                        Point.fromLngLat(102.0, -10.0),
-                                        Point.fromLngLat(130.0, 4.0)
+                                        Point(102.0, -10.0),
+                                        Point(130.0, 4.0)
                                     )
                                 ),
-                                LineString.fromLngLats(
+                                LineString(
                                     listOf(
-                                        Point.fromLngLat(40.0, -20.0),
-                                        Point.fromLngLat(150.0, 18.0)
+                                        Point(40.0, -20.0),
+                                        Point(150.0, 18.0)
                                     )
                                 )
                             )
@@ -238,56 +238,56 @@ class TurfConversionTest {
         assertNotNull(featureCollectionWithNewMultiLineStringObject)
 
         val multiLineString = featureCollectionWithNewMultiLineStringObject
-            .features()!![0].geometry() as MultiLineString?
+            .features[0].geometry as MultiLineString?
         assertNotNull(multiLineString)
 
         // Checking the first LineString in the MultiLineString
-        assertEquals(-11.25, multiLineString!!.coordinates()[0][0].longitude(), DELTA)
-        assertEquals(55.7765, multiLineString.coordinates()[0][0].latitude(), DELTA)
+        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
-        assertEquals(41.1328, multiLineString.coordinates()[0][1].longitude(), DELTA)
-        assertEquals(22.91792, multiLineString.coordinates()[0][1].latitude(), DELTA)
+        assertEquals(41.1328, multiLineString.coordinates[0][1].longitude, DELTA)
+        assertEquals(22.91792, multiLineString.coordinates[0][1].latitude, DELTA)
 
         // Checking the second LineString in the MultiLineString
-        assertEquals(102.0, multiLineString.coordinates()[1][0].longitude(), DELTA)
-        assertEquals(-10.0, multiLineString.coordinates()[1][0].latitude(), DELTA)
+        assertEquals(102.0, multiLineString.coordinates[1][0].longitude, DELTA)
+        assertEquals(-10.0, multiLineString.coordinates[1][0].latitude, DELTA)
 
-        assertEquals(130.0, multiLineString.coordinates()[1][1].longitude(), DELTA)
-        assertEquals(4.0, multiLineString.coordinates()[1][1].latitude(), DELTA)
+        assertEquals(130.0, multiLineString.coordinates[1][1].longitude, DELTA)
+        assertEquals(4.0, multiLineString.coordinates[1][1].latitude, DELTA)
 
         // Checking the third LineString in the MultiLineString
-        assertEquals(40.0, multiLineString.coordinates()[2][0].longitude(), DELTA)
-        assertEquals(-20.0, multiLineString.coordinates()[2][0].latitude(), DELTA)
+        assertEquals(40.0, multiLineString.coordinates[2][0].longitude, DELTA)
+        assertEquals(-20.0, multiLineString.coordinates[2][0].latitude, DELTA)
 
-        assertEquals(150.0, multiLineString.coordinates()[2][1].longitude(), DELTA)
-        assertEquals(18.0, multiLineString.coordinates()[2][1].latitude(), DELTA)
+        assertEquals(150.0, multiLineString.coordinates[2][1].longitude, DELTA)
+        assertEquals(18.0, multiLineString.coordinates[2][1].latitude, DELTA)
     }
 
     @Test
     fun combinePolygonToMultiPolygon() {
         val polygonFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(
-                        Polygon.fromLngLats(
+                    Feature(
+                        Polygon(
                             listOf(
                                 listOf(
-                                    Point.fromLngLat(61.938950426660604, 5.9765625),
-                                    Point.fromLngLat(52.696361078274485, 33.046875),
-                                    Point.fromLngLat(69.90011762668541, 28.828124999999996),
-                                    Point.fromLngLat(61.938950426660604, 5.9765625)
+                                    Point(61.938950426660604, 5.9765625),
+                                    Point(52.696361078274485, 33.046875),
+                                    Point(69.90011762668541, 28.828124999999996),
+                                    Point(61.938950426660604, 5.9765625)
                                 )
                             )
                         )
                     ),
-                    Feature.fromGeometry(
-                        Polygon.fromLngLats(
+                    Feature(
+                        Polygon(
                             listOf(
                                 listOf(
-                                    Point.fromLngLat(11.42578125, 16.636191878397664),
-                                    Point.fromLngLat(7.91015625, -9.102096738726443),
-                                    Point.fromLngLat(31.113281249999996, 17.644022027872726),
-                                    Point.fromLngLat(11.42578125, 16.636191878397664)
+                                    Point(11.42578125, 16.636191878397664),
+                                    Point(7.91015625, -9.102096738726443),
+                                    Point(31.113281249999996, 17.644022027872726),
+                                    Point(11.42578125, 16.636191878397664)
                                 )
                             )
                         )
@@ -299,7 +299,7 @@ class TurfConversionTest {
         assertNotNull(featureCollectionWithNewMultiPolygonObject)
 
         val multiPolygon =
-            featureCollectionWithNewMultiPolygonObject.features()!![0].geometry() as MultiPolygon?
+            featureCollectionWithNewMultiPolygonObject.features[0].geometry as MultiPolygon?
         assertNotNull(multiPolygon)
 
         // Checking the first Polygon in the MultiPolygon
@@ -307,34 +307,34 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates()[0][0][0].longitude(),
+            multiPolygon!!.coordinates[0][0][0].longitude,
             DELTA
         )
-        assertEquals(5.9765625, multiPolygon.coordinates()[0][0][0].latitude(), DELTA)
+        assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
 
         // Checking the second Point
         assertEquals(
             52.696361078274485,
-            multiPolygon.coordinates()[0][0][1].longitude(),
+            multiPolygon.coordinates[0][0][1].longitude,
             DELTA
         )
-        assertEquals(33.046875, multiPolygon.coordinates()[0][0][1].latitude(), DELTA)
+        assertEquals(33.046875, multiPolygon.coordinates[0][0][1].latitude, DELTA)
 
         // Checking the second Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(11.42578125, multiPolygon.coordinates()[1][0][0].longitude(), DELTA)
+        assertEquals(11.42578125, multiPolygon.coordinates[1][0][0].longitude, DELTA)
         assertEquals(
             16.636191878397664,
-            multiPolygon.coordinates()[1][0][0].latitude(),
+            multiPolygon.coordinates[1][0][0].latitude,
             DELTA
         )
 
         // Checking the second Point
-        assertEquals(7.91015625, multiPolygon.coordinates()[1][0][1].longitude(), DELTA)
+        assertEquals(7.91015625, multiPolygon.coordinates[1][0][1].longitude, DELTA)
         assertEquals(
             -9.102096738726443,
-            multiPolygon.coordinates()[1][0][1].latitude(),
+            multiPolygon.coordinates[1][0][1].latitude,
             DELTA
         )
     }
@@ -342,43 +342,43 @@ class TurfConversionTest {
     @Test
     fun combinePolygonAndMultiPolygonToMultiPolygon() {
         val polygonFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(
-                        Polygon.fromLngLats(
+                    Feature(
+                        Polygon(
                             listOf(
                                 listOf(
-                                    Point.fromLngLat(61.938950426660604, 5.9765625),
-                                    Point.fromLngLat(52.696361078274485, 33.046875),
-                                    Point.fromLngLat(69.90011762668541, 28.828124999999996),
-                                    Point.fromLngLat(61.938950426660604, 5.9765625)
+                                    Point(61.938950426660604, 5.9765625),
+                                    Point(52.696361078274485, 33.046875),
+                                    Point(69.90011762668541, 28.828124999999996),
+                                    Point(61.938950426660604, 5.9765625)
                                 )
                             )
                         )
                     ),
-                    Feature.fromGeometry(
+                    Feature(
                         MultiPolygon.fromPolygons(
                             listOf(
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(11.42578125, 16.636191878397664),
-                                            Point.fromLngLat(7.91015625, -9.102096738726443),
-                                            Point.fromLngLat(
+                                            Point(11.42578125, 16.636191878397664),
+                                            Point(7.91015625, -9.102096738726443),
+                                            Point(
                                                 31.113281249999996,
                                                 17.644022027872726
                                             ),
-                                            Point.fromLngLat(11.42578125, 16.636191878397664)
+                                            Point(11.42578125, 16.636191878397664)
                                         )
                                     )
                                 ),
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(30.0, 0.0),
-                                            Point.fromLngLat(102.0, 0.0),
-                                            Point.fromLngLat(103.0, 1.0),
-                                            Point.fromLngLat(30.0, 0.0)
+                                            Point(30.0, 0.0),
+                                            Point(102.0, 0.0),
+                                            Point(103.0, 1.0),
+                                            Point(30.0, 0.0)
                                         )
                                     )
                                 )
@@ -391,7 +391,7 @@ class TurfConversionTest {
         val combinedFeatureCollection = combine(polygonFeatureCollection)
         assertNotNull(combinedFeatureCollection)
 
-        val multiPolygon = combinedFeatureCollection.features()!![0].geometry() as MultiPolygon?
+        val multiPolygon = combinedFeatureCollection.features[0].geometry as MultiPolygon?
         assertNotNull(multiPolygon)
 
         // Checking the first Polygon in the MultiPolygon
@@ -399,91 +399,91 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates()[0][0][0].longitude(),
+            multiPolygon!!.coordinates[0][0][0].longitude,
             DELTA
         )
-        assertEquals(5.9765625, multiPolygon.coordinates()[0][0][0].latitude(), DELTA)
+        assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
 
         // Checking the second Point
         assertEquals(
             52.696361078274485,
-            multiPolygon.coordinates()[0][0][1].longitude(),
+            multiPolygon.coordinates[0][0][1].longitude,
             DELTA
         )
-        assertEquals(33.046875, multiPolygon.coordinates()[0][0][1].latitude(), DELTA)
+        assertEquals(33.046875, multiPolygon.coordinates[0][0][1].latitude, DELTA)
 
         // Checking the second Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(11.42578125, multiPolygon.coordinates()[1][0][0].longitude(), DELTA)
+        assertEquals(11.42578125, multiPolygon.coordinates[1][0][0].longitude, DELTA)
         assertEquals(
             16.636191878397664,
-            multiPolygon.coordinates()[1][0][0].latitude(),
+            multiPolygon.coordinates[1][0][0].latitude,
             DELTA
         )
 
         // Checking the second Point
-        assertEquals(7.91015625, multiPolygon.coordinates()[1][0][1].longitude(), DELTA)
+        assertEquals(7.91015625, multiPolygon.coordinates[1][0][1].longitude, DELTA)
         assertEquals(
             -9.102096738726443,
-            multiPolygon.coordinates()[1][0][1].latitude(),
+            multiPolygon.coordinates[1][0][1].latitude,
             DELTA
         )
 
         // Checking the third Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(30.0, multiPolygon.coordinates()[2][0][0].longitude(), DELTA)
-        assertEquals(0.0, multiPolygon.coordinates()[2][0][0].latitude(), DELTA)
+        assertEquals(30.0, multiPolygon.coordinates[2][0][0].longitude, DELTA)
+        assertEquals(0.0, multiPolygon.coordinates[2][0][0].latitude, DELTA)
 
         // Checking the second Point
-        assertEquals(102.0, multiPolygon.coordinates()[2][0][1].longitude(), DELTA)
-        assertEquals(0.0, multiPolygon.coordinates()[2][0][1].latitude(), DELTA)
+        assertEquals(102.0, multiPolygon.coordinates[2][0][1].longitude, DELTA)
+        assertEquals(0.0, multiPolygon.coordinates[2][0][1].latitude, DELTA)
     }
 
     @Test
     fun combinePolygonAndMultiPolygonAndPointToMultiPolygon() {
         val featureCollectionWithPointPolygonAndMultiPolygon =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(
-                        Point.fromLngLat(-2.46, 27.6835)
+                    Feature(
+                        Point(-2.46, 27.6835)
                     ),
-                    Feature.fromGeometry(
-                        Polygon.fromLngLats(
+                    Feature(
+                        Polygon(
                             listOf(
                                 listOf(
-                                    Point.fromLngLat(61.938950426660604, 5.9765625),
-                                    Point.fromLngLat(52.696361078274485, 33.046875),
-                                    Point.fromLngLat(69.90011762668541, 28.828124999999996),
-                                    Point.fromLngLat(61.938950426660604, 5.9765625)
+                                    Point(61.938950426660604, 5.9765625),
+                                    Point(52.696361078274485, 33.046875),
+                                    Point(69.90011762668541, 28.828124999999996),
+                                    Point(61.938950426660604, 5.9765625)
                                 )
                             )
                         )
                     ),
-                    Feature.fromGeometry(
+                    Feature(
                         MultiPolygon.fromPolygons(
                             listOf(
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(11.42578125, 16.636191878397664),
-                                            Point.fromLngLat(7.91015625, -9.102096738726443),
-                                            Point.fromLngLat(
+                                            Point(11.42578125, 16.636191878397664),
+                                            Point(7.91015625, -9.102096738726443),
+                                            Point(
                                                 31.113281249999996,
                                                 17.644022027872726
                                             ),
-                                            Point.fromLngLat(11.42578125, 16.636191878397664)
+                                            Point(11.42578125, 16.636191878397664)
                                         )
                                     )
                                 ),
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(30.0, 0.0),
-                                            Point.fromLngLat(102.0, 0.0),
-                                            Point.fromLngLat(103.0, 1.0),
-                                            Point.fromLngLat(30.0, 0.0)
+                                            Point(30.0, 0.0),
+                                            Point(102.0, 0.0),
+                                            Point(103.0, 1.0),
+                                            Point(30.0, 0.0)
                                         )
                                     )
                                 )
@@ -497,13 +497,13 @@ class TurfConversionTest {
         assertNotNull(combinedFeatureCollection)
         var multiPolygon: MultiPolygon? = null
         var multiPoint: MultiPoint? = null
-        for (x in combinedFeatureCollection.features()!!.indices) {
-            val singleFeature = combinedFeatureCollection.features()!![x]
-            if (singleFeature.geometry() is MultiPolygon) {
-                multiPolygon = combinedFeatureCollection.features()!![x].geometry() as MultiPolygon?
+        for (x in combinedFeatureCollection.features.indices) {
+            val singleFeature = combinedFeatureCollection.features[x]
+            if (singleFeature.geometry is MultiPolygon) {
+                multiPolygon = combinedFeatureCollection.features[x].geometry as MultiPolygon?
             }
-            if (singleFeature.geometry() is MultiPoint) {
-                multiPoint = combinedFeatureCollection.features()!![x].geometry() as MultiPoint?
+            if (singleFeature.geometry is MultiPoint) {
+                multiPoint = combinedFeatureCollection.features[x].geometry as MultiPoint?
             }
         }
         assertNotNull(multiPolygon)
@@ -514,59 +514,59 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates()[0][0][0].longitude(),
+            multiPolygon!!.coordinates[0][0][0].longitude,
             DELTA
         )
-        assertEquals(5.9765625, multiPolygon.coordinates()[0][0][0].latitude(), DELTA)
+        assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
 
         // Checking the second Point
         assertEquals(
             52.696361078274485,
-            multiPolygon.coordinates()[0][0][1].longitude(),
+            multiPolygon.coordinates[0][0][1].longitude,
             DELTA
         )
-        assertEquals(33.046875, multiPolygon.coordinates()[0][0][1].latitude(), DELTA)
+        assertEquals(33.046875, multiPolygon.coordinates[0][0][1].latitude, DELTA)
 
         // Checking the second Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(11.42578125, multiPolygon.coordinates()[1][0][0].longitude(), DELTA)
+        assertEquals(11.42578125, multiPolygon.coordinates[1][0][0].longitude, DELTA)
         assertEquals(
             16.636191878397664,
-            multiPolygon.coordinates()[1][0][0].latitude(),
+            multiPolygon.coordinates[1][0][0].latitude,
             DELTA
         )
 
         // Checking the second Point
-        assertEquals(7.91015625, multiPolygon.coordinates()[1][0][1].longitude(), DELTA)
+        assertEquals(7.91015625, multiPolygon.coordinates[1][0][1].longitude, DELTA)
         assertEquals(
             -9.102096738726443,
-            multiPolygon.coordinates()[1][0][1].latitude(),
+            multiPolygon.coordinates[1][0][1].latitude,
             DELTA
         )
 
         // Checking the third Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(30.0, multiPolygon.coordinates()[2][0][0].longitude(), DELTA)
-        assertEquals(0.0, multiPolygon.coordinates()[2][0][0].latitude(), DELTA)
+        assertEquals(30.0, multiPolygon.coordinates[2][0][0].longitude, DELTA)
+        assertEquals(0.0, multiPolygon.coordinates[2][0][0].latitude, DELTA)
 
         // Checking the second Point
-        assertEquals(102.0, multiPolygon.coordinates()[2][0][1].longitude(), DELTA)
-        assertEquals(0.0, multiPolygon.coordinates()[2][0][1].latitude(), DELTA)
+        assertEquals(102.0, multiPolygon.coordinates[2][0][1].longitude, DELTA)
+        assertEquals(0.0, multiPolygon.coordinates[2][0][1].latitude, DELTA)
     }
 
     @Test
     fun combinePointAndLineStringGeometry() {
         val pointAndLineStringFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(Point.fromLngLat(-2.46, 27.6835)),
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(Point(-2.46, 27.6835)),
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(-11.25, 55.7765),
-                                Point.fromLngLat(41.1328, 22.91792)
+                                Point(-11.25, 55.7765),
+                                Point(41.1328, 22.91792)
                             )
                         )
                     )
@@ -577,14 +577,14 @@ class TurfConversionTest {
         assertNotNull(combinedFeatureCollection)
         var multiPoint: MultiPoint? = null
         var multiLineString: MultiLineString? = null
-        for (x in combinedFeatureCollection.features()!!.indices) {
-            val singleFeature = combinedFeatureCollection.features()!![x]
-            if (singleFeature.geometry() is MultiPoint) {
-                multiPoint = combinedFeatureCollection.features()!![x].geometry() as MultiPoint?
+        for (x in combinedFeatureCollection.features.indices) {
+            val singleFeature = combinedFeatureCollection.features[x]
+            if (singleFeature.geometry is MultiPoint) {
+                multiPoint = combinedFeatureCollection.features[x].geometry as MultiPoint?
             }
-            if (singleFeature.geometry() is MultiLineString) {
+            if (singleFeature.geometry is MultiLineString) {
                 multiLineString =
-                    combinedFeatureCollection.features()!![x].geometry() as MultiLineString?
+                    combinedFeatureCollection.features[x].geometry as MultiLineString?
             }
         }
         assertNotNull(multiPoint)
@@ -593,50 +593,50 @@ class TurfConversionTest {
         // Checking the LineString in the MultiLineString
 
         // Checking the first LineString location
-        assertEquals(-11.25, multiLineString!!.coordinates()[0][0].longitude(), DELTA)
-        assertEquals(55.7765, multiLineString.coordinates()[0][0].latitude(), DELTA)
+        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString location
-        assertEquals(41.1328, multiLineString.coordinates()[0][1].longitude(), DELTA)
-        assertEquals(22.91792, multiLineString.coordinates()[0][1].latitude(), DELTA)
+        assertEquals(41.1328, multiLineString.coordinates[0][1].longitude, DELTA)
+        assertEquals(22.91792, multiLineString.coordinates[0][1].latitude, DELTA)
 
         // Checking the Point in the MultiPoint
 
         // Checking the first and only Point
-        assertEquals(-2.46, multiPoint!!.coordinates()[0].longitude(), DELTA)
-        assertEquals(27.6835, multiPoint.coordinates()[0].latitude(), DELTA)
+        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
     }
 
     @Test
     fun combinePointAndMultiPolygonAndLineStringGeometry() {
         val pointMultiPolygonAndLineStringFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(Point.fromLngLat(-2.46, 27.6835)),
-                    Feature.fromGeometry(
+                    Feature(Point(-2.46, 27.6835)),
+                    Feature(
                         MultiPolygon.fromPolygons(
                             listOf(
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(11.42578125, 16.636191878397664),
-                                            Point.fromLngLat(7.91015625, -9.102096738726443),
-                                            Point.fromLngLat(
+                                            Point(11.42578125, 16.636191878397664),
+                                            Point(7.91015625, -9.102096738726443),
+                                            Point(
                                                 31.113281249999996,
                                                 17.644022027872726
                                             ),
-                                            Point.fromLngLat(11.42578125, 16.636191878397664)
+                                            Point(11.42578125, 16.636191878397664)
                                         )
                                     )
                                 )
                             )
                         )
                     ),
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(-11.25, 55.7765),
-                                Point.fromLngLat(41.1328, 22.91792)
+                                Point(-11.25, 55.7765),
+                                Point(41.1328, 22.91792)
                             )
                         )
                     )
@@ -648,17 +648,17 @@ class TurfConversionTest {
         var multiPoint: MultiPoint? = null
         var multiLineString: MultiLineString? = null
         var multiPolygon: MultiPolygon? = null
-        for (x in combinedFeatureCollection.features()!!.indices) {
-            val singleFeature = combinedFeatureCollection.features()!![x]
-            if (singleFeature.geometry() is MultiPoint) {
-                multiPoint = combinedFeatureCollection.features()!![x].geometry() as MultiPoint?
+        for (x in combinedFeatureCollection.features.indices) {
+            val singleFeature = combinedFeatureCollection.features[x]
+            if (singleFeature.geometry is MultiPoint) {
+                multiPoint = combinedFeatureCollection.features[x].geometry as MultiPoint?
             }
-            if (singleFeature.geometry() is MultiLineString) {
+            if (singleFeature.geometry is MultiLineString) {
                 multiLineString =
-                    combinedFeatureCollection.features()!![x].geometry() as MultiLineString?
+                    combinedFeatureCollection.features[x].geometry as MultiLineString?
             }
-            if (singleFeature.geometry() is MultiPolygon) {
-                multiPolygon = combinedFeatureCollection.features()!![x].geometry() as MultiPolygon?
+            if (singleFeature.geometry is MultiPolygon) {
+                multiPolygon = combinedFeatureCollection.features[x].geometry as MultiPolygon?
             }
         }
         assertNotNull(multiPoint)
@@ -668,68 +668,68 @@ class TurfConversionTest {
         // Checking the Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(11.42578125, multiPolygon!!.coordinates()[0][0][0].longitude(), DELTA)
+        assertEquals(11.42578125, multiPolygon!!.coordinates[0][0][0].longitude, DELTA)
         assertEquals(
             16.636191878397664,
-            multiPolygon.coordinates()[0][0][0].latitude(),
+            multiPolygon.coordinates[0][0][0].latitude,
             DELTA
         )
 
         // Checking the second Point
-        assertEquals(7.91015625, multiPolygon.coordinates()[0][0][1].longitude(), DELTA)
+        assertEquals(7.91015625, multiPolygon.coordinates[0][0][1].longitude, DELTA)
         assertEquals(
             -9.102096738726443,
-            multiPolygon.coordinates()[0][0][1].latitude(),
+            multiPolygon.coordinates[0][0][1].latitude,
             DELTA
         )
 
         // Checking the LineString in the MultiLineString
 
         // Checking the first LineString location
-        assertEquals(-11.25, multiLineString!!.coordinates()[0][0].longitude(), DELTA)
-        assertEquals(55.7765, multiLineString.coordinates()[0][0].latitude(), DELTA)
+        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString location
-        assertEquals(41.1328, multiLineString.coordinates()[0][1].longitude(), DELTA)
-        assertEquals(22.91792, multiLineString.coordinates()[0][1].latitude(), DELTA)
+        assertEquals(41.1328, multiLineString.coordinates[0][1].longitude, DELTA)
+        assertEquals(22.91792, multiLineString.coordinates[0][1].latitude, DELTA)
 
         // Checking the Point in the MultiPoint
 
         // Checking the first and only Point
-        assertEquals(-2.46, multiPoint!!.coordinates()[0].longitude(), DELTA)
-        assertEquals(27.6835, multiPoint.coordinates()[0].latitude(), DELTA)
+        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
     }
 
     @Test
     fun combine_featureCollectionSizeCheck() {
         val pointMultiPolygonAndLineStringFeatureCollection =
-            FeatureCollection.fromFeatures(
+            FeatureCollection(
                 listOf(
-                    Feature.fromGeometry(Point.fromLngLat(-2.46, 27.6835)),
-                    Feature.fromGeometry(
+                    Feature(Point(-2.46, 27.6835)),
+                    Feature(
                         MultiPolygon.fromPolygons(
                             listOf(
-                                Polygon.fromLngLats(
+                                Polygon(
                                     listOf(
                                         listOf(
-                                            Point.fromLngLat(11.42578125, 16.636191878397664),
-                                            Point.fromLngLat(7.91015625, -9.102096738726443),
-                                            Point.fromLngLat(
+                                            Point(11.42578125, 16.636191878397664),
+                                            Point(7.91015625, -9.102096738726443),
+                                            Point(
                                                 31.113281249999996,
                                                 17.644022027872726
                                             ),
-                                            Point.fromLngLat(11.42578125, 16.636191878397664)
+                                            Point(11.42578125, 16.636191878397664)
                                         )
                                     )
                                 )
                             )
                         )
                     ),
-                    Feature.fromGeometry(
-                        LineString.fromLngLats(
+                    Feature(
+                        LineString(
                             listOf(
-                                Point.fromLngLat(-11.25, 55.7765),
-                                Point.fromLngLat(41.1328, 22.91792)
+                                Point(-11.25, 55.7765),
+                                Point(41.1328, 22.91792)
                             )
                         )
                     )
@@ -738,7 +738,7 @@ class TurfConversionTest {
 
         val combinedFeatureCollection = combine(pointMultiPolygonAndLineStringFeatureCollection)
         assertNotNull(combinedFeatureCollection)
-        assertEquals(3, combinedFeatureCollection.features()!!.size.toLong())
+        assertEquals(3, combinedFeatureCollection.features.size.toLong())
     }
 
     @Test
@@ -757,13 +757,13 @@ class TurfConversionTest {
 
     @Test
     fun explodePointSingleFeature() {
-        val point = Point.fromLngLat(102.0, 0.5)
+        val point = Point(102.0, 0.5)
         assertEquals(
             1, explode(
-                Feature.fromGeometry(
+                Feature(
                     point
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
@@ -772,10 +772,10 @@ class TurfConversionTest {
         val multiPoint = MultiPoint.fromJson(loadJsonFixture(TURF_EXPLODE_MULTI_POINT))
         assertEquals(
             4, explode(
-                Feature.fromGeometry(
+                Feature(
                     multiPoint
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
@@ -784,31 +784,31 @@ class TurfConversionTest {
         val lineString = LineString.fromJson(loadJsonFixture(TURF_EXPLODE_LINESTRING))
         assertEquals(
             4, explode(
-                Feature.fromGeometry(
+                Feature(
                     lineString
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
     @Test
     fun explodePolygonSingleFeature() {
-        val polygon = Polygon.fromLngLats(
+        val polygon = Polygon(
             listOf(
                 listOf(
-                    Point.fromLngLat(0.0, 101.0),
-                    Point.fromLngLat(1.0, 101.0),
-                    Point.fromLngLat(1.0, 100.0),
-                    Point.fromLngLat(0.0, 100.0)
+                    Point(0.0, 101.0),
+                    Point(1.0, 101.0),
+                    Point(1.0, 100.0),
+                    Point(0.0, 100.0)
                 )
             )
         )
         assertEquals(
             3, explode(
-                Feature.fromGeometry(
+                Feature(
                     polygon
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
@@ -818,10 +818,10 @@ class TurfConversionTest {
             MultiLineString.fromJson(loadJsonFixture(TURF_EXPLODE_MULTILINESTRING))
         assertEquals(
             4, explode(
-                Feature.fromGeometry(
+                Feature(
                     multiLineString
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
@@ -830,10 +830,10 @@ class TurfConversionTest {
         val multiPolygon = MultiPolygon.fromJson(loadJsonFixture(TURF_EXPLODE_MULTIPOLYGON))
         assertEquals(
             12, explode(
-                Feature.fromGeometry(
+                Feature(
                     multiPolygon
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
@@ -846,25 +846,25 @@ class TurfConversionTest {
         )
         assertEquals(
             3, explode(
-                Feature.fromGeometry(
+                Feature(
                     geometryCollection
                 )
-            ).features()!!.size.toLong()
+            ).features.size.toLong()
         )
     }
 
     @Test
     fun explodeFeatureCollection() {
-        val featureCollection = FeatureCollection.fromFeatures(
-            arrayOf(
-                Feature.fromGeometry(
+        val featureCollection = FeatureCollection(
+            listOf(
+                Feature(
                     MultiLineString.fromJson(
                         loadJsonFixture(
                             TURF_EXPLODE_MULTILINESTRING
                         )
                     )
                 ),
-                Feature.fromGeometry(
+                Feature(
                     MultiPolygon.fromJson(
                         loadJsonFixture(
                             TURF_EXPLODE_MULTIPOLYGON
@@ -873,7 +873,7 @@ class TurfConversionTest {
                 )
             )
         )
-        assertEquals(16, explode(featureCollection).features()!!.size.toLong())
+        assertEquals(16, explode(featureCollection).features.size.toLong())
     }
 
     @Test

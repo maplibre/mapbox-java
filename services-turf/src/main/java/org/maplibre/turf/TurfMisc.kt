@@ -1,5 +1,6 @@
 package org.maplibre.turf
 
+import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.Point
@@ -36,7 +37,7 @@ object TurfMisc {
      */
     @JvmStatic
     fun lineSlice(startPt: Point, stopPt: Point, line: Feature): LineString {
-        return (line.geometry() as? LineString)?.let { lineString ->
+        return (line.geometry as? LineString)?.let { lineString ->
             lineSlice(startPt, stopPt, lineString)
         } ?: throw TurfException("line must be a LineString")
     }
@@ -55,7 +56,7 @@ object TurfMisc {
      */
     @JvmStatic
     fun lineSlice(startPt: Point, stopPt: Point, line: LineString): LineString {
-        val coordinates = line.coordinates()
+        val coordinates = line.coordinates
 
         if (coordinates.size < 2) {
             throw TurfException("Turf lineSlice requires a LineString made up of at least 2 coordinates.")
@@ -67,14 +68,14 @@ object TurfMisc {
             nearestPointOnLine(startPt, coordinates),
             nearestPointOnLine(stopPt, coordinates)
         )
-            .sortedBy { point -> point.getNumberProperty(INDEX_KEY).toInt() }
-            .map { feature -> feature.geometry() as Point }
+            .sortedBy { point -> point.getIntProperty(INDEX_KEY) }
+            .map { feature -> feature.geometry as Point }
 
         val points = listOf(ends.first()) +
                 coordinates.subList(1, coordinates.size - 1) +
                 listOf(ends.last())
 
-        return LineString.fromLngLats(points)
+        return LineString(points)
     }
 
     /**
@@ -103,7 +104,7 @@ object TurfMisc {
         stopDist: Double,
         @TurfUnitCriteria units: String
     ): LineString {
-        return (line.geometry() as? LineString)?.let { lineString ->
+        return (line.geometry as? LineString)?.let { lineString ->
             lineSliceAlong(lineString, startDist, stopDist, units)
         } ?: throw TurfException("line must be a LineString")
     }
@@ -139,7 +140,7 @@ object TurfMisc {
         require(startDist >= 0) { "startDist must be greater than or equal 0" }
         require(stopDist > 0) { "stopDist must be greater than 0" }
 
-        val coordinates = line.coordinates()
+        val coordinates = line.coordinates
 
         if (coordinates.size < 2) {
             throw TurfException("Turf lineSlice requires a LineString made up of at least 2 coordinates.")
@@ -192,7 +193,7 @@ object TurfMisc {
             throw TurfException("Start position is beyond line")
         }
 
-        return LineString.fromLngLats(slicedLinePoints)
+        return LineString(slicedLinePoints)
     }
 
     /**
@@ -217,93 +218,82 @@ object TurfMisc {
             throw TurfException("Turf nearestPointOnLine requires a List of Points made up of at least 2 coordinates.")
         }
 
-        var closestPt = Feature.fromGeometry(
-            Point.fromLngLat(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
+        var closestPt = Feature(
+            Point(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
+            mapOf(DISTANCE_KEY to JsonPrimitive(Double.POSITIVE_INFINITY))
         )
-        closestPt.addNumberProperty(DISTANCE_KEY, Double.POSITIVE_INFINITY)
 
         for (i in 0 until coords.size - 1) {
-            val start = Feature.fromGeometry(coords[i])
-            val startPoint = start.geometry() as Point
+            val start = Feature(coords[i], mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], units))))
+            val startPoint = start.geometry as Point
 
-            val stop = Feature.fromGeometry(coords[i + 1])
-            val stopPoint = stop.geometry() as Point
-
-            //start
-            start.addNumberProperty(
-                DISTANCE_KEY,
-                distance(pt, startPoint, units)
-            )
-            //stop
-            stop.addNumberProperty(
-                DISTANCE_KEY,
-                distance(pt, stopPoint, units)
-            )
+            val stop = Feature(coords[i + 1], mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], units))))
+            val stopPoint = stop.geometry as Point
 
             // perpendicular
             val heightDistance = max(
-                start.properties()!![DISTANCE_KEY].asDouble,
-                stop.properties()!![DISTANCE_KEY].asDouble
+                start.getDoubleProperty(DISTANCE_KEY)!!,
+                stop.getDoubleProperty(DISTANCE_KEY)!!
             )
 
             val direction = bearing(startPoint, stopPoint)
 
-            val perpendicularPt1Feature = Feature.fromGeometry(
+            val perpendicularPt1Feature = Feature(
                 destination(pt, heightDistance, direction + 90, units)
             )
-            val perpendicularPt1Point = perpendicularPt1Feature.geometry() as Point
+            val perpendicularPt1Point = perpendicularPt1Feature.geometry as Point
 
-            val perpendicularPt2Feature = Feature.fromGeometry(
+            val perpendicularPt2Feature = Feature(
                 destination(pt, heightDistance, direction - 90, units)
             )
-            val perpendicularPt2Point = perpendicularPt2Feature.geometry() as Point
+            val perpendicularPt2Point = perpendicularPt2Feature.geometry as Point
 
             val intersect = lineIntersects(
-                perpendicularPt1Point.longitude(),
-                perpendicularPt1Point.latitude(),
-                perpendicularPt2Point.longitude(),
-                perpendicularPt2Point.latitude(),
-                startPoint.longitude(),
-                startPoint.latitude(),
-                stopPoint.longitude(),
-                stopPoint.latitude()
+                perpendicularPt1Point.longitude,
+                perpendicularPt1Point.latitude,
+                perpendicularPt2Point.longitude,
+                perpendicularPt2Point.latitude,
+                startPoint.longitude,
+                startPoint.latitude,
+                stopPoint.longitude,
+                stopPoint.latitude
             )
 
             val intersectPtFeature = intersect?.let {lineIntersects ->
-                Feature.fromGeometry(
-                    Point.fromLngLat(
-                        lineIntersects.horizontalIntersection!!,
-                        lineIntersects.verticalIntersection!!
-                    )
-                ).apply {
-                    addNumberProperty(
-                        DISTANCE_KEY,
-                        distance(pt, geometry() as Point, units)
-                    )
-                }
+                val intersectionPoint = Point(
+                    lineIntersects.horizontalIntersection!!,
+                    lineIntersects.verticalIntersection!!
+                )
+
+                Feature(
+                    intersectionPoint,
+                    mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, intersectionPoint, units)))
+                )
             }
 
-            var closestFeatureDistance = closestPt.getNumberProperty(DISTANCE_KEY).toDouble()
-            val startFeatureDistance = start.getNumberProperty(DISTANCE_KEY).toDouble()
+            var closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
+            val startFeatureDistance = start.getDoubleProperty(DISTANCE_KEY)!!
             if (startFeatureDistance < closestFeatureDistance) {
-                closestPt = start
-                closestPt.addNumberProperty(INDEX_KEY, i)
+                closestPt = start.copy(
+                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(start.properties ?: emptyMap())
+                )
             }
 
-            closestFeatureDistance = closestPt.getNumberProperty(DISTANCE_KEY).toDouble()
-            val stopFeatureDistance = stop.getNumberProperty(DISTANCE_KEY).toDouble()
+            closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
+            val stopFeatureDistance = stop.getDoubleProperty(DISTANCE_KEY)!!
             if (stopFeatureDistance < closestFeatureDistance) {
-                closestPt = stop
-                closestPt.addNumberProperty(INDEX_KEY, i)
+                closestPt = stop.copy(
+                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(stop.properties ?: emptyMap())
+                )
             }
 
-            closestFeatureDistance = closestPt.getNumberProperty(DISTANCE_KEY).toDouble()
+            closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
             intersectPtFeature?.let { intersectPoint ->
-                val intersectFeatureDistance = intersectPoint.getNumberProperty(DISTANCE_KEY)
-                    .toDouble()
+                val intersectFeatureDistance = intersectPoint.getDoubleProperty(DISTANCE_KEY)!!
                 if (intersectFeatureDistance < closestFeatureDistance) {
-                    closestPt = intersectPoint
-                    closestPt.addNumberProperty(INDEX_KEY, i)
+                    closestPt = intersectPoint.copy(
+                        properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(intersectPoint.properties ?: emptyMap())
+                    )
                 }
             }
         }
