@@ -3,6 +3,7 @@ package org.maplibre.geojson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
+import org.maplibre.geojson.utils.json
 
 
 /**

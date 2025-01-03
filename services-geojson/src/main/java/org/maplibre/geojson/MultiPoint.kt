@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
+import org.maplibre.geojson.utils.json
 
 /**
  * A MultiPoint represents two or more geographic points that share a relationship and is one of the
@@ -36,13 +37,11 @@ data class MultiPoint
 constructor(
     override val coordinates: List<@Serializable(with = PointDoubleArraySerializer::class) Point>,
     override val bbox: BoundingBox? = null,
-//    override val type: String = TYPE
 ) : CoordinateContainer<List<Point>> {
 
     override fun toJson() = json.encodeToString(this)
 
     companion object {
-        const val TYPE = "MultiPoint"
 
         @JvmStatic
         fun fromJson(jsonString: String): MultiPoint = json.decodeFromString(jsonString)

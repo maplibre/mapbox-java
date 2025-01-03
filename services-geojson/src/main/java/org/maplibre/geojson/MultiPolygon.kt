@@ -1,10 +1,10 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
+import org.maplibre.geojson.utils.json
 
 
 /**
@@ -69,7 +69,6 @@ data class MultiPolygon
 constructor(
     override val coordinates: List<List<List<@Serializable(with = PointDoubleArraySerializer::class) Point>>>,
     override val bbox: BoundingBox? = null,
-//    override val type: String = TYPE
 ) : CoordinateContainer<List<List<List<Point>>>> {
 
     val polygons: List<Polygon>

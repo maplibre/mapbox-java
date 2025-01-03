@@ -1,11 +1,11 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.exception.GeoJsonException
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
+import org.maplibre.geojson.utils.json
 
 /**
  * This class represents a GeoJson Polygon which may or may not include polygon holes.
@@ -81,7 +81,6 @@ constructor(
     override fun toJson(): String = json.encodeToString(this)
 
     companion object {
-        const val TYPE = "Polygon"
 
         /**
          * Create a new instance of this class by passing in an outer [LineString] and optionally

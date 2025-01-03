@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
+import org.maplibre.geojson.utils.json
 
 /**
  * A multilinestring is an array of LineString coordinate arrays.
@@ -50,7 +51,6 @@ data class MultiLineString
 constructor(
     override val coordinates: List<List<@Serializable(with = PointDoubleArraySerializer::class) Point>>,
     override val bbox: BoundingBox? = null,
-//    override val type: String = TYPE
 ) : CoordinateContainer<List<List<Point>>> {
 
     /**

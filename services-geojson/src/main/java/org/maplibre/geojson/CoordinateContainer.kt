@@ -1,6 +1,5 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 

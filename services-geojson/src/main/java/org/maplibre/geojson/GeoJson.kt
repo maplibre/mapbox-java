@@ -1,6 +1,5 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -11,16 +10,6 @@ import java.io.Serializable
  * @since 1.0.0
  */
 interface GeoJson : Serializable {
-
-//    /**
-//     * This describes the type of GeoJson geometry, Feature, or FeatureCollection this object is.
-//     * Every GeoJson Object will have this defined once an instance is created and will never return
-//     * null.
-//     *
-//     * @return a String which describes the type of geometry, for this object it will always return `Feature`
-//     * @since 1.0.0
-//     */
-//    fun type(): String
 
     /**
      * A GeoJson object MAY have a member named "bbox" to include information on the coordinate range

@@ -1,9 +1,7 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
-import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
-import org.maplibre.geojson.serializer.GeometrySerializer
+import org.maplibre.geojson.utils.json
 
 /**
  * Each of the six geometries and [GeometryCollection]
@@ -12,8 +10,6 @@ import org.maplibre.geojson.serializer.GeometrySerializer
  * @since 1.0.0
  */
 @Serializable
-//@Serializable
-//@Polymorphic
 sealed interface Geometry : GeoJson {
 
     companion object {

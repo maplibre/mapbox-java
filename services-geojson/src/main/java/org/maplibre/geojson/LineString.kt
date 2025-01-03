@@ -1,11 +1,11 @@
 package org.maplibre.geojson
 
-import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
 import org.maplibre.geojson.utils.PolylineUtils
+import org.maplibre.geojson.utils.json
 
 /**
  * A linestring represents two or more geographic points that share a relationship and is one of the
@@ -52,7 +52,6 @@ data class LineString
 constructor(
     override val coordinates: List<@Serializable(with = PointDoubleArraySerializer::class) Point>,
     override val bbox: BoundingBox? = null,
-//    override val type: String = TYPE
 ) : CoordinateContainer<List<Point>> {
 
     /**

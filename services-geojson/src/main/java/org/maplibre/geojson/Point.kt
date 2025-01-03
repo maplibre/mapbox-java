@@ -3,6 +3,7 @@ package org.maplibre.geojson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
+import org.maplibre.geojson.utils.json
 
 /**
  * A point represents a single geographic position and is one of the seven Geometries found in the
@@ -91,17 +92,6 @@ constructor(
     override fun toJson() = json.encodeToString(this)
 
     companion object {
-
-//        @JvmStatic
-//        fun fromLngLat(coords: DoubleArray): Point? {
-//            return if (coords.size == 2) {
-//                Point(coords[0], coords[1])
-//            } else if (coords.size > 2) {
-//                Point(coords[0], coords[1], coords.getOrNull(2))
-//            } else {
-//                null
-//            }
-//        }
 
         /**
          * Create a new instance of this class by passing in a formatted valid JSON String. If you are
