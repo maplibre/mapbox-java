@@ -80,7 +80,7 @@ class TurfMetaTest {
 
     @Test
     fun testInvariantGetCoord() {
-        val jsonFeature = "{type: 'Feature', geometry: {type: 'Point', coordinates: [1, 2]}}"
+        val jsonFeature = "{type: Feature, geometry: {type: Point, coordinates: [1, 2]}}"
         assertEquals(
             getCoord(Feature.fromJson(jsonFeature)),
             Point(1.0, 2.0)

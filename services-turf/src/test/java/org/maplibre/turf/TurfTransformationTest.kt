@@ -14,7 +14,7 @@ class TurfTransformationTest {
     fun throwOnInvalidSteps() {
         val featureIn = Feature.fromJson(loadJsonFixture(CIRCLE_IN))
 
-        assertThrows(IllegalStateException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             circle(
                 center = featureIn.geometry as Point,
                 steps = -1,
@@ -22,7 +22,7 @@ class TurfTransformationTest {
             )
         }
 
-        assertThrows(IllegalStateException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             circle(
                 center = featureIn.geometry as Point,
                 steps = 0,

@@ -85,8 +85,6 @@ object TurfMeasurement {
         bearing: Double,
         @TurfUnitCriteria units: String
     ): Point {
-        require(bearing in -180.0..180.0) { "Bearing must be between -180 and 180 degrees" }
-
         val longitude1 = degreesToRadians(point.longitude)
         val latitude1 = degreesToRadians(point.latitude)
         val bearingRad = degreesToRadians(bearing)

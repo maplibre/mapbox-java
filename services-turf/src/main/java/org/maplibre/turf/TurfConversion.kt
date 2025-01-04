@@ -3,7 +3,6 @@ package org.maplibre.turf
 import kotlinx.serialization.json.JsonElement
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
-import org.maplibre.geojson.GeometryCollection
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.MultiLineString
 import org.maplibre.geojson.MultiPoint
@@ -77,7 +76,7 @@ object TurfConversion {
      */
     @JvmStatic
     fun radiansToDegrees(radians: Double): Double {
-        val degrees: Double = radians % (2 * PI)
+        val degrees = radians % (2 * PI)
         return degrees * 180 / PI
     }
 
@@ -108,7 +107,6 @@ object TurfConversion {
     @JvmStatic
     @JvmOverloads
     fun lengthToRadians(distance: Double, units: String = TurfConstants.UNIT_DEFAULT): Double {
-        require(distance >= 0) { "Distance must be greater than or equal to 0" }
         return distance / factors[units]!! //TODO fabi755
     }
 
