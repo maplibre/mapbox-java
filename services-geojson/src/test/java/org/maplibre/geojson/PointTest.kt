@@ -23,21 +23,6 @@ class PointTest {
         assertNull(point.altitude)
     }
 
-    //TODO fabi755, add when array constructor exists, or remove unused tests
-//    @Test
-//    fun altitude_doesReturnCorrectValueFromDoubleArray() {
-//        val coords = doubleArrayOf(1.0, 2.0, 5.0)
-//        val point = Point(1.0, 2.0, 5.0)
-//        assertEquals(5, point.altitude, DELTA)
-//    }
-//
-//    @Test
-//    fun point_isNullWithWrongLengthDoubleArray() {
-//        val coords = doubleArrayOf(1.0)
-//        val point = Point(coords)
-//        assertNull(point)
-//    }
-
     @Test
     fun longitude_doesReturnCorrectValue() {
         val point = Point(1.0, 2.0, 5.0)
@@ -111,30 +96,11 @@ class PointTest {
         assertEquals(3.0, point.latitude, DELTA)
     }
 
-    //TODO
-//    @Test
-//    fun testSerializable() {
-//        val points: MutableList<Point> = ArrayList()
-//        points.add(Point(1.0, 1.0))
-//        points.add(Point(2.0, 2.0))
-//        points.add(Point(3.0, 3.0))
-//        val bbox: BoundingBox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-//        val lineString: LineString = LineString(points, bbox)
-//        val bytes = serialize(lineString)
-//        assertEquals(
-//            lineString, deserialize(
-//                bytes,
-//                LineString::class.java
-//            )
-//        )
-//    }
-
     @Test
     fun fromJson() {
         val json =
             "{ \"type\": \"Point\", \"coordinates\": [ 100, 0] }"
         val geo: Point = Point.fromJson(json)
-//        assertEquals(geo.type, "Point")
         assertEquals(geo.longitude, 100.0, DELTA)
         assertEquals(geo.latitude, 0.0, DELTA)
         assertNull(geo.altitude)

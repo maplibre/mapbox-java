@@ -7,6 +7,7 @@ import org.junit.Test
 import org.maplibre.geojson.TestUtils.DELTA
 
 class BoundingBoxTest {
+
     @Test
     @Throws(Exception::class)
     fun sanity() {

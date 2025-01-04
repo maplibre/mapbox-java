@@ -33,19 +33,21 @@ import org.maplibre.geojson.utils.json
  *
  *
  * An example of a serialized polygon with no holes is given below:
- * <pre>
+ * ```json
  * {
- * "TYPE": "Polygon",
- * "coordinates": [
- * [[100.0, 0.0],
- * [101.0, 0.0],
- * [101.0, 1.0],
- * [100.0, 1.0],
- * [100.0, 0.0]]
- * ]
+ *   "TYPE": "Polygon",
+ *   "coordinates": [
+ *     [[100.0, 0.0],
+ *     [101.0, 0.0],
+ *     [101.0, 1.0],
+ *     [100.0, 1.0],
+ *     [100.0, 0.0]]
+ *   ]
  * }
-</pre> *
+ * ```
  *
+ * @param coordinates a list of a list of points which represent the polygon geometry
+ * @param bbox        optionally include a bbox definition as a double array
  * @since 1.0.0
  */
 @Serializable
@@ -78,6 +80,13 @@ constructor(
     val innerLines: List<LineString>
         get() = coordinates.drop(1).map { points -> LineString(points) }
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this Polygon geometry
+     * @since 1.0.0
+     */
     override fun toJson(): String = json.encodeToString(this)
 
     companion object {
@@ -136,6 +145,16 @@ constructor(
             }
         }
 
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a Polygon object from scratch it is better to use the constructor.
+         * For a valid Polygon to exist, it must follow the linear ring rules and the first list of
+         * coordinates are considered the outer ring by default.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson Polygon
+         * @return a new instance of this class defined by the values in the JSON string method
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): Polygon = json.decodeFromString(jsonString)
     }

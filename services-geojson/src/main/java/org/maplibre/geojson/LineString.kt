@@ -31,18 +31,22 @@ import org.maplibre.geojson.utils.json
  *
  *
  * A sample GeoJson LineString's provided below (in it's serialized state).
+ * ```json
  * <pre>
  * {
- * "TYPE": "LineString",
- * "coordinates": [
- * [100.0, 0.0],
- * [101.0, 1.0]
- * ]
+ *   "TYPE": "LineString",
+ *   "coordinates": [
+ *     [100.0, 0.0],
+ *     [101.0, 1.0]
+ *   ]
  * }
-</pre> *
+ * ```
+ *
  * Look over the [Point] documentation to get more
  * information about formatting your list of point objects correctly.
  *
+ * @param coordinates a list of {@link Point}s which make up the LineString geometry
+ * @param bbox   optionally include a bbox definition as a double array
  * @since 1.0.0
  */
 @Serializable
@@ -103,12 +107,27 @@ constructor(
         return PolylineUtils.encode(coordinates, precision)
     }
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this LineString geometry
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
-        const val TYPE = "LineString"
 
-
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a LineString object from scratch it is better to use the constructor.
+         * For a valid lineString to exist, it must have at least 2 coordinate entries.
+         * The LineString should also have non-zero distance and zero area.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson LineString
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): LineString = json.decodeFromString(jsonString)
     }

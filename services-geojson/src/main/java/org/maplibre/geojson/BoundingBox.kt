@@ -25,7 +25,7 @@ import org.maplibre.geojson.serializer.BoundingBoxSerializer
  * @since 3.0.0
  */
 @Serializable(with = BoundingBoxSerializer::class)
-data class BoundingBox(val southwest: Point, val northeast: Point)  {
+data class BoundingBox(val southwest: Point, val northeast: Point) {
 
     /**
      * Define a new instance of this class by passing in four coordinates in the same order they would
@@ -93,24 +93,4 @@ data class BoundingBox(val southwest: Point, val northeast: Point)  {
      */
     val north: Double
         get() = northeast.latitude
-
-    //TODO fabi755
-    //toJson() ?!?!?
-
-    companion object {
-//        /**
-//         * Create a new instance of this class by passing in a formatted valid JSON String.
-//         *
-//         * @param json a formatted valid JSON string defining a Bounding Box
-//         * @return a new instance of this class defined by the values passed inside this static factory
-//         * method
-//         * @since 3.0.0
-//         */
-//        fun fromJson(json: String?): BoundingBox {
-//            val gson: Gson = GsonBuilder()
-//                .registerTypeAdapter(BoundingBox::class.java, BoundingBoxTypeAdapter())
-//                .create()
-//            return gson.fromJson<BoundingBox>(json, BoundingBox::class.java)
-//        }
-    }
 }

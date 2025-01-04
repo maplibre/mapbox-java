@@ -16,15 +16,15 @@ import org.maplibre.geojson.utils.json
  *
  *
  * An example of a Feature Collections given below:
- * <pre>
+ * ```json
  * {
- * "TYPE": "FeatureCollection",
- * "bbox": [100.0, 0.0, -100.0, 105.0, 1.0, 0.0],
- * "features": [
- * //...
- * ]
+ *   "TYPE": "FeatureCollection",
+ *   "bbox": [100.0, 0.0, -100.0, 105.0, 1.0, 0.0],
+ *   "features": [
+ *     //...
+ *   ]
  * }
-</pre> *
+ * ```
  *
  * @param features a list of features
  * @param bbox     optionally include a bbox definition as a double array
@@ -51,9 +51,25 @@ constructor(
     @JvmOverloads
     constructor(feature: Feature, bbox: BoundingBox? = null) : this(listOf(feature), bbox)
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this Feature Collection
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
+
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a FeatureCollection object from scratch it is better to use the constructor.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson Feature Collection
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): FeatureCollection = json.decodeFromString(jsonString)
     }

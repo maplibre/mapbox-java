@@ -1,5 +1,6 @@
 package org.maplibre.turf
 
+import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -636,27 +637,24 @@ class TurfMeasurementTest {
         assertEquals(expectedFeature, center(inputFeature, null, null))
     }
 
-//    @Test
-//    fun centerFeatureWithProperties() {
-////        val properties = JsonObject()
-////        properties.addProperty("key", "value")
-//        val inputFeature = Feature.fromJson(
-//            loadJsonFixture(
-//                TURF_AREA_POLYGON_GEOJSON
-//            )
-//        )
-//        val returnedCenterFeature = center(inputFeature, properties, null)
-//        val returnedPoint = returnedCenterFeature.geometry() as Point?
-//        if (returnedPoint != null) {
-//            assertEquals(133.5, returnedPoint.longitude(), 0.0)
-//            assertEquals(-27.0, returnedPoint.latitude(), 0.0)
-//            if (returnedCenterFeature.properties() != null) {
-//                assertTrue(
-//                    returnedCenterFeature.properties().toString().contains("{\"key\":\"value\"}")
-//                )
-//            }
-//        }
-//    }
+    @Test
+    fun centerFeatureWithProperties() {
+        val properties = mapOf("key" to JsonPrimitive("value"))
+        val inputFeature = Feature.fromJson(
+            loadJsonFixture(
+                TURF_AREA_POLYGON_GEOJSON
+            )
+        )
+        val returnedCenterFeature = center(inputFeature, properties, null)
+        val returnedPoint = returnedCenterFeature.geometry as Point?
+        if (returnedPoint != null) {
+            assertEquals(133.5, returnedPoint.longitude, 0.0)
+            assertEquals(-27.0, returnedPoint.latitude, 0.0)
+            if (returnedCenterFeature.properties != null) {
+                assertEquals("value", returnedCenterFeature.getStringProperty("key"))
+            }
+        }
+    }
 
     @Test
     fun centerFeatureWithId() {

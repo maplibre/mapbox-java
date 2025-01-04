@@ -8,23 +8,28 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.maplibre.geojson.Point
 
-class PointDoubleArraySerializer : KSerializer<Point> {
+/**
+ * Internal serializer/deserializer that is converting a [Point] object into a
+ * double array (aka GeoJSON Position).
+ */
+internal class PointDoubleArraySerializer : KSerializer<Point> {
     private val delegateSerializer = DoubleArraySerializer()
 
     @OptIn(ExperimentalSerializationApi::class)
     override val descriptor = SerialDescriptor("Point", delegateSerializer.descriptor)
 
     override fun serialize(encoder: Encoder, value: Point) {
-        //TODO:  fabi755 more then lat long can be in the array
-        val data = doubleArrayOf(
+        val data = listOfNotNull(
             value.longitude,
-            value.latitude
+            value.latitude,
+            value.altitude
         )
-        encoder.encodeSerializableValue(delegateSerializer, data)
+
+        encoder.encodeSerializableValue(delegateSerializer, data.toDoubleArray())
     }
 
     override fun deserialize(decoder: Decoder): Point {
         val array = decoder.decodeSerializableValue(delegateSerializer)
-        return Point(longitude = array[0], latitude = array[1])
+        return Point(longitude = array[0], latitude = array[1], altitude = array.getOrNull(2))
     }
 }

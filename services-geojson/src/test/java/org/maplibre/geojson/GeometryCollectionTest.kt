@@ -66,7 +66,7 @@ class GeometryCollectionTest {
         val lineString = LineString(points)
         val geometries = listOf(points[0], lineString)
 
-        val bbox: BoundingBox = BoundingBox(1.0, 2.0, 3.0, 4.0)
+        val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val geometryCollection = GeometryCollection(geometries, bbox)
         assertNotNull(geometryCollection.bbox)
         assertEquals(1.0, geometryCollection.bbox!!.west, DELTA)

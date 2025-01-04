@@ -110,9 +110,9 @@ class FeatureCollectionTest {
         val geo = FeatureCollection.fromJson(json)
         assertEquals(geo.features.size, 3)
         assertTrue(geo.features[0].geometry is Point)
-        assertTrue(geo.features.get(0).geometry is Point)
-        assertTrue(geo.features.get(1).geometry is LineString)
-        assertTrue(geo.features.get(2).geometry is Polygon)
+        assertTrue(geo.features[0].geometry is Point)
+        assertTrue(geo.features[1].geometry is LineString)
+        assertTrue(geo.features[2].geometry is Polygon)
     }
 
     @Test

@@ -24,24 +24,27 @@ import org.maplibre.geojson.utils.json
  *
  *
  * A sample GeoJson MultiLineString's provided below (in it's serialized state).
- * <pre>
+ * ```json
  * {
- * "type": "MultiLineString",
- * "coordinates": [
- * [
- * [100.0, 0.0],
- * [101.0, 1.0]
- * ],
- * [
- * [102.0, 2.0],
- * [103.0, 3.0]
- * ]
- * ]
+ *   "type": "MultiLineString",
+ *   "coordinates": [
+ *     [
+ *       [100.0, 0.0],
+ *       [101.0, 1.0]
+ *     ],
+ *     [
+ *       [102.0, 2.0],
+ *       [103.0, 3.0]
+ *     ]
+ *   ]
  * }
-</pre> *
+ * ```
+ *
  * Look over the [LineString] documentation to get more information about
  * formatting your list of linestring objects correctly.
  *
+ * @param coordinates a list of {@link Point}s which make up the MultiLineString geometry
+ * @param bbox   optionally include a bbox definition
  * @since 1.0.0
  */
 @Serializable
@@ -62,10 +65,16 @@ constructor(
     val lineStrings: List<LineString>
         get() = coordinates.map { points -> LineString(points) }
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this MultiLineString geometry
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
-        const val TYPE = "MultiLineString"
 
         /**
          * Create a new instance of this class by defining a list of [LineString] objects and
@@ -79,6 +88,7 @@ constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         @JvmOverloads
         fun fromLineStrings(
             lineStrings: List<LineString>,
@@ -95,13 +105,21 @@ constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         @JvmOverloads
-        @JvmName("fromLineString")
         fun fromLineString(
             lineString: LineString,
             bbox: BoundingBox? = null
         ) = MultiLineString(listOf(lineString.coordinates), bbox)
 
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a MultiLineString object from scratch it is better to use the constructor.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson MultiLineString
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): MultiLineString = json.decodeFromString(jsonString)
     }

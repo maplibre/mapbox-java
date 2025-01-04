@@ -16,7 +16,7 @@ class LineStringTest {
         val points = listOf(
             Point(1.0, 1.0),
             Point(2.0, 2.0),
-            Point(3.0, 3.0) ,
+            Point(3.0, 3.0),
         )
 
         val lineString = LineString(points)
@@ -119,31 +119,11 @@ class LineStringTest {
         assertEquals(4.0, lineString.coordinates[2].latitude, DELTA)
     }
 
-//    @Test
-//    fun testSerializable() {
-//        val points = listOf(
-//            Point(1.0, 1.0),
-//                    Point(2.0, 2.0),
-//                    Point(3.0, 3.0)
-//        )
-//
-//        val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-//        val lineString = LineString(points, bbox)
-//        val bytes = serialize(lineString)
-//        assertEquals(
-//            lineString, deserialize(
-//                bytes,
-//                LineString::class.java
-//            )
-//        )
-//    }
-
     @Test
     fun fromJson() {
         val json = "{\"type\": \"LineString\"," +
                 "  \"coordinates\": [[ 100, 0], [101, 1]]} "
         val geo: LineString = LineString.fromJson(json)
-//        assertEquals(geo.type, "LineString")
         assertEquals(geo.coordinates.first().longitude, 100.0, 0.0)
         assertEquals(geo.coordinates.first().latitude, 0.0, 0.0)
         assertNull(geo.coordinates.first().altitude)

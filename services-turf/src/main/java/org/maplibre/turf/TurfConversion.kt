@@ -163,11 +163,11 @@ object TurfConversion {
     }
 
     /**
-     * Takes a [Feature] that contains [Polygon] and a properties [JsonObject] and
+     * Takes a [Feature] that contains [Polygon] and a properties [Map] and
      * covert it to a [Feature] that contains [LineString] or [MultiLineString].
      *
      * @param feature a [Feature] object that contains [Polygon]
-     * @param properties a [JsonObject] that represents a feature's properties
+     * @param properties a [Map] that represents a feature's properties
      * @return  a [Feature] object that contains [LineString] or [MultiLineString]
      * @since 4.9.0
      */
@@ -183,11 +183,11 @@ object TurfConversion {
     }
 
     /**
-     * Takes a [Polygon] and a properties [JsonObject] and
+     * Takes a [Polygon] and a properties [Map] and
      * covert it to a [Feature] that contains [LineString] or [MultiLineString].
      *
      * @param polygon a [Polygon] object
-     * @param properties a [JsonObject] that represents a feature's properties
+     * @param properties a [Map] that represents a feature's properties
      * @return  a [Feature] object that contains [LineString] or [MultiLineString]
      * @since 4.9.0
      */
@@ -198,12 +198,12 @@ object TurfConversion {
     }
 
     /**
-     * Takes a [MultiPolygon] and a properties [JsonObject] and
+     * Takes a [MultiPolygon] and a properties [Map] and
      * covert it to a [FeatureCollection] that contains list
      * of [Feature] of [LineString] or [MultiLineString].
      *
      * @param multiPolygon a [MultiPolygon] object
-     * @param properties a [JsonObject] that represents a feature's properties
+     * @param properties a [Map] that represents a feature's properties
      * @return  a [FeatureCollection] object that contains
      * list of [Feature] of [LineString] or [MultiLineString]
      * @since 4.9.0
@@ -222,12 +222,12 @@ object TurfConversion {
 
     /**
      * Takes a [Feature] that contains [MultiPolygon] and a
-     * properties [JsonObject] and
+     * properties [Map] and
      * covert it to a [FeatureCollection] that contains
      * list of [Feature] of [LineString] or [MultiLineString].
      *
      * @param feature a [Feature] object that contains [MultiPolygon]
-     * @param properties a [JsonObject] that represents a feature's properties
+     * @param properties a [Map] that represents a feature's properties
      * @return  a [FeatureCollection] object that contains
      * list of [Feature] of [LineString] or [MultiLineString]
      * @since 4.9.0
@@ -247,7 +247,10 @@ object TurfConversion {
         } ?: throw TurfException("Feature's geometry must be MultiPolygon")
     }
 
-    private fun coordsToLine(coordinates: List<List<Point>>, properties: Map<String, JsonElement>?): Feature? {
+    private fun coordsToLine(
+        coordinates: List<List<Point>>,
+        properties: Map<String, JsonElement>?
+    ): Feature? {
         return when {
             coordinates.isEmpty() ->
                 null
@@ -291,9 +294,7 @@ object TurfConversion {
     @JvmStatic
     fun combine(originalFeatureCollection: FeatureCollection): FeatureCollection {
         val features = originalFeatureCollection.features
-        if (features == null) {
-            throw TurfException("Your FeatureCollection is null.")
-        } else if (features.size == 0) {
+        if (features.isEmpty()) {
             throw TurfException("Your FeatureCollection doesn't have any Feature objects in it.")
         }
 

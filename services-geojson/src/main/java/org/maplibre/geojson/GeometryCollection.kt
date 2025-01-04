@@ -34,22 +34,24 @@ import org.maplibre.geojson.utils.json
  *
  *
  * An example of a serialized GeometryCollections given below:
- * <pre>
+ * ```json
  * {
- * "TYPE": "GeometryCollection",
- * "geometries": [{
- * "TYPE": "Point",
- * "coordinates": [100.0, 0.0]
- * }, {
- * "TYPE": "LineString",
- * "coordinates": [
- * [101.0, 0.0],
- * [102.0, 1.0]
- * ]
- * }]
+ *   "TYPE": "GeometryCollection",
+ *   "geometries": [{
+ *     "TYPE": "Point",
+ *     "coordinates": [100.0, 0.0]
+ *   }, {
+ *     "TYPE": "LineString",
+ *     "coordinates": [
+ *       [101.0, 0.0],
+ *       [102.0, 1.0]
+ *     ]
+ *   }]
  * }
-</pre> *
+ * ```
  *
+ * @param geometries a non-null list of geometry which makes up this collection
+ * @param bbox       optionally include a bbox definition as a double array
  * @since 1.0.0
  */
 @Serializable
@@ -73,10 +75,25 @@ constructor(
     @JvmOverloads
     constructor(geometry: Geometry, bbox: BoundingBox? = null) : this(listOf(geometry), bbox)
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this GeometryCollection
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
 
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a GeometryCollection object from scratch it is better to use the constructor.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson Geometry Collection
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): GeometryCollection = json.decodeFromString(jsonString)
     }

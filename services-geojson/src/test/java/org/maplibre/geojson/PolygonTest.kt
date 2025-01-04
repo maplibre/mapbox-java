@@ -25,23 +25,6 @@ class PolygonTest {
         assertNotNull(polygon)
     }
 
-    //TODO: needed?
-//    @Test
-//    fun fromLngLats_tripleDoubleArray() {
-//        val coordinates = arrayOf(
-//            arrayOf(
-//                doubleArrayOf(100.0, 0.0),
-//                doubleArrayOf(101.0, 0.0),
-//                doubleArrayOf(101.0, 1.0),
-//                doubleArrayOf(100.0, 1.0),
-//                doubleArrayOf(100.0, 0.0)
-//            )
-//        )
-//        val polygon: Polygon = Polygon.fromLngLats(coordinates)
-//        assertEquals(0, polygon.inner().size())
-//        assertEquals(Point.fromLngLat(100.0, 0.0), polygon.coordinates().get(0).get(0))
-//    }
-
     @Test
     fun fromOuterInner_throwsNotLinearRingException() {
         val points = listOf(
@@ -211,35 +194,11 @@ class PolygonTest {
         )
     }
 
-    //TODO fabi755
-//    @Test
-//    fun testSerializable() {
-//        val points = listOf(
-//            Point(1.0, 2.0),
-//            Point(2.0, 3.0),
-//            Point(3.0, 4.0),
-//            Point(1.0, 2.0)
-//        )
-//
-//        val outerLine = LineString(points)
-//val innerLines = listOf(LineString(points), LineString(points))
-//        val bbox: BoundingBox = BoundingBox.fromLngLats(1.0, 2.0, 3.0, 4.0)
-//        val polygon = Polygon.fromOuterInner(outerLine, innerLines, bbox)
-//        val bytes = serialize(polygon)
-//        assertEquals(
-//            polygon, deserialize(
-//                bytes,
-//                Polygon::class.java
-//            )
-//        )
-//    }
-
     @Test
     fun fromJson() {
         val json = "{\"type\": \"Polygon\", " +
                 "\"coordinates\": [[[100, 0], [101, 0], [101, 1], [100, 1],[100, 0]]]}"
         val geo = Polygon.fromJson(json)
-//        assertEquals("Polygon", geo.type)
         assertEquals(100.0, geo.coordinates.first().first().longitude, DELTA)
         assertEquals(0.0, geo.coordinates.first().first().latitude, DELTA)
         assertNull(geo.coordinates.first().first().altitude)
@@ -251,7 +210,6 @@ class PolygonTest {
                 "\"coordinates\": [[[100, 0], [101, 0], [101, 1], [100, 1],[100, 0]], " +
                 " [[100.8, 0.8],[100.8, 0.2],[100.2, 0.2],[100.2, 0.8],[100.8, 0.8]]]}"
         val geo: Polygon = Polygon.fromJson(json)
-//        assertEquals("Polygon", geo.type)
         assertEquals(100.0, geo.coordinates.first().first().longitude, DELTA)
         assertEquals(0.0, geo.coordinates.first().first().latitude, DELTA)
         assertEquals(2, geo.coordinates.size)

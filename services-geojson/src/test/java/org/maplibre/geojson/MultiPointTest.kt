@@ -78,30 +78,11 @@ class MultiPointTest {
         )
     }
 
-//    @Test
-//    fun testSerializable() {
-//        val points = listOf(
-//            Point(1.0, 2.0),
-//            Point(2.0, 3.0)
-//        )
-//
-//        val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-//        val multiPoint = MultiPoint(points, bbox)
-//        val bytes = serialize(multiPoint)
-//        assertEquals(
-//            multiPoint, deserialize(
-//                bytes,
-//                MultiPoint::class.java
-//            )
-//        )
-//    }
-
     @Test
     fun fromJson() {
         val json = ("{ \"type\": \"MultiPoint\","
                 + "\"coordinates\": [ [100, 0], [101, 1] ] } ")
         val geo: MultiPoint = MultiPoint.fromJson(json)
-//        assertEquals(geo.type, "MultiPoint")
         assertEquals(geo.coordinates.first().longitude, 100.0, DELTA)
         assertEquals(geo.coordinates.first().latitude, 0.0, DELTA)
         assertEquals(geo.coordinates[1].longitude, 101.0, DELTA)

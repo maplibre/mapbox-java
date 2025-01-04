@@ -20,7 +20,7 @@ internal object TestUtils {
 
     fun loadJsonFixture(filename: String?): String {
         val classLoader = javaClass.classLoader
-        val inputStream = classLoader.getResourceAsStream(filename)
+        val inputStream = classLoader.getResourceAsStream(filename)!!
         val scanner = Scanner(inputStream, StandardCharsets.UTF_8.name()).useDelimiter("\\A")
         return if (scanner.hasNext()) scanner.next() else ""
     }

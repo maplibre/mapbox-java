@@ -1,7 +1,5 @@
 package org.maplibre.geojson
 
-import java.io.Serializable
-
 /**
  * Generic implementation for all GeoJson objects defining common traits that each GeoJson object
  * has. This logic is carried over to [Geometry] which is an interface which all seven GeoJson
@@ -9,7 +7,7 @@ import java.io.Serializable
  *
  * @since 1.0.0
  */
-interface GeoJson : Serializable {
+interface GeoJson {
 
     /**
      * A GeoJson object MAY have a member named "bbox" to include information on the coordinate range

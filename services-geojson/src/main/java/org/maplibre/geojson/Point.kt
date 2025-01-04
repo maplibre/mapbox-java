@@ -32,13 +32,15 @@ import org.maplibre.geojson.utils.json
  *
  *
  * A sample GeoJson Point's provided below (in its serialized state).
- * <pre>
+ * ```json
  * {
- * "type": "Point",
- * "coordinates": [100.0, 0.0]
+ *   "type": "Point",
+ *   "coordinates": [100.0, 0.0]
  * }
-</pre> *
+ * ```
  *
+ * @param coordinates a list of double values representing the longitude, latitude, and optionally altitude position of this point
+ * @param bbox      optionally include a bbox definition as a double array
  * @since 1.0.0
  */
 @Serializable
@@ -80,29 +82,61 @@ constructor(
         bbox
     )
 
+    /**
+     * This returns a double value representing the x or easting position of
+     * this point. ideally, this value would be restricted to 6 decimal places to correctly follow the
+     * GeoJson spec.
+     *
+     * @return a double value representing the x or easting position of this
+     *   point
+     * @since 3.0.0
+     */
     val longitude: Double
         get() = coordinates[0]
 
+    /**
+     * This returns a double value representing the y or northing position of
+     * this point. ideally, this value would be restricted to 6 decimal places to correctly follow the
+     * GeoJson spec.
+     *
+     * @return a double value representing the y or northing position of this
+     *   point
+     * @since 3.0.0
+     */
     val latitude: Double
         get() = coordinates[1]
 
+    /**
+     * Optionally, the coordinate spec in GeoJson allows for altitude values to be placed inside the
+     * coordinate array. {@link #hasAltitude()} can be used to determine if this value was set during
+     * initialization of this Point instance. This double value should only be used to represent
+     * either the elevation or altitude value at this particular point.
+     *
+     * @return a double value ranging from negative to positive infinity
+     * @since 3.0.0
+     */
     val altitude: Double?
         get() = coordinates.getOrNull(2)
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this Point geometry
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
 
         /**
          * Create a new instance of this class by passing in a formatted valid JSON String. If you are
-         * creating a Point object from scratch it is better to use one of the other provided static
-         * factory methods such as [.fromLngLat]. While no limit is placed
-         * on decimal precision, for performance reasons when serializing and deserializing it is
-         * suggested to limit decimal precision to within 6 decimal places.
+         * creating a Point object from scratch it is better to use the constructor.
+         * While no limit is placed on decimal precision, for performance reasons when serializing
+         * and deserializing it is suggested to limit decimal precision to within 6 decimal places.
          *
-         * @param json a formatted valid JSON string defining a GeoJson Point
-         * @return a new instance of this class defined by the values passed inside this static factory
-         * method
+         * @param jsonString a formatted valid JSON string defining a GeoJson Point
+         * @return a new instance of this class defined by the values in the JSON string method
          * @since 1.0.0
          */
         @JvmStatic

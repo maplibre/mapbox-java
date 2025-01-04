@@ -33,18 +33,22 @@ import org.maplibre.geojson.utils.json
  *
  *
  * An example of a serialized feature is given below:
- * <pre>
+ * ```json
  * {
- * "TYPE": "Feature",
- * "geometry": {
- * "TYPE": "Point",
- * "coordinates": [102.0, 0.5]
- * },
- * "properties": {
- * "prop0": "value0"
+ *   "TYPE": "Feature",
+ *   "geometry": {
+ *     "TYPE": "Point",
+ *     "coordinates": [102.0, 0.5]
+ *   },
+ *   "properties": {
+ *   "prop0": "value0"
  * }
-</pre> *
+ * ```
  *
+ * @param geometry   a single geometry which makes up this feature object
+ * @param properties a map with [JsonElement]s containing the feature properties
+ * @param bbox       optionally include a bbox definition as a double array
+ * @param id         common identifier of this feature
  * @since 1.0.0
  */
 @Serializable
@@ -124,10 +128,25 @@ constructor(
         return properties?.get(key)?.jsonPrimitive?.booleanOrNull
     }
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this Feature
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
 
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a Feature object from scratch it is better to use the constructor.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson Feature
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): Feature = json.decodeFromString(jsonString)
     }

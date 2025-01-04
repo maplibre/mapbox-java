@@ -224,10 +224,16 @@ object TurfMisc {
         )
 
         for (i in 0 until coords.size - 1) {
-            val start = Feature(coords[i], mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], units))))
+            val start = Feature(
+                coords[i],
+                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], units)))
+            )
             val startPoint = start.geometry as Point
 
-            val stop = Feature(coords[i + 1], mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], units))))
+            val stop = Feature(
+                coords[i + 1],
+                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], units)))
+            )
             val stopPoint = stop.geometry as Point
 
             // perpendicular
@@ -259,7 +265,7 @@ object TurfMisc {
                 stopPoint.latitude
             )
 
-            val intersectPtFeature = intersect?.let {lineIntersects ->
+            val intersectPtFeature = intersect?.let { lineIntersects ->
                 val intersectionPoint = Point(
                     lineIntersects.horizontalIntersection!!,
                     lineIntersects.verticalIntersection!!
@@ -275,7 +281,9 @@ object TurfMisc {
             val startFeatureDistance = start.getDoubleProperty(DISTANCE_KEY)!!
             if (startFeatureDistance < closestFeatureDistance) {
                 closestPt = start.copy(
-                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(start.properties ?: emptyMap())
+                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
+                        start.properties ?: emptyMap()
+                    )
                 )
             }
 
@@ -283,7 +291,9 @@ object TurfMisc {
             val stopFeatureDistance = stop.getDoubleProperty(DISTANCE_KEY)!!
             if (stopFeatureDistance < closestFeatureDistance) {
                 closestPt = stop.copy(
-                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(stop.properties ?: emptyMap())
+                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
+                        stop.properties ?: emptyMap()
+                    )
                 )
             }
 
@@ -292,7 +302,9 @@ object TurfMisc {
                 val intersectFeatureDistance = intersectPoint.getDoubleProperty(DISTANCE_KEY)!!
                 if (intersectFeatureDistance < closestFeatureDistance) {
                     closestPt = intersectPoint.copy(
-                        properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(intersectPoint.properties ?: emptyMap())
+                        properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
+                            intersectPoint.properties ?: emptyMap()
+                        )
                     )
                 }
             }

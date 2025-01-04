@@ -105,7 +105,6 @@ object TurfMeasurement {
         )
     }
 
-
     /**
      * Calculates the distance between two points in degress, radians, miles, or kilometers. This
      * uses the Haversine formula to account for global curvature.
@@ -629,6 +628,7 @@ object TurfMeasurement {
             is Polygon -> polygonArea(geometry.coordinates)
             is MultiPolygon ->
                 geometry.coordinates.sumOf { coordinates -> polygonArea(coordinates) }
+
             else ->
                 // Area should be 0 for case Point, MultiPoint, LineString and MultiLineString
                 0.0
@@ -640,7 +640,8 @@ object TurfMeasurement {
             return 0.0
         }
 
-        return abs(ringArea(coordinates.first())) - coordinates.drop(1).sumOf { c -> abs(ringArea(c)) }
+        return abs(ringArea(coordinates.first())) - coordinates.drop(1)
+            .sumOf { c -> abs(ringArea(c)) }
     }
 
     /**
@@ -675,11 +676,13 @@ object TurfMeasurement {
                         middleIndex = coordsLength - 1
                         upperIndex = 0
                     }
+
                     coordsLength - 1 -> { // i = N-1
                         lowerIndex = coordsLength - 1
                         middleIndex = 0
                         upperIndex = 1
                     }
+
                     else -> { // i = 0 to N-3
                         lowerIndex = i
                         middleIndex = i + 1

@@ -16,18 +16,21 @@ import org.maplibre.geojson.utils.json
  * than 2.
  *
  * A sample GeoJson MultiPoint's provided below (in it's serialized state).
- * <pre>
+ * ```json
  * {
- * "TYPE": "MultiPoint",
- * "coordinates": [
- * [100.0, 0.0],
- * [101.0, 1.0]
- * ]
+ *   "TYPE": "MultiPoint",
+ *   "coordinates": [
+ *     [100.0, 0.0],
+ *     [101.0, 1.0]
+ *   ]
  * }
-</pre> *
+ * ```
+ *
  * Look over the [Point] documentation to get more
  * information about formatting your list of point objects correctly.
  *
+ * @param coordinates a list of {@link Point}s which make up the LineString geometry
+ * @param bbox   optionally include a bbox definition as a double array
  * @since 1.0.0
  */
 @Serializable
@@ -39,10 +42,26 @@ constructor(
     override val bbox: BoundingBox? = null,
 ) : CoordinateContainer<List<Point>> {
 
+    /**
+     * This takes the currently defined values found inside this instance and converts it to a GeoJson
+     * string.
+     *
+     * @return a JSON string which represents this MultiPoint geometry
+     * @since 1.0.0
+     */
     override fun toJson() = json.encodeToString(this)
 
     companion object {
 
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a MultiPoint object from scratch it is better to use the constructor.
+         * For a valid MultiPoint to exist, it must have at least 2 coordinate entries.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson MultiPoint
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 1.0.0
+         */
         @JvmStatic
         fun fromJson(jsonString: String): MultiPoint = json.decodeFromString(jsonString)
     }
