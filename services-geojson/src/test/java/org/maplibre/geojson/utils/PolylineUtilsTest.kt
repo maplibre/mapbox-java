@@ -1,13 +1,13 @@
 package org.maplibre.geojson.utils
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.TestUtils.expectNearNumber
 import org.maplibre.geojson.TestUtils.loadJsonFixture
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertSame
 
 class PolylineUtilsTest {
 
@@ -16,7 +16,7 @@ class PolylineUtilsTest {
         val latLngs = PolylineUtils.decode(TEST_LINE, PRECISION_5)
 
         val expectedLength = 21
-        assertEquals("Wrong length.", expectedLength.toLong(), latLngs.size.toLong())
+        assertEquals(expectedLength.toLong(), latLngs.size.toLong(), "Wrong length.")
 
         val lastPoint = latLngs[expectedLength - 1]
         expectNearNumber(37.76953, lastPoint.latitude, 1e-6)
@@ -107,7 +107,7 @@ class PolylineUtilsTest {
             Point(10.0, 0.0)
         )
         val simplifiedPath = PolylineUtils.simplify(path, PRECISION_6.toDouble(), true)
-        assertTrue("Returned list is different from input list", path === simplifiedPath)
+        assertSame(path, simplifiedPath, "Returned list is different from input list")
     }
 
     @Test
@@ -116,17 +116,11 @@ class PolylineUtilsTest {
         val simplifiedPath = PolylineUtils.simplify(path, PRECISION_5.toDouble(), true)
         val expectedSimplifiedPath = createPointListFromResourceFile(SIMPLIFICATION_EXPECTED_OUTPUT)
 
-        assertTrue(
-            "Wrong number of points retained",
-            simplifiedPath.size == expectedSimplifiedPath.size
-        )
+        assertEquals(simplifiedPath.size, expectedSimplifiedPath.size, "Wrong number of points retained")
 
         for ((counter, retainedPoint) in simplifiedPath.withIndex()) {
             val expectedPoint = expectedSimplifiedPath[counter]
-            assertTrue(
-                "Wrong point retained by simplification algorithm",
-                retainedPoint == expectedPoint
-            )
+            assertEquals(retainedPoint, expectedPoint, "Wrong point retained by simplification algorithm")
         }
     }
 

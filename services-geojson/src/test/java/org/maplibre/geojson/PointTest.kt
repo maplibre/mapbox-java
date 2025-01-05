@@ -1,13 +1,13 @@
 package org.maplibre.geojson
 
 import kotlinx.serialization.SerializationException
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
+import kotlin.test.assertFailsWith
 
 class PointTest {
 
@@ -73,7 +73,7 @@ class PointTest {
         val point = Point(2.0, 2.0, bbox = bbox)
         compareJson(
             point.toJson(),
-            "{\"coordinates\": [2,2],"
+            "{\"coordinates\": [2.0,2.0],"
                     + "\"type\":\"Point\",\"bbox\":[1.0,2.0,3.0,4.0]}"
         )
     }
@@ -112,7 +112,7 @@ class PointTest {
     @Test
     fun toJson() {
         val json =
-            "{ \"type\": \"Point\", \"coordinates\": [ 100, 0] }"
+            "{ \"type\": \"Point\", \"coordinates\": [ 100.0, 0.0] }"
         val geo: Point = Point.fromJson(json)
         compareJson(json, geo.toJson())
     }
@@ -120,7 +120,7 @@ class PointTest {
     @Test
     @Throws(Exception::class)
     fun fromJson_coordinatesPresent() {
-        assertThrows(SerializationException::class.java) {
+        assertFailsWith(SerializationException::class) {
             Point.fromJson("{\"type\":\"Point\",\"coordinates\":null}")
         }
     }

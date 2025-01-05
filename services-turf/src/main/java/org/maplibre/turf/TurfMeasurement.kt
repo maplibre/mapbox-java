@@ -1,6 +1,5 @@
 package org.maplibre.turf
 
-import com.google.gson.JsonObject
 import kotlinx.serialization.json.JsonElement
 import org.maplibre.geojson.BoundingBox
 import org.maplibre.geojson.Feature

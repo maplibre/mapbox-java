@@ -1,10 +1,10 @@
 package org.maplibre.geojson
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 
@@ -52,7 +52,7 @@ class GeometryCollectionTest {
         compareJson(
             geometryCollection.toJson(),
             ("{\"type\":\"GeometryCollection\",\"geometries\":[" + "{\"type\":\"Point\","
-                    + "\"coordinates\":[1.0,2.0]},{\"type\":\"LineString\",\"coordinates\":[[1,2],[2,3]]}]}")
+                    + "\"coordinates\":[1.0,2.0]},{\"type\":\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}]}")
         )
     }
 
@@ -100,7 +100,7 @@ class GeometryCollectionTest {
             geometryCollection.toJson(),
             ("{\"type\":\"GeometryCollection\",\"bbox\":[1.0,2.0,3.0,4.0],"
                     + "\"geometries\":[{\"type\":\"Point\",\"coordinates\":[1.0,2.0]},"
-                    + "{\"type\":\"LineString\",\"coordinates\":[[1,2],[2,3]]}]}")
+                    + "{\"type\":\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}]}")
         )
     }
 
@@ -125,14 +125,14 @@ class GeometryCollectionTest {
     fun toJson() {
         val jsonOriginal =
             "    { \"type\": \"GeometryCollection\"," +
-                    "            \"bbox\": [-120, -40, 120, 40]," +
+                    "            \"bbox\": [-120.0, -40.0, 120.0, 40.0]," +
                     "      \"geometries\": [" +
                     "      { \"type\": \"Point\"," +
-                    "              \"bbox\": [-110, -30, 110, 30]," +
-                    "        \"coordinates\": [100, 0]}," +
+                    "              \"bbox\": [-110.0, -30.0, 110.0, 30.0]," +
+                    "        \"coordinates\": [100.0, 0.0]}," +
                     "      { \"type\": \"LineString\"," +
-                    "              \"bbox\": [-110, -30, 110, 30]," +
-                    "        \"coordinates\": [[101, 0], [102, 1]]}]}"
+                    "              \"bbox\": [-110.0, -30.0, 110.0, 30.0]," +
+                    "        \"coordinates\": [[101.0, 0.0], [102.0, 1.0]]}]}"
 
         val geometries = listOf(
             Point(

@@ -1,13 +1,13 @@
 package org.maplibre.geojson
 
 import kotlinx.serialization.SerializationException
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
+import kotlin.test.assertFailsWith
 
 class MultiLineStringTest {
 
@@ -58,7 +58,7 @@ class MultiLineStringTest {
         val multiLineString: MultiLineString = MultiLineString.fromLineStrings(lineStrings)
         compareJson(
             multiLineString.toJson(),
-            "{\"type\":\"MultiLineString\",\"coordinates\":[[[1,2],[2,3]],[[1,2],[2,3]]]}"
+            "{\"type\":\"MultiLineString\",\"coordinates\":[[[1.0,2.0],[2.0,3.0]],[[1.0,2.0],[2.0,3.0]]]}"
         )
     }
 
@@ -120,14 +120,14 @@ class MultiLineStringTest {
         compareJson(
             multiLineString.toJson(),
             "{\"type\":\"MultiLineString\",\"bbox\":[1.0,2.0,3.0,4.0],"
-                    + "\"coordinates\":[[[1,2],[2,3]],[[1,2],[2,3]]]}"
+                    + "\"coordinates\":[[[1.0,2.0],[2.0,3.0]],[[1.0,2.0],[2.0,3.0]]]}"
         )
     }
 
     @Test
     fun fromJson() {
         val json = "{\"type\": \"MultiLineString\", " +
-                "\"coordinates\": [[[100, 0],[101, 1]],[[102, 2],[103, 3]]] }"
+                "\"coordinates\": [[[100.0, 0.0],[101.0, 1.0]],[[102.0, 2.0],[103.0, 3.0]]] }"
 
         val geo: MultiLineString = MultiLineString.fromJson(json)
         assertEquals(geo.coordinates[0][0].longitude, 100.0, DELTA)
@@ -138,14 +138,14 @@ class MultiLineStringTest {
     @Test
     fun toJson() {
         val json = "{\"type\": \"MultiLineString\", " +
-                "\"coordinates\": [[[100, 0],[101, 1]],[[102, 2],[103, 3]]] }"
+                "\"coordinates\": [[[100.0, 0.0],[101.0, 1.0]],[[102.0, 2.0],[103.0, 3.0]]] }"
         val geo = MultiLineString.fromJson(json)
         compareJson(json, geo.toJson())
     }
 
     @Test
     fun fromJson_coordinatesPresent() {
-        assertThrows(SerializationException::class.java) {
+        assertFailsWith(SerializationException::class) {
             MultiLineString.fromJson("{\"type\":\"MultiLineString\",\"coordinates\":null}")
         }
     }

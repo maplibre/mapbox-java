@@ -1,9 +1,8 @@
 package org.maplibre.turf
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.Test
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
 import org.maplibre.geojson.GeometryCollection
@@ -24,6 +23,7 @@ import org.maplibre.turf.TurfConversion.lengthToRadians
 import org.maplibre.turf.TurfConversion.multiPolygonToLine
 import org.maplibre.turf.TurfConversion.polygonToLine
 import org.maplibre.turf.TurfConversion.radiansToLength
+import kotlin.test.assertFailsWith
 
 class TurfConversionTest {
 
@@ -120,7 +120,7 @@ class TurfConversionTest {
             featureCollectionWithNewMultiPointObject.features[0].geometry as MultiPoint?
         assertNotNull(multiPoint)
 
-        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(-2.46, multiPoint.coordinates[0].longitude, DELTA)
         assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
         assertEquals(41.83, multiPoint.coordinates[1].longitude, DELTA)
         assertEquals(7.3624, multiPoint.coordinates[1].latitude, DELTA)
@@ -743,7 +743,7 @@ class TurfConversionTest {
 
     @Test
     fun combineEmptyFeatureCollectionThrowsException() {
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             combine(
                 FeatureCollection.fromJson(
                     """{

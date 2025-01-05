@@ -2,12 +2,12 @@ package org.maplibre.geojson
 
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 
@@ -51,7 +51,7 @@ class FeatureTest {
         compareJson(
             featureJsonString,
             "{\"type\":\"Feature\",\"geometry\":{\"type\":"
-                    + "\"LineString\",\"coordinates\":[[1,2],[2,3]]}}"
+                    + "\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}}"
         )
     }
 
@@ -86,7 +86,7 @@ class FeatureTest {
         val feature = Feature(lineString, bbox = bbox)
         compareJson(
             "{\"type\":\"Feature\",\"bbox\":[1.0,2.0,3.0,4.0],\"geometry\":"
-                    + "{\"type\":\"LineString\",\"coordinates\":[[1,2],[2,3]]}}",
+                    + "{\"type\":\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}}",
             feature.toJson()
         )
     }
@@ -154,7 +154,7 @@ class FeatureTest {
         val geoJsonString = geo.toJson()
 
         val expectedJson = "{ \"type\": \"Feature\"," +
-                "\"geometry\": { \"type\": \"LineString\", \"coordinates\": [[1,1],[2,2],[3,3]]}," +
+                "\"geometry\": { \"type\": \"LineString\", \"coordinates\": [[1.0,1.0],[2.0,2.0],[3.0,3.0]]}," +
                 "\"properties\": {\"name\": \"Dinagat Islands\" }}"
 
         compareJson(expectedJson, geoJsonString)

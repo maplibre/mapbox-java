@@ -20,19 +20,9 @@ kotlin {
 dependencies {
     api libs.kotlinx.serialization.json
 
-    // Gson
-    api libs.gson
-
-    // Annotations
-    compileOnly libs.supportAnnotation
-
     // Test Dependencies
-    testImplementation libs.okhttp3Mockwebserver
-
-    // Test Dependencies
-    testImplementation libs.junit
-    testImplementation libs.hamcrestJunit
-    testImplementation libs.mockito
+    testImplementation libs.kotlin.test
+    testImplementation libs.kotlinx.io.core
 }
 
 

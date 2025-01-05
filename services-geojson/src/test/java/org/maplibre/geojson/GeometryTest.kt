@@ -1,9 +1,9 @@
 package org.maplibre.geojson
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 
@@ -51,7 +51,7 @@ class GeometryTest {
         )
         val pointStr = geometry.toJson()
         compareJson(
-            "{\"coordinates\": [2,3],"
+            "{\"coordinates\": [2.0,3.0],"
                     + "\"type\":\"Point\",\"bbox\":[1.0,2.0,3.0,4.0]}",
             pointStr
         )
@@ -90,7 +90,7 @@ class GeometryTest {
             BoundingBox(1.0, 2.0, 3.0, 4.0)
         )
         val geometryJsonStr = geometry.toJson()
-        val expectedJsonString = ("{\"coordinates\":[[1,2],[2,3],[3,4]],"
+        val expectedJsonString = ("{\"coordinates\":[[1.0,2.0],[2.0,3.0],[3.0,4.0]],"
                 + "\"type\":\"LineString\",\"bbox\":[1.0,2.0,3.0,4.0]}")
         compareJson(expectedJsonString, geometryJsonStr)
     }

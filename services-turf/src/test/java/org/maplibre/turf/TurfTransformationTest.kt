@@ -1,12 +1,12 @@
 package org.maplibre.turf
 
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.Test
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.Point
 import org.maplibre.turf.TestUtils.compareJson
 import org.maplibre.turf.TestUtils.loadJsonFixture
 import org.maplibre.turf.TurfTransformation.circle
+import kotlin.test.assertFailsWith
 
 class TurfTransformationTest {
 
@@ -14,7 +14,7 @@ class TurfTransformationTest {
     fun throwOnInvalidSteps() {
         val featureIn = Feature.fromJson(loadJsonFixture(CIRCLE_IN))
 
-        assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith(IllegalArgumentException::class) {
             circle(
                 center = featureIn.geometry as Point,
                 steps = -1,
@@ -22,7 +22,7 @@ class TurfTransformationTest {
             )
         }
 
-        assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith(IllegalArgumentException::class) {
             circle(
                 center = featureIn.geometry as Point,
                 steps = 0,

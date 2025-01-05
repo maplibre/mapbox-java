@@ -1,10 +1,9 @@
 package org.maplibre.geojson
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
 import org.maplibre.geojson.TestUtils.DELTA
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class BoundingBoxTest {
 
@@ -23,7 +22,7 @@ class BoundingBoxTest {
         val southwest = Point(1.0, 2.0)
         val northeast = Point(3.0, 4.0)
         val boundingBox = BoundingBox(southwest, northeast)
-        assertTrue(southwest == boundingBox.southwest)
+        assertEquals(southwest, boundingBox.southwest)
     }
 
     @Test
@@ -32,7 +31,7 @@ class BoundingBoxTest {
         val southwest = Point(1.0, 2.0)
         val northeast = Point(3.0, 4.0)
         val boundingBox = BoundingBox(southwest, northeast)
-        assertTrue(northeast == boundingBox.northeast)
+        assertEquals(northeast, boundingBox.northeast)
     }
 
     @Test

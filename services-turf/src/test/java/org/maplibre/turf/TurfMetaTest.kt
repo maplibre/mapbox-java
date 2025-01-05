@@ -1,9 +1,8 @@
 package org.maplibre.turf
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.Test
 import org.maplibre.geojson.BoundingBox
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
@@ -15,6 +14,7 @@ import org.maplibre.geojson.Polygon
 import org.maplibre.turf.TestUtils.DELTA
 import org.maplibre.turf.TurfMeta.coordAll
 import org.maplibre.turf.TurfMeta.getCoord
+import kotlin.test.assertFailsWith
 
 class TurfMetaTest {
 
@@ -148,7 +148,7 @@ class TurfMetaTest {
 
     @Test
     fun wrongFeatureGeometryForGetCoordThrowsException() {
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             getCoord(
                 Feature(
                     LineString(

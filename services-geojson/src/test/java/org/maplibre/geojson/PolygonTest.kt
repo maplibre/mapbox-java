@@ -1,14 +1,14 @@
 package org.maplibre.geojson
 
 import kotlinx.serialization.SerializationException
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 import org.maplibre.geojson.exception.GeoJsonException
+import kotlin.test.assertFailsWith
 
 class PolygonTest {
 
@@ -33,7 +33,7 @@ class PolygonTest {
             Point(3.0, 2.0)
         )
 
-        assertThrows(GeoJsonException::class.java) {
+        assertFailsWith(GeoJsonException::class) {
             Polygon.fromOuterInner(LineString(points))
         }
     }
@@ -47,7 +47,7 @@ class PolygonTest {
             Point(5.0, 2.0),
         )
 
-        assertThrows(GeoJsonException::class.java) {
+        assertFailsWith(GeoJsonException::class) {
             Polygon.fromOuterInner(LineString(points))
         }
     }
@@ -149,7 +149,7 @@ class PolygonTest {
         compareJson(
             polygon.toJson(),
             "{\"type\":\"Polygon\",\"coordinates\":"
-                    + "[[[1,2],[2,3],[3,4],[1,2]],[[1,2],[2,3],[3,4],[1,2]],[[1,2],[2,3],[3,4],[1,2]]]}"
+                    + "[[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]],[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]],[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]]]}"
         )
     }
 
@@ -190,7 +190,7 @@ class PolygonTest {
         compareJson(
             polygon.toJson(),
             "{\"type\":\"Polygon\",\"bbox\":[1.0,2.0,3.0,4.0],\"coordinates\":"
-                    + "[[[1,2],[2,3],[3,4],[1,2]],[[1,2],[2,3],[3,4],[1,2]],[[1,2],[2,3],[3,4],[1,2]]]}"
+                    + "[[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]],[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]],[[1.0,2.0],[2.0,3.0],[3.0,4.0],[1.0,2.0]]]}"
         )
     }
 
@@ -221,7 +221,7 @@ class PolygonTest {
     @Test
     fun toJson() {
         val json = "{\"type\": \"Polygon\", " +
-                "\"coordinates\": [[[100, 0], [101, 0], [101, 1], [100, 1],[100, 0]]]}"
+                "\"coordinates\": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0],[100.0, 0.0]]]}"
         val geo: Polygon = Polygon.fromJson(json)
         compareJson(json, geo.toJson())
     }
@@ -229,7 +229,7 @@ class PolygonTest {
     @Test
     fun toJsonHoles() {
         val json = "{\"type\": \"Polygon\", " +
-                "\"coordinates\": [[[100, 0], [101, 0], [101, 1], [100, 1],[100, 0]], " +
+                "\"coordinates\": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0],[100.0, 0.0]], " +
                 " [[100.8, 0.8],[100.8, 0.2],[100.2, 0.2],[100.2, 0.8],[100.8, 0.8]]]}"
         val geo: Polygon = Polygon.fromJson(json)
         compareJson(json, geo.toJson())
@@ -237,7 +237,7 @@ class PolygonTest {
 
     @Test
     fun fromJson_coordinatesPresent() {
-        assertThrows(SerializationException::class.java) {
+        assertFailsWith(SerializationException::class) {
             Polygon.fromJson("{\"type\":\"Polygon\",\"coordinates\":null}")
         }
     }

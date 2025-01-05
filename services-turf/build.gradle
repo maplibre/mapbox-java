@@ -19,11 +19,7 @@ kotlin {
 dependencies {
   api project(":services-geojson")
 
-  // Annotations
-  compileOnly libs.supportAnnotation
-
     // Test Dependencies
-    testImplementation libs.junit
-    testImplementation libs.hamcrestJunit
-    testImplementation libs.mockito
+    testImplementation libs.kotlin.test
+    testImplementation libs.kotlinx.io.core
 }

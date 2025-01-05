@@ -1,12 +1,11 @@
 package org.maplibre.turf
 
 import junit.framework.TestCase
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThrows
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.Point
@@ -17,6 +16,7 @@ import org.maplibre.turf.TurfMeasurement.length
 import org.maplibre.turf.TurfMisc.lineSlice
 import org.maplibre.turf.TurfMisc.lineSliceAlong
 import org.maplibre.turf.TurfMisc.nearestPointOnLine
+import kotlin.test.assertFailsWith
 
 class TurfMiscTest {
 
@@ -27,7 +27,7 @@ class TurfMiscTest {
         val coords = listOf(point)
 
         val lineString = LineString(coords)
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             lineSlice(point, point2, lineString)
         }
     }
@@ -42,7 +42,7 @@ class TurfMiscTest {
 
         val lineString = LineString(coords)
 
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             lineSlice(point, point, lineString)
         }
     }
@@ -148,7 +148,7 @@ class TurfMiscTest {
             Point(-122.45717525482178, 37.72003306385638)
         )
 
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             nearestPointOnLine(line[0], line)
         }
     }
@@ -459,7 +459,7 @@ class TurfMiscTest {
         val start = 500000.0
         val stop = 800000.0
 
-        assertThrows(TurfException::class.java) {
+        assertFailsWith(TurfException::class) {
             lineSliceAlong(line1, start, stop, TurfUnit.MILES)
         }
     }

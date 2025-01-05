@@ -1,10 +1,10 @@
 package org.maplibre.geojson
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 import org.maplibre.geojson.TestUtils.loadJsonFixture
@@ -49,8 +49,8 @@ class FeatureCollectionTest {
         compareJson(
             featureCollection.toJson(),
             ("{\"type\":\"FeatureCollection\",\"features\":[" +
-                    "{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1,2],[2,3]]}}," +
-                    "{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1,2],[2,3]]}}]}")
+                    "{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}}," +
+                    "{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1.0,2.0],[2.0,3.0]]}}]}")
         )
     }
 

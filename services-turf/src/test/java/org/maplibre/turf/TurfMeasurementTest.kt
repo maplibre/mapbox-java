@@ -1,12 +1,11 @@
 package org.maplibre.turf
 
 import kotlinx.serialization.json.JsonPrimitive
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.Test
 import org.maplibre.geojson.BoundingBox
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.FeatureCollection
@@ -32,6 +31,7 @@ import org.maplibre.turf.TurfMeasurement.envelope
 import org.maplibre.turf.TurfMeasurement.length
 import org.maplibre.turf.TurfMeasurement.midpoint
 import org.maplibre.turf.TurfMeasurement.square
+import kotlin.test.assertContentEquals
 
 class TurfMeasurementTest {
 
@@ -370,10 +370,9 @@ class TurfMeasurementTest {
     fun bboxFromGeometryCollection() {
         // Check that geometry collection and direct bbox are equal
         val multiPolygon = MultiPolygon.fromJson(loadJsonFixture(TURF_BBOX_MULTIPOLYGON))
-        assertArrayEquals(
+        assertContentEquals(
             bbox(multiPolygon),
-            bbox(GeometryCollection(multiPolygon)),
-            DELTA
+            bbox(GeometryCollection(multiPolygon))
         )
 
         // Check all geometry types
@@ -555,7 +554,7 @@ class TurfMeasurementTest {
             )
         )
         val expected = Polygon(polygonPoints)
-        assertEquals("Polygon should match.", expected, polygon)
+        assertEquals(expected, polygon, "Polygon should match.")
     }
 
     @Test

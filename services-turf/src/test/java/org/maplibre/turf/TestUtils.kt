@@ -1,28 +1,26 @@
 package org.maplibre.turf
 
-import com.google.gson.JsonParser
-import org.junit.Assert.assertEquals
-import java.io.IOException
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Paths
+import kotlinx.io.buffered
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.readString
+import kotlinx.serialization.json.Json
+import kotlin.test.assertEquals
 
 object TestUtils {
 
     fun compareJson(expectedJson: String, actualJson: String) {
+        val json = Json { isLenient = true }
         assertEquals(
-            JsonParser.parseString(actualJson),
-            JsonParser.parseString(expectedJson)
+            json.parseToJsonElement(expectedJson),
+            json.parseToJsonElement(actualJson)
         )
     }
 
     fun loadJsonFixture(filename: String): String {
-        try {
-            val filepath = "src/test/resources/$filename"
-            val encoded = Files.readAllBytes(Paths.get(filepath))
-            return String(encoded, StandardCharsets.UTF_8)
-        } catch (ex: IOException) {
-            throw IOException("Unable to load test resource $filename")
+        val filePath = Path("src/test/resources/$filename")
+        return SystemFileSystem.source(filePath).use { rawSource ->
+            rawSource.buffered().readString()
         }
     }
 

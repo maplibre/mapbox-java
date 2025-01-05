@@ -1,11 +1,11 @@
 {
   "type": "FeatureCollection",
-  "bbox": [100, 0, 105, 1],
+  "bbox": [100.0, 0.0, 105.0, 1.0],
   "features": [
     {
       "type": "Feature",
       "id": "id0",
-      "bbox": [102, 0, 105, 1],
+      "bbox": [102.0, 0.0, 105.0, 1.0],
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -20,7 +20,7 @@
     {
       "type": "Feature",
       "id": "id1",
-      "bbox": [100, 0, 101, 1],
+      "bbox": [100.0, 0.0, 101.0, 1.0],
       "geometry": {
         "type": "Polygon",
         "coordinates": [

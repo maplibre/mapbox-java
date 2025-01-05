@@ -1,13 +1,13 @@
 package org.maplibre.geojson
 
 import kotlinx.serialization.SerializationException
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
+import kotlin.test.assertFailsWith
 
 class LineStringTest {
 
@@ -58,7 +58,7 @@ class LineStringTest {
         val lineString = LineString(points)
         compareJson(
             lineString.toJson(),
-            "{\"coordinates\":[[1,1],[2,2],[3,3]],\"type\":\"LineString\"}"
+            "{\"coordinates\":[[1.0,1.0],[2.0,2.0],[3.0,3.0]],\"type\":\"LineString\"}"
         )
     }
 
@@ -92,7 +92,7 @@ class LineStringTest {
         val lineString = LineString(points, bbox)
         val lineStringJson = lineString.toJson()
         compareJson(
-            "{\"coordinates\":[[1,1],[2,2],[3,3]],"
+            "{\"coordinates\":[[1.0,1.0],[2.0,2.0],[3.0,3.0]],"
                     + "\"type\":\"LineString\",\"bbox\":[1.0,2.0,3.0,4.0]}",
             lineStringJson
         )
@@ -132,7 +132,7 @@ class LineStringTest {
     @Test
     fun toJson() {
         val json = "{\"type\": \"LineString\"," +
-                "  \"coordinates\": [[ 100, 0], [101, 1]]} "
+                "  \"coordinates\": [[ 100.0, 0.0], [101.0, 1.0]]} "
         val geo: LineString = LineString.fromJson(json)
         val geoJsonString = geo.toJson()
         compareJson(geoJsonString, json)
@@ -140,7 +140,7 @@ class LineStringTest {
 
     @Test
     fun fromJson_coordinatesNotPresent() {
-        assertThrows(SerializationException::class.java) {
+        assertFailsWith(SerializationException::class) {
             LineString.fromJson("{\"type\":\"LineString\",\"coordinates\":null}")
         }
     }
