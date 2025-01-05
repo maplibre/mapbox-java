@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
 import org.maplibre.geojson.utils.json
-
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * A multiPolygon is an array of Polygon coordinate arrays.

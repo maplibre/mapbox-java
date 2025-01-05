@@ -4,6 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.utils.json
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 
 /**

@@ -22,16 +22,13 @@ internal object TestUtils {
     }
 
     fun loadJsonFixture(filename: String): String {
-        val filePath = Path("src/test/resources/$filename")
-        return SystemFileSystem.source(filePath).use { rawSource ->
-            rawSource.buffered().readString()
-        }
+        return readResourceFile(filename)
     }
 
     fun expectNearNumber(expected: Double, actual: Double, epsilon: Double) {
         assertTrue(
             abs(expected - actual) <= epsilon,
-            String.format("Expected %f to be near %f", actual, expected),
+            "Expected $actual to be near $expected",
         )
     }
 }

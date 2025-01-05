@@ -6,6 +6,8 @@ import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
 import org.maplibre.geojson.utils.PolylineUtils
 import org.maplibre.geojson.utils.json
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * A linestring represents two or more geographic points that share a relationship and is one of the

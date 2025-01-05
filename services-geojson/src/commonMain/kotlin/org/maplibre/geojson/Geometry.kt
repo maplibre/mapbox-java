@@ -2,6 +2,7 @@ package org.maplibre.geojson
 
 import kotlinx.serialization.Serializable
 import org.maplibre.geojson.utils.json
+import kotlin.jvm.JvmStatic
 
 /**
  * Each of the six geometries and [GeometryCollection]

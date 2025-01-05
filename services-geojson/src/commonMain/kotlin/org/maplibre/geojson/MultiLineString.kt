@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
 import org.maplibre.geojson.utils.json
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * A multilinestring is an array of LineString coordinate arrays.

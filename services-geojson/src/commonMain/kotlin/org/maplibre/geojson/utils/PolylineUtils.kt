@@ -3,6 +3,7 @@ package org.maplibre.geojson.utils
 import org.maplibre.geojson.Point
 import kotlin.math.pow
 import kotlin.math.roundToLong
+import kotlin.jvm.JvmOverloads
 
 /**
  * Polyline utils class contains method that can decode/encode a polyline, simplify a line, and

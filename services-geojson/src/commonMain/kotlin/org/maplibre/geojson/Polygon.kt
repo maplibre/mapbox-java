@@ -6,6 +6,8 @@ import kotlinx.serialization.encodeToString
 import org.maplibre.geojson.exception.GeoJsonException
 import org.maplibre.geojson.serializer.PointDoubleArraySerializer
 import org.maplibre.geojson.utils.json
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * This class represents a GeoJson Polygon which may or may not include polygon holes.

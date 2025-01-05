@@ -1,48 +1,32 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
+
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
-//    alias(libs.plugins.android.library)
-    id("java-library")
-}
-
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }
 
 kotlin {
     jvmToolchain(17)
+
+    jvm()
+
+    def xcf = new XCFrameworkConfig(project)
+    [iosX64(), iosArm64(), iosSimulatorArm64()].forEach { target ->
+        target.binaries.framework { framework ->
+            baseName = "maplibre-geojson"
+            xcf.add(framework)
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api libs.kotlinx.serialization.json
+        }
+
+        commonTest.dependencies {
+            implementation libs.kotlin.test
+            implementation libs.kotlinx.io.core
+        }
+    }
+
 }
-
-
-dependencies {
-    api libs.kotlinx.serialization.json
-
-    // Test Dependencies
-    testImplementation libs.kotlin.test
-    testImplementation libs.kotlinx.io.core
-}
-
-
-//    apply plugin: 'java'
-//    apply plugin: 'idea'
-//    apply from: "${rootDir}/gradle/checkstyle.gradle"
-//
-//    // Fixes issue with test resources not being found inside Intellij
-//    idea {
-//        module {
-//            testOutputDir = file('build/resources/test')
-//        }
-//    }
-//
-
-//    repositories {
-//        google()
-//        mavenCentral()
-//    }
-//
-//    dependencies {
-
-//    }

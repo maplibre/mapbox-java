@@ -1,46 +1,15 @@
 plugins {
-//    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.kotlin.jvm) apply false
-//    alias(libs.plugins.android.library) apply false
-//    alias(libs.plugins.androidLibrary) apply false
-//    alias(libs.plugins.compose.compiler) apply false
-    //    alias libs.plugins.gradle.nexus
+    alias(libs.plugins.gradle.nexus)
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlinx.serialization) apply false
 }
-//
-//apply from: file("${rootDir}/gradle/artifact-settings.gradle")
-//
-//
+
+apply from: file("${rootDir}/gradle/artifact-settings.gradle")
+
+
 //tasks.withType(JavaCompile) {
 //    options.encoding = 'UTF-8'
 //    options.compilerArgs += ['-Xlint:all', '-Xlint:unchecked']
-//}
-
-//subprojects {
-//    apply plugin: 'java'
-//    apply plugin: 'idea'
-//    apply from: "${rootDir}/gradle/checkstyle.gradle"
-//
-//    // Fixes issue with test resources not being found inside Intellij
-//    idea {
-//        module {
-//            testOutputDir = file('build/resources/test')
-//        }
-//    }
-//
-//    sourceCompatibility = JavaVersion.VERSION_1_7
-//    targetCompatibility = JavaVersion.VERSION_1_7
-//
-//    repositories {
-//        google()
-//        mavenCentral()
-//    }
-//
-//    dependencies {
-//        // Test Dependencies
-//        testImplementation libs.junit
-//        testImplementation libs.hamcrestJunit
-//        testImplementation libs.mockito
-//    }
 //}
 
 //def TESTABLE_MODULES = ["services-geojson", "services-turf"]
@@ -81,23 +50,23 @@ plugins {
 //    }
 //}
 
-//apply from: "${rootDir}/gradle/publish-root.gradle"
+apply from: "${rootDir}/gradle/publish-root.gradle"
 
-//defaultTasks('clean', 'build')
+defaultTasks('clean', 'build')
 
-//nexusPublishing {
-//    repositories {
-//        sonatype {
-//            useStaging = !project.ext.isSnapshot
-//            stagingProfileId = sonatypeStagingProfileId
-//            username = ossrhUsername
-//            password = ossrhPassword
-//            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-//            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-//        }
-//    }
-//    transitionCheckOptions {
-//        maxRetries = 120
-//        delayBetween = Duration.ofSeconds(10)
-//    }
-//}
+nexusPublishing {
+    repositories {
+        sonatype {
+            useStaging = !project.ext.isSnapshot
+            stagingProfileId = sonatypeStagingProfileId
+            username = ossrhUsername
+            password = ossrhPassword
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+    transitionCheckOptions {
+        maxRetries = 120
+        delayBetween = Duration.ofSeconds(10)
+    }
+}

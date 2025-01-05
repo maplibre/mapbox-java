@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.1.0"
+kotlinMultiPlatform = "2.1.0"
 agp = "8.3.2"
 kotlinxSerializationJson = "1.7.3"
 kotlinxIO = "0.6.0"
@@ -13,6 +14,7 @@ kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", v
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref ="kotlinMultiPlatform" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 gradle-nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradleNexus" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

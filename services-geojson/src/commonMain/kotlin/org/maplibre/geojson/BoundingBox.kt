@@ -2,6 +2,7 @@ package org.maplibre.geojson
 
 import kotlinx.serialization.Serializable
 import org.maplibre.geojson.serializer.BoundingBoxSerializer
+import kotlin.jvm.JvmOverloads
 
 
 /**
