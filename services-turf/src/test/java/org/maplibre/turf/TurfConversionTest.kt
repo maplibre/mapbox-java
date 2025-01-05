@@ -30,42 +30,42 @@ class TurfConversionTest {
     @Test
     fun radiansToDistance() {
         assertEquals(
-            1.0, radiansToLength(1.0, TurfConstants.UNIT_RADIANS), DELTA
+            1.0, radiansToLength(1.0, TurfUnit.RADIANS), DELTA
         )
         assertEquals(
-            6373.0, radiansToLength(1.0, TurfConstants.UNIT_KILOMETERS), DELTA
+            6373.0, radiansToLength(1.0, TurfUnit.KILOMETERS), DELTA
         )
         assertEquals(
-            3960.0, radiansToLength(1.0, TurfConstants.UNIT_MILES), DELTA
+            3960.0, radiansToLength(1.0, TurfUnit.MILES), DELTA
         )
     }
 
     @Test
     fun distanceToRadians() {
         assertEquals(
-            1.0, lengthToRadians(1.0, TurfConstants.UNIT_RADIANS), DELTA
+            1.0, lengthToRadians(1.0, TurfUnit.RADIANS), DELTA
         )
         assertEquals(
-            1.0, lengthToRadians(6373.0, TurfConstants.UNIT_KILOMETERS), DELTA
+            1.0, lengthToRadians(6373.0, TurfUnit.KILOMETERS), DELTA
         )
         assertEquals(
-            1.0, lengthToRadians(3960.0, TurfConstants.UNIT_MILES), DELTA
+            1.0, lengthToRadians(3960.0, TurfUnit.MILES), DELTA
         )
     }
 
     @Test
     fun distanceToDegrees() {
         assertEquals(
-            57.29577951308232, lengthToDegrees(1.0, TurfConstants.UNIT_RADIANS), DELTA
+            57.29577951308232, lengthToDegrees(1.0, TurfUnit.RADIANS), DELTA
         )
         assertEquals(
             0.8990393772647469, lengthToDegrees(
                 100.0,
-                TurfConstants.UNIT_KILOMETERS
+                TurfUnit.KILOMETERS
             ), DELTA
         )
         assertEquals(
-            0.14468631190172304, lengthToDegrees(10.0, TurfConstants.UNIT_MILES), DELTA
+            0.14468631190172304, lengthToDegrees(10.0, TurfUnit.MILES), DELTA
         )
     }
 
@@ -73,31 +73,31 @@ class TurfConversionTest {
     fun convertDistance() {
         assertEquals(
             1.0,
-            convertLength(1000.0, TurfConstants.UNIT_METERS), DELTA
+            convertLength(1000.0, TurfUnit.METERS), DELTA
         )
         assertEquals(
             0.6213714106386318,
             convertLength(
-                1.0, TurfConstants.UNIT_KILOMETERS,
-                TurfConstants.UNIT_MILES
+                1.0, TurfUnit.KILOMETERS,
+                TurfUnit.MILES
             ), DELTA
         )
         assertEquals(
             1.6093434343434343,
             convertLength(
-                1.0, TurfConstants.UNIT_MILES,
-                TurfConstants.UNIT_KILOMETERS
+                1.0, TurfUnit.MILES,
+                TurfUnit.KILOMETERS
             ), DELTA
         )
         assertEquals(
             1.851999843075488,
-            convertLength(1.0, TurfConstants.UNIT_NAUTICAL_MILES), DELTA
+            convertLength(1.0, TurfUnit.NAUTICAL_MILES), DELTA
         )
         assertEquals(
             100.0,
             convertLength(
-                1.0, TurfConstants.UNIT_METERS,
-                TurfConstants.UNIT_CENTIMETERS
+                1.0, TurfUnit.METERS,
+                TurfUnit.CENTIMETERS
             ), DELTA
         )
     }

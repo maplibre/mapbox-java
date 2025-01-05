@@ -9,7 +9,6 @@ import org.maplibre.geojson.MultiPoint
 import org.maplibre.geojson.MultiPolygon
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
-import org.maplibre.turf.TurfConstants.TurfUnitCriteria
 import kotlin.math.PI
 
 /**
@@ -21,22 +20,6 @@ import kotlin.math.PI
  * @since 1.2.0
  */
 object TurfConversion {
-
-    private val factors = mapOf(
-        TurfConstants.UNIT_MILES to 3960.0,
-        TurfConstants.UNIT_NAUTICAL_MILES to 3441.145,
-        TurfConstants.UNIT_DEGREES to 57.2957795,
-        TurfConstants.UNIT_RADIANS to 1.0,
-        TurfConstants.UNIT_INCHES to 250905600.0,
-        TurfConstants.UNIT_YARDS to 6969600.0,
-        TurfConstants.UNIT_METERS to 6373000.0,
-        TurfConstants.UNIT_CENTIMETERS to 6.373e+8,
-        TurfConstants.UNIT_KILOMETERS to 6373.0,
-        TurfConstants.UNIT_FEET to 20908792.65,
-        TurfConstants.UNIT_CENTIMETRES to 6.373e+8,
-        TurfConstants.UNIT_METRES to 6373000.0,
-        TurfConstants.UNIT_KILOMETRES to 6373.0,
-    )
 
     /**
      * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
@@ -50,7 +33,7 @@ object TurfConversion {
      * @since 3.0.0
      */
     @JvmStatic
-    fun lengthToDegrees(distance: Double, @TurfUnitCriteria units: String): Double {
+    fun lengthToDegrees(distance: Double, units: TurfUnit): Double {
         return radiansToDegrees(lengthToRadians(distance, units))
     }
 
@@ -85,14 +68,14 @@ object TurfConversion {
      * unit.
      *
      * @param radians a double using unit radian
-     * @param units   pass in one of the units defined in [TurfUnitCriteria]
+     * @param unit   pass in one of the units defined in [TurfUnit]
      * @return converted radian to distance value
      * @since 1.2.0
      */
     @JvmStatic
     @JvmOverloads
-    fun radiansToLength(radians: Double, units: String = TurfConstants.UNIT_DEFAULT): Double {
-        return radians * factors[units]!! //TODO fabi755
+    fun radiansToLength(radians: Double, unit: TurfUnit = TurfUnit.DEFAULT): Double {
+        return radians * unit.factor
     }
 
     /**
@@ -100,23 +83,22 @@ object TurfConversion {
      * radians.
      *
      * @param distance double representing a distance value
-     * @param units    pass in one of the units defined in [TurfUnitCriteria]
+     * @param unit    pass in one of the units defined in [TurfUnit]
      * @return converted distance to radians value
      * @since 1.2.0
      */
     @JvmStatic
     @JvmOverloads
-    fun lengthToRadians(distance: Double, units: String = TurfConstants.UNIT_DEFAULT): Double {
-        return distance / factors[units]!! //TODO fabi755
+    fun lengthToRadians(distance: Double, unit: TurfUnit = TurfUnit.DEFAULT): Double {
+        return distance / unit.factor
     }
 
     /**
      * Converts a distance to a different unit specified.
      *
      * @param distance     the distance to be converted
-     * @param originalUnit of the distance, must be one of the units defined in
-     * [TurfUnitCriteria]
-     * @param finalUnit    returned unit, [TurfConstants.UNIT_DEFAULT] if not specified
+     * @param originalUnit of the distance, must be one of the units defined in [TurfUnit]
+     * @param finalUnit    returned unit, [TurfUnit.DEFAULT] if not specified
      * @return the converted distance
      * @since 2.2.0
      */
@@ -124,8 +106,8 @@ object TurfConversion {
     @JvmOverloads
     fun convertLength(
         distance: Double,
-        @TurfUnitCriteria originalUnit: String,
-        @TurfUnitCriteria finalUnit: String = TurfConstants.UNIT_DEFAULT
+        originalUnit: TurfUnit,
+        finalUnit: TurfUnit = TurfUnit.DEFAULT
     ): Double {
         return radiansToLength(lengthToRadians(distance, originalUnit), finalUnit)
     }

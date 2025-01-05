@@ -4,7 +4,6 @@ import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.LineString
 import org.maplibre.geojson.Point
-import org.maplibre.turf.TurfConstants.TurfUnitCriteria
 import org.maplibre.turf.TurfMeasurement.bearing
 import org.maplibre.turf.TurfMeasurement.destination
 import org.maplibre.turf.TurfMeasurement.distance
@@ -89,7 +88,7 @@ object TurfMisc {
      * @param line input line
      * @param startDist distance along the line to starting point
      * @param stopDist distance along the line to ending point
-     * @param units one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit one of the units found inside [TurfConstants.TurfUnitCriteria]
      * can be degrees, radians, miles, or kilometers
      * @return sliced line
      * @throws TurfException signals that a Turf exception of some sort has occurred.
@@ -102,10 +101,10 @@ object TurfMisc {
         line: Feature,
         startDist: Double,
         stopDist: Double,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): LineString {
         return (line.geometry as? LineString)?.let { lineString ->
-            lineSliceAlong(lineString, startDist, stopDist, units)
+            lineSliceAlong(lineString, startDist, stopDist, unit)
         } ?: throw TurfException("line must be a LineString")
     }
 
@@ -122,7 +121,7 @@ object TurfMisc {
      * @param line input line
      * @param startDist distance along the line to starting point
      * @param stopDist distance along the line to ending point
-     * @param units one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit one of the units found inside [TurfConstants.TurfUnitCriteria]
      * can be degrees, radians, miles, or kilometers
      * @return sliced line
      * @throws TurfException signals that a Turf exception of some sort has occurred.
@@ -135,7 +134,7 @@ object TurfMisc {
         line: LineString,
         startDist: Double,
         stopDist: Double,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): LineString {
         require(startDist >= 0) { "startDist must be greater than or equal 0" }
         require(stopDist > 0) { "stopDist must be greater than 0" }
@@ -161,7 +160,7 @@ object TurfMisc {
                         slicedLinePoints.add(point)
                     } else {
                         val direction = bearing(point, coordinates[index - 1]) - 180
-                        val interpolated = destination(point, overshot, direction, units)
+                        val interpolated = destination(point, overshot, direction, unit)
                         slicedLinePoints.add(interpolated)
                     }
                 }
@@ -173,7 +172,7 @@ object TurfMisc {
                         slicedLinePoints.add(point)
                     } else {
                         val direction = bearing(point, coordinates[index - 1]) - 180
-                        val interpolated = destination(point, overshot, direction, units)
+                        val interpolated = destination(point, overshot, direction, unit)
                         slicedLinePoints.add(interpolated)
                     }
 
@@ -185,7 +184,7 @@ object TurfMisc {
             }
 
             coordinates.getOrNull(index + 1)?.let { upcomingPoint ->
-                travelled += distance(point, upcomingPoint, units)
+                travelled += distance(point, upcomingPoint, unit)
             }
         }
 
@@ -202,7 +201,7 @@ object TurfMisc {
      *
      * @param pt point to snap from
      * @param coords line to snap to
-     * @param units one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit one of the units found inside [TurfUnit]
      * can be degrees, radians, miles, or kilometers
      * @return closest point on the line to point
      * @since 4.9.0
@@ -212,7 +211,7 @@ object TurfMisc {
     fun nearestPointOnLine(
         pt: Point,
         coords: List<Point>,
-        @TurfUnitCriteria units: String = TurfConstants.UNIT_KILOMETERS
+        unit: TurfUnit = TurfUnit.DEFAULT
     ): Feature {
         if (coords.size < 2) {
             throw TurfException("Turf nearestPointOnLine requires a List of Points made up of at least 2 coordinates.")
@@ -226,13 +225,13 @@ object TurfMisc {
         for (i in 0 until coords.size - 1) {
             val start = Feature(
                 coords[i],
-                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], units)))
+                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], unit)))
             )
             val startPoint = start.geometry as Point
 
             val stop = Feature(
                 coords[i + 1],
-                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], units)))
+                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], unit)))
             )
             val stopPoint = stop.geometry as Point
 
@@ -245,12 +244,12 @@ object TurfMisc {
             val direction = bearing(startPoint, stopPoint)
 
             val perpendicularPt1Feature = Feature(
-                destination(pt, heightDistance, direction + 90, units)
+                destination(pt, heightDistance, direction + 90, unit)
             )
             val perpendicularPt1Point = perpendicularPt1Feature.geometry as Point
 
             val perpendicularPt2Feature = Feature(
-                destination(pt, heightDistance, direction - 90, units)
+                destination(pt, heightDistance, direction - 90, unit)
             )
             val perpendicularPt2Point = perpendicularPt2Feature.geometry as Point
 
@@ -273,7 +272,7 @@ object TurfMisc {
 
                 Feature(
                     intersectionPoint,
-                    mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, intersectionPoint, units)))
+                    mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, intersectionPoint, unit)))
                 )
             }
 

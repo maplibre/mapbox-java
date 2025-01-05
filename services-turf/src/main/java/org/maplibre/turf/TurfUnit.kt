@@ -1,30 +1,21 @@
-package org.maplibre.turf;
-
-import androidx.annotation.StringDef;
-
-import org.maplibre.geojson.Point;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+package org.maplibre.turf
 
 /**
- * This class holds the Turf constants which are useful when specifying additional information such
- * as units prior to executing the Turf function. For example, if I intend to get the distance
- * between two GeoJson Points using {@link TurfMeasurement#distance(Point, Point, String)} the third
+ * This class holds units prior to executing the Turf function. For example, if I intend to get the distance
+ * between two GeoJson Points using [TurfMeasurement.distance] the third
  * optional parameter can define the output units.
- * <p>
- * Note that {@link TurfConversion#convertLength(double, String, String)} can be used to transform
- * one unit to another, such as miles to feet.
- * </p>
  *
- * @see <a href="http://turfjs.org/docs/">Turfjs documentation</a>
+ *
+ * Note that [TurfConversion.convertLength] can be used to transform
+ * one unit to another, such as miles to feet.
+ *
+ *
+ * @see [Turfjs documentation](http://turfjs.org/docs/)
+ *
  * @since 1.2.0
  */
-public class TurfConstants {
-
-    private TurfConstants() {
-        // Private constructor preventing initialization of this class
-    }
+@Suppress("unused")
+enum class TurfUnit(val factor: Double) {
 
     /**
      * The mile is an English unit of length of linear measure equal to 5,280 feet, or 1,760 yards,
@@ -32,7 +23,7 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_MILES = "miles";
+    MILES(factor = 3960.0),
 
     /**
      * The nautical mile per hour is known as the knot. Nautical miles and knots are almost
@@ -42,7 +33,7 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_NAUTICAL_MILES = "nauticalmiles";
+    NAUTICAL_MILES(factor = 3441.145),
 
     /**
      * The kilometer (American spelling) is a unit of length in the metric system, equal to one
@@ -50,28 +41,29 @@ public class TurfConstants {
      * between geographical places on land in most of the world; notable exceptions are the United
      * States and the road network of the United Kingdom where the statute mile is the official unit
      * used.
-     * <p>
+     *
+     *
      * In many Turf calculations, if a unit is not provided, the output value will fallback onto using
-     * this unit. See {@link #UNIT_DEFAULT} for more information.
-     * </p>
+     * this unit. See [.UNIT_DEFAULT] for more information.
+     *
      *
      * @since 1.2.0
      */
-    public static final String UNIT_KILOMETERS = "kilometers";
+    KILOMETERS(factor = 6373.0),
 
     /**
      * The radian is the standard unit of angular measure, used in many areas of mathematics.
      *
      * @since 1.2.0
      */
-    public static final String UNIT_RADIANS = "radians";
+    RADIANS(factor = 1.0),
 
     /**
      * A degree, is a measurement of a plane angle, defined so that a full rotation is 360 degrees.
      *
      * @since 1.2.0
      */
-    public static final String UNIT_DEGREES = "degrees";
+    DEGREES(factor = 57.2957795),
 
     /**
      * The inch (abbreviation: in or &quot;) is a unit of length in the (British) imperial and United
@@ -80,7 +72,7 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_INCHES = "inches";
+    INCHES(factor = 250905600.0),
 
     /**
      * The yard (abbreviation: yd) is an English unit of length, in both the British imperial and US
@@ -88,7 +80,7 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_YARDS = "yards";
+    YARDS(factor = 6969600.0),
 
     /**
      * The metre (international spelling) or meter (American spelling) is the base unit of length in
@@ -96,7 +88,7 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_METERS = "meters";
+    METERS(factor = 6373000.0),
 
     /**
      * A centimeter (American spelling) is a unit of length in the metric system, equal to one
@@ -104,14 +96,14 @@ public class TurfConstants {
      *
      * @since 1.2.0
      */
-    public static final String UNIT_CENTIMETERS = "centimeters";
+    CENTIMETERS(factor = 6.373e+8),
 
     /**
      * The foot is a unit of length in the imperial and US customary systems of measurement.
      *
      * @since 1.2.0
      */
-    public static final String UNIT_FEET = "feet";
+    FEET(factor = 20908792.65),
 
     /**
      * A centimetre (international spelling) is a unit of length in the metric system, equal to one
@@ -119,7 +111,7 @@ public class TurfConstants {
      *
      * @since 3.0.0
      */
-    public static final String UNIT_CENTIMETRES = "centimetres";
+    CENTIMETRES(factor = 6.373e+8),
 
     /**
      * The metre (international spelling) is the base unit of length in
@@ -127,7 +119,7 @@ public class TurfConstants {
      *
      * @since 3.0.0
      */
-    public static final String UNIT_METRES = "metres";
+    METRES(factor = 6373000.0),
 
     /**
      * The kilometre (international spelling) is a unit of length in the metric system, equal to one
@@ -138,36 +130,9 @@ public class TurfConstants {
      *
      * @since 3.0.0
      */
-    public static final String UNIT_KILOMETRES = "kilometres";
+    KILOMETRES(factor = 6373.0);
 
-    /**
-     * Retention policy for the various Turf units.
-     *
-     * @since 3.0.0
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-        UNIT_KILOMETRES,
-        UNIT_METRES,
-        UNIT_CENTIMETRES,
-        UNIT_FEET,
-        UNIT_CENTIMETERS,
-        UNIT_METERS,
-        UNIT_YARDS,
-        UNIT_INCHES,
-        UNIT_DEGREES,
-        UNIT_RADIANS,
-        UNIT_KILOMETERS,
-        UNIT_MILES,
-        UNIT_NAUTICAL_MILES
-    })
-    public @interface TurfUnitCriteria {
+    companion object {
+        val DEFAULT = KILOMETERS
     }
-
-    /**
-     * The default unit used in most Turf methods when no other unit is specified is kilometers.
-     *
-     * @since 1.2.0
-     */
-    public static final String UNIT_DEFAULT = UNIT_KILOMETERS;
 }

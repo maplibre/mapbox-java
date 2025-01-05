@@ -2,8 +2,6 @@ package org.maplibre.turf
 
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
-import org.maplibre.turf.TurfConstants.TurfUnitCriteria
-import org.maplibre.turf.TurfMeasurement.destination
 
 /**
  * Methods in this class consume one GeoJSON object and output a new object with the defined
@@ -17,12 +15,12 @@ object TurfTransformation {
 
     /**
      * Takes a [Point] and calculates the circle polygon given a radius in the
-     * provided [TurfConstants.TurfUnitCriteria]; and steps for precision.
+     * provided [TurfUnit]; and steps for precision.
      *
      * @param center a [Point] which the circle will center around
      * @param radius the radius of the circle
      * @param steps  number of steps which make up the circle parameter
-     * @param units  one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit  one of the units found inside [TurfUnit]
      * @return a [Polygon] which represents the newly created circle
      * @since 3.0.0
      */
@@ -32,12 +30,12 @@ object TurfTransformation {
         center: Point,
         radius: Double,
         steps: Int = DEFAULT_STEPS,
-        @TurfUnitCriteria units: String = TurfConstants.UNIT_DEFAULT
+        unit: TurfUnit = TurfUnit.DEFAULT
     ): Polygon {
         require(steps >= 1) { "Steps must be greater than 0" }
 
         val coordinates = (0 until steps)
-            .map { value -> destination(center, radius, value * 360.0 / steps, units) }
+            .map { value -> TurfMeasurement.destination(center, radius, value * 360.0 / steps, unit) }
 
         return Polygon(listOf(coordinates + coordinates.first()))
     }

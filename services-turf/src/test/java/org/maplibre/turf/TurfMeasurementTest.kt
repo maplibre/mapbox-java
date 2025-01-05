@@ -47,7 +47,7 @@ class TurfMeasurementTest {
         val pt1 = Point(-75.0, 39.0)
         val dist = 100.0
         val bear = 180.0
-        assertNotNull(destination(pt1, dist, bear, TurfConstants.UNIT_KILOMETERS))
+        assertNotNull(destination(pt1, dist, bear, TurfUnit.KILOMETERS))
     }
 
     //
@@ -60,32 +60,32 @@ class TurfMeasurementTest {
         val pt2 = Point(-75.534, 39.123)
 
         // Common cases
-        assertEquals(60.37218405837491, distance(pt1, pt2, TurfConstants.UNIT_MILES), DELTA)
+        assertEquals(60.37218405837491, distance(pt1, pt2, TurfUnit.MILES), DELTA)
         assertEquals(
             52.461979624130436,
-            distance(pt1, pt2, TurfConstants.UNIT_NAUTICAL_MILES),
+            distance(pt1, pt2, TurfUnit.NAUTICAL_MILES),
             DELTA
         )
         assertEquals(
             97.15957803131901,
-            distance(pt1, pt2, TurfConstants.UNIT_KILOMETERS),
+            distance(pt1, pt2, TurfUnit.KILOMETERS),
             DELTA
         )
         assertEquals(
             0.015245501024842149,
-            distance(pt1, pt2, TurfConstants.UNIT_RADIANS),
+            distance(pt1, pt2, TurfUnit.RADIANS),
             DELTA
         )
         assertEquals(
             0.8735028650863799,
-            distance(pt1, pt2, TurfConstants.UNIT_DEGREES),
+            distance(pt1, pt2, TurfUnit.DEGREES),
             DELTA
         )
 
         // This also works
         assertEquals(
             97.15957803131901,
-            distance(pt1, pt2, TurfConstants.UNIT_KILOMETERS),
+            distance(pt1, pt2, TurfUnit.KILOMETERS),
             DELTA
         )
 
@@ -100,7 +100,7 @@ class TurfMeasurementTest {
         val coords = listOf(Point(1.0, 1.0))
 
         val lineString = LineString(coords)
-        val distance = length(lineString, TurfConstants.UNIT_METERS)
+        val distance = length(lineString, TurfUnit.METERS)
         assertEquals(0.0, distance, DELTA)
     }
 
@@ -112,13 +112,13 @@ class TurfMeasurementTest {
             202, Math.round(
                 length(
                     (route1.geometry as LineString?)!!,
-                    TurfConstants.UNIT_MILES
+                    TurfUnit.MILES
                 )
             )
         )
         assertEquals(
             741.7787396994203,
-            length((route2.geometry as LineString?)!!, TurfConstants.UNIT_KILOMETERS), DELTA
+            length((route2.geometry as LineString?)!!, TurfUnit.KILOMETERS), DELTA
         )
     }
 
@@ -129,7 +129,7 @@ class TurfMeasurementTest {
             5599, Math.round(
                 1000 * length(
                     (feature.geometry as Polygon?)!!,
-                    TurfConstants.UNIT_KILOMETERS
+                    TurfUnit.KILOMETERS
                 )
             )
         )
@@ -147,7 +147,7 @@ class TurfMeasurementTest {
                 1000
                         * length(
                     (feature.geometry as MultiLineString?)!!,
-                    TurfConstants.UNIT_KILOMETERS
+                    TurfUnit.KILOMETERS
                 )
             ).toDouble(), DELTA
         )
@@ -164,8 +164,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -176,8 +176,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -188,8 +188,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -200,8 +200,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -212,8 +212,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -224,8 +224,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -237,8 +237,8 @@ class TurfMeasurementTest {
         val mid = midpoint(pt1, pt2)
 
         assertEquals(
-            distance(pt1, mid, TurfConstants.UNIT_MILES),
-            distance(pt2, mid, TurfConstants.UNIT_MILES), DELTA
+            distance(pt1, mid, TurfUnit.MILES),
+            distance(pt2, mid, TurfUnit.MILES), DELTA
         )
     }
 
@@ -247,7 +247,7 @@ class TurfMeasurementTest {
         val coords = listOf(Point(1.0, 1.0))
 
         val lineString = LineString(coords)
-        val point = along(lineString, 0.0, TurfConstants.UNIT_METERS)
+        val point = along(lineString, 0.0, TurfUnit.METERS)
         assertEquals(1.0, point.latitude, DELTA)
         assertEquals(1.0, point.longitude, DELTA)
     }
@@ -257,16 +257,16 @@ class TurfMeasurementTest {
         val feature = Feature.fromJson(loadJsonFixture(TURF_ALONG_DC_LINE))
         val line = feature.geometry as LineString
 
-        val pt8 = along(line, 0.0, "miles")
+        val pt8 = along(line, 0.0, TurfUnit.MILES)
         val fc = FeatureCollection(
             listOf(
-                Feature(along(line, 1.0, "miles")),
-                Feature(along(line, 1.2, "miles")),
-                Feature(along(line, 1.4, "miles")),
-                Feature(along(line, 1.6, "miles")),
-                Feature(along(line, 1.8, "miles")),
-                Feature(along(line, 2.0, "miles")),
-                Feature(along(line, 100.0, "miles")),
+                Feature(along(line, 1.0, TurfUnit.MILES)),
+                Feature(along(line, 1.2, TurfUnit.MILES)),
+                Feature(along(line, 1.4, TurfUnit.MILES)),
+                Feature(along(line, 1.6, TurfUnit.MILES)),
+                Feature(along(line, 1.8, TurfUnit.MILES)),
+                Feature(along(line, 2.0, TurfUnit.MILES)),
+                Feature(along(line, 100.0, TurfUnit.MILES)),
                 Feature(pt8)
             )
         )

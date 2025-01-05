@@ -14,7 +14,6 @@ import org.maplibre.geojson.MultiPoint
 import org.maplibre.geojson.MultiPolygon
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
-import org.maplibre.turf.TurfConstants.TurfUnitCriteria
 import org.maplibre.turf.TurfConversion.degreesToRadians
 import org.maplibre.turf.TurfConversion.lengthToRadians
 import org.maplibre.turf.TurfConversion.radiansToDegrees
@@ -72,7 +71,7 @@ object TurfMeasurement {
      * @param point    starting point used for calculating the destination
      * @param distance distance from the starting point
      * @param bearing  ranging from -180 to 180 in decimal degrees
-     * @param units    one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit    one of the units found inside [TurfUnit]
      * @return destination [Point] result where you specified
      * @see [Turf Destination documetation](http://turfjs.org/docs/.destination)
      *
@@ -83,13 +82,13 @@ object TurfMeasurement {
         point: Point,
         distance: Double,
         bearing: Double,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Point {
         val longitude1 = degreesToRadians(point.longitude)
         val latitude1 = degreesToRadians(point.latitude)
         val bearingRad = degreesToRadians(bearing)
 
-        val radians = lengthToRadians(distance, units)
+        val radians = lengthToRadians(distance, unit)
 
         val latitude2 = asin(
             sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad)
@@ -111,7 +110,7 @@ object TurfMeasurement {
      *
      * @param point1 first point used for calculating the bearing
      * @param point2 second point used for calculating the bearing
-     * @param units  one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit  one of the units found inside [TurfUnit]
      * @return distance between the two points in kilometers
      * @see [Turf distance documentation](http://turfjs.org/docs/.distance)
      *
@@ -121,7 +120,7 @@ object TurfMeasurement {
     @JvmOverloads
     fun distance(
         point1: Point, point2: Point,
-        @TurfUnitCriteria units: String = TurfConstants.UNIT_DEFAULT
+        unit: TurfUnit = TurfUnit.DEFAULT
     ): Double {
         val difLat = degreesToRadians((point2.latitude - point1.latitude))
         val difLon = degreesToRadians((point2.longitude - point1.longitude))
@@ -131,7 +130,7 @@ object TurfMeasurement {
         val value = sin(difLat / 2).pow(2.0) + sin(difLon / 2).pow(2.0) * cos(lat1) * cos(lat2)
 
         return radiansToLength(
-            2 * atan2(sqrt(value), sqrt(1 - value)), units
+            2 * atan2(sqrt(value), sqrt(1 - value)), unit
         )
     }
 
@@ -139,7 +138,7 @@ object TurfMeasurement {
      * Takes a [LineString] and measures its length in the specified units.
      *
      * @param lineString geometry to measure
-     * @param units      one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit       one of the units found inside [TurfUnit]
      * @return length of the input line in the units specified
      * @see [Turf Line Distance documentation](http://turfjs.org/docs/.linedistance)
      *
@@ -148,14 +147,14 @@ object TurfMeasurement {
     @JvmStatic
     fun length(
         lineString: LineString,
-        @TurfUnitCriteria units: String
-    ): Double = length(lineString.coordinates, units)
+        unit: TurfUnit
+    ): Double = length(lineString.coordinates, unit)
 
     /**
      * Takes a [MultiLineString] and measures its length in the specified units.
      *
      * @param multiLineString geometry to measure
-     * @param units           one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit            one of the units found inside [TurfUnit]
      * @return length of the input lines combined, in the units specified
      * @see [Turf Line Distance documentation](http://turfjs.org/docs/.linedistance)
      *
@@ -164,10 +163,10 @@ object TurfMeasurement {
     @JvmStatic
     fun length(
         multiLineString: MultiLineString,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Double {
         return multiLineString.coordinates
-            .sumOf { points -> length(points, units) }
+            .sumOf { points -> length(points, unit) }
     }
 
     /**
@@ -175,7 +174,7 @@ object TurfMeasurement {
      * contains holes, the perimeter will also be included.
      *
      * @param polygon geometry to measure
-     * @param units   one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit   one of the units found inside [TurfUnit]
      * @return total perimeter of the input polygon in the units specified
      * @see [Turf Line Distance documentation](http://turfjs.org/docs/.linedistance)
      *
@@ -184,10 +183,10 @@ object TurfMeasurement {
     @JvmStatic
     fun length(
         polygon: Polygon,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Double {
         return polygon.coordinates
-            .sumOf { points -> length(points, units) }
+            .sumOf { points -> length(points, unit) }
     }
 
     /**
@@ -195,7 +194,7 @@ object TurfMeasurement {
      * one of the polygons contains holes, the perimeter will also be included.
      *
      * @param multiPolygon geometry to measure
-     * @param units        one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit        one of the units found inside [TurfUnit]
      * @return total perimeter of the input polygons combined, in the units specified
      * @see [Turf Line Distance documentation](http://turfjs.org/docs/.linedistance)
      *
@@ -203,29 +202,29 @@ object TurfMeasurement {
      */
     fun length(
         multiPolygon: MultiPolygon,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Double {
         return multiPolygon.coordinates
             .flatten()
-            .sumOf { points -> length(points, units) }
+            .sumOf { points -> length(points, unit) }
     }
 
     /**
      * Takes a [List] of [Point] and measures its length in the specified units.
      *
      * @param coords geometry to measure
-     * @param units  one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit  one of the units found inside [TurfUnit]
      * @return length of the input line in the units specified
      * @see [Turf Line Distance documentation](http://turfjs.org/docs/.linedistance)
      *
      * @since 5.2.0
      */
-    fun length(coords: List<Point>, units: String): Double {
+    fun length(coords: List<Point>, unit: TurfUnit): Double {
         return coords.drop(1)
             .mapIndexed { index, point ->
                 // Using unmodified index for previous point is working,
                 // because we drop the first point
-                distance(coords[index], point, units)
+                distance(coords[index], point, unit)
             }
             .sum()
     }
@@ -243,9 +242,9 @@ object TurfMeasurement {
      */
     @JvmStatic
     fun midpoint(from: Point, to: Point): Point {
-        val dist = distance(from, to, TurfConstants.UNIT_MILES)
+        val dist = distance(from, to, TurfUnit.MILES)
         val heading = bearing(from, to)
-        return destination(from, dist / 2, heading, TurfConstants.UNIT_MILES)
+        return destination(from, dist / 2, heading, TurfUnit.MILES)
     }
 
     /**
@@ -253,7 +252,7 @@ object TurfMeasurement {
      *
      * @param line     that the point should be placed upon
      * @param distance along the linestring geometry which the point should be placed on
-     * @param units    one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit    one of the units found inside [TurfUnit]
      * @return a [Point] which is on the linestring provided and at the distance from
      * the origin of that line to the end of the distance
      * @since 1.3.0
@@ -262,9 +261,9 @@ object TurfMeasurement {
     fun along(
         line: LineString,
         distance: Double,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Point {
-        return along(line.coordinates, distance, units)
+        return along(line.coordinates, distance, unit)
     }
 
     /**
@@ -272,7 +271,7 @@ object TurfMeasurement {
      *
      * @param coords   that the point should be placed upon
      * @param distance along the linestring geometry which the point should be placed on
-     * @param units    one of the units found inside [TurfConstants.TurfUnitCriteria]
+     * @param unit     one of the units found inside [TurfUnit]
      * @return a [Point] which is on the linestring provided and at the distance from
      * the origin of that line to the end of the distance
      * @since 5.2.0
@@ -280,7 +279,7 @@ object TurfMeasurement {
     fun along(
         coords: List<Point>,
         distance: Double,
-        @TurfUnitCriteria units: String
+        unit: TurfUnit
     ): Point {
         var travelled = 0.0
         for ((index, point) in coords.withIndex()) {
@@ -290,10 +289,10 @@ object TurfMeasurement {
                     return point
                 } else {
                     val direction = bearing(point, coords[index - 1]) - 180
-                    return destination(point, overshot, direction, units)
+                    return destination(point, overshot, direction, unit)
                 }
             } else if (index < coords.size - 1) {
-                travelled += distance(point, coords[index + 1], units)
+                travelled += distance(point, coords[index + 1], unit)
             }
         }
 
