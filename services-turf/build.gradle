@@ -1,25 +1,40 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
+
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-//    alias(libs.plugins.android.library)
-    id("java-library")
-}
-
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
     jvmToolchain(17)
+
+    jvm()
+
+    def xcf = new XCFrameworkConfig(project)
+    [iosX64(), iosArm64(), iosSimulatorArm64()].forEach { target ->
+        target.binaries.framework { framework ->
+            baseName = "maplibre-turf"
+            xcf.add(framework)
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api project(":services-geojson")
+        }
+
+        commonTest.dependencies {
+            implementation libs.kotlin.test
+            implementation libs.kotlinx.io.core
+        }
+    }
 }
 
+tasks.register('copyiOSTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosX64/debugTest/resources"
+}
 
-dependencies {
-  api project(":services-geojson")
-
-    // Test Dependencies
-    testImplementation libs.kotlin.test
-    testImplementation libs.kotlinx.io.core
+tasks.named("iosX64Test") {
+    dependsOn "copyiOSTestResources"
 }

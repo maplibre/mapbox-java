@@ -5,6 +5,7 @@ import org.maplibre.geojson.FeatureCollection
 import org.maplibre.geojson.MultiPolygon
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
+import kotlin.jvm.JvmStatic
 
 /**
  * Class contains methods that can determine if points lie within a polygon or not.

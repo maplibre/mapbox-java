@@ -1,6 +1,5 @@
 package org.maplibre.turf
 
-import junit.framework.TestCase
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
@@ -55,7 +54,7 @@ class TurfMiscTest {
         )
 
         val lineString = LineString(coords)
-        TestCase.assertNotNull(lineSlice(coords[0], coords[1], lineString))
+        assertNotNull(lineSlice(coords[0], coords[1], lineString))
     }
 
     @Test
@@ -66,7 +65,7 @@ class TurfMiscTest {
         val line1 = Feature.fromJson(loadJsonFixture(LINE_SLICE_ONE))
 
         val sliced = lineSlice(start, stop, line1)
-        TestCase.assertNotNull(sliced)
+        assertNotNull(sliced)
     }
 
     @Test

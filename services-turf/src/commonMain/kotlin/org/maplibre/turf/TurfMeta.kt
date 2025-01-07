@@ -10,6 +10,7 @@ import org.maplibre.geojson.MultiPoint
 import org.maplibre.geojson.MultiPolygon
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
+import kotlin.jvm.JvmStatic
 
 /**
  * Class contains methods that are useful for getting all coordinates from a specific GeoJson

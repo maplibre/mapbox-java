@@ -151,7 +151,7 @@ class TurfConversionTest {
         val multiPoint = combinedFeatureCollection.features[0].geometry as MultiPoint?
         assertNotNull(multiPoint)
 
-        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(-2.46, multiPoint.coordinates[0].longitude, DELTA)
         assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
         assertEquals(41.83, multiPoint.coordinates[1].longitude, DELTA)
         assertEquals(7.3624, multiPoint.coordinates[1].latitude, DELTA)
@@ -191,7 +191,7 @@ class TurfConversionTest {
         assertNotNull(multiLineString)
 
         // Checking the first LineString in the MultiLineString
-        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(-11.25, multiLineString.coordinates[0][0].longitude, DELTA)
         assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString in the MultiLineString
@@ -242,7 +242,7 @@ class TurfConversionTest {
         assertNotNull(multiLineString)
 
         // Checking the first LineString in the MultiLineString
-        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(-11.25, multiLineString.coordinates[0][0].longitude, DELTA)
         assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         assertEquals(41.1328, multiLineString.coordinates[0][1].longitude, DELTA)
@@ -307,7 +307,7 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates[0][0][0].longitude,
+            multiPolygon.coordinates[0][0][0].longitude,
             DELTA
         )
         assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
@@ -399,7 +399,7 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates[0][0][0].longitude,
+            multiPolygon.coordinates[0][0][0].longitude,
             DELTA
         )
         assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
@@ -514,7 +514,7 @@ class TurfConversionTest {
         // Checking the first Point
         assertEquals(
             61.938950426660604,
-            multiPolygon!!.coordinates[0][0][0].longitude,
+            multiPolygon.coordinates[0][0][0].longitude,
             DELTA
         )
         assertEquals(5.9765625, multiPolygon.coordinates[0][0][0].latitude, DELTA)
@@ -593,7 +593,7 @@ class TurfConversionTest {
         // Checking the LineString in the MultiLineString
 
         // Checking the first LineString location
-        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(-11.25, multiLineString.coordinates[0][0].longitude, DELTA)
         assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString location
@@ -603,7 +603,7 @@ class TurfConversionTest {
         // Checking the Point in the MultiPoint
 
         // Checking the first and only Point
-        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(-2.46, multiPoint.coordinates[0].longitude, DELTA)
         assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
     }
 
@@ -668,7 +668,7 @@ class TurfConversionTest {
         // Checking the Polygon in the MultiPolygon
 
         // Checking the first Point
-        assertEquals(11.42578125, multiPolygon!!.coordinates[0][0][0].longitude, DELTA)
+        assertEquals(11.42578125, multiPolygon.coordinates[0][0][0].longitude, DELTA)
         assertEquals(
             16.636191878397664,
             multiPolygon.coordinates[0][0][0].latitude,
@@ -686,7 +686,7 @@ class TurfConversionTest {
         // Checking the LineString in the MultiLineString
 
         // Checking the first LineString location
-        assertEquals(-11.25, multiLineString!!.coordinates[0][0].longitude, DELTA)
+        assertEquals(-11.25, multiLineString.coordinates[0][0].longitude, DELTA)
         assertEquals(55.7765, multiLineString.coordinates[0][0].latitude, DELTA)
 
         // Checking the second LineString location
@@ -696,7 +696,7 @@ class TurfConversionTest {
         // Checking the Point in the MultiPoint
 
         // Checking the first and only Point
-        assertEquals(-2.46, multiPoint!!.coordinates[0].longitude, DELTA)
+        assertEquals(-2.46, multiPoint.coordinates[0].longitude, DELTA)
         assertEquals(27.6835, multiPoint.coordinates[0].latitude, DELTA)
     }
 

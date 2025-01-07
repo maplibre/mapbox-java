@@ -3,9 +3,10 @@ package org.maplibre.turf
 import kotlin.test.Test
 import org.maplibre.geojson.Feature
 import org.maplibre.geojson.Point
-import org.maplibre.turf.TestUtils.compareJson
+import org.maplibre.geojson.Polygon
 import org.maplibre.turf.TestUtils.loadJsonFixture
 import org.maplibre.turf.TurfTransformation.circle
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class TurfTransformationTest {
@@ -34,13 +35,28 @@ class TurfTransformationTest {
     @Test
     fun pointToCircle() {
         val featureIn = Feature.fromJson(loadJsonFixture(CIRCLE_IN))
-        val polygon = circle(
+        val circlePolygon = circle(
             center = featureIn.geometry as Point,
             radius = featureIn.getDoubleProperty("radius")!!
         )
 
-        val featureOut = Feature.fromJson(loadJsonFixture(CIRCLE_OUT))
-        compareJson(featureOut.geometry!!.toJson(), polygon.toJson())
+        val expectedPolygonFeature = Feature.fromJson(loadJsonFixture(CIRCLE_OUT))
+        val expectedPolygon = expectedPolygonFeature.geometry as Polygon
+
+        assertEquals(circlePolygon.coordinates.size, expectedPolygon.coordinates.size)
+        for (i in circlePolygon.coordinates.indices) {
+            val circleLineCoordinates = circlePolygon.coordinates[i]
+            val expectedLineCoordinates = expectedPolygon.coordinates[i]
+
+            assertEquals(circleLineCoordinates.size, expectedLineCoordinates.size)
+            for (x in circleLineCoordinates.indices) {
+                val circlePoint = circleLineCoordinates[x]
+                val expectedPoint = expectedLineCoordinates[x]
+
+                assertEquals(circlePoint.longitude, expectedPoint.longitude, TestUtils.DELTA)
+                assertEquals(circlePoint.latitude, expectedPoint.latitude, TestUtils.DELTA)
+            }
+        }
     }
 
     companion object {

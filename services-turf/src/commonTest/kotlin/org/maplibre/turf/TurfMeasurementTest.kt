@@ -31,6 +31,7 @@ import org.maplibre.turf.TurfMeasurement.envelope
 import org.maplibre.turf.TurfMeasurement.length
 import org.maplibre.turf.TurfMeasurement.midpoint
 import org.maplibre.turf.TurfMeasurement.square
+import kotlin.math.roundToInt
 import kotlin.test.assertContentEquals
 
 class TurfMeasurementTest {
@@ -109,12 +110,11 @@ class TurfMeasurementTest {
         val route1 = Feature.fromJson(loadJsonFixture(LINE_DISTANCE_ROUTE_ONE))
         val route2 = Feature.fromJson(loadJsonFixture(LINE_DISTANCE_ROUTE_TWO))
         assertEquals(
-            202, Math.round(
-                length(
-                    (route1.geometry as LineString?)!!,
-                    TurfUnit.MILES
-                )
-            )
+            202,
+            length(
+                (route1.geometry as LineString?)!!,
+                TurfUnit.MILES
+            ).roundToInt()
         )
         assertEquals(
             741.7787396994203,
@@ -126,12 +126,11 @@ class TurfMeasurementTest {
     fun testLineDistancePolygon() {
         val feature = Feature.fromJson(loadJsonFixture(LINE_DISTANCE_POLYGON))
         assertEquals(
-            5599, Math.round(
-                1000 * length(
-                    (feature.geometry as Polygon?)!!,
-                    TurfUnit.KILOMETERS
-                )
-            )
+            5599,
+            (1000 * length(
+                (feature.geometry as Polygon?)!!,
+                TurfUnit.KILOMETERS
+            )).roundToInt()
         )
     }
 
@@ -143,13 +142,13 @@ class TurfMeasurementTest {
             )
         )
         assertEquals(
-            4705.0, Math.round(
-                1000
-                        * length(
-                    (feature.geometry as MultiLineString?)!!,
-                    TurfUnit.KILOMETERS
-                )
-            ).toDouble(), DELTA
+            4705.0, (
+                    1000
+                            * length(
+                        (feature.geometry as MultiLineString?)!!,
+                        TurfUnit.KILOMETERS
+                    )
+                    ).roundToInt().toDouble(), DELTA
         )
     }
 
@@ -415,7 +414,7 @@ class TurfMeasurementTest {
         val polygonRepresentingBoundingBox = featureRepresentingBoundingBox.geometry as Polygon?
 
         assertNotNull(polygonRepresentingBoundingBox)
-        assertEquals(0, polygonRepresentingBoundingBox!!.innerLines.size.toLong())
+        assertEquals(0, polygonRepresentingBoundingBox.innerLines.size.toLong())
         assertEquals(5, polygonRepresentingBoundingBox.coordinates[0].size.toLong())
         assertEquals(
             Point(102.0, -10.0),
@@ -458,7 +457,7 @@ class TurfMeasurementTest {
         val polygonRepresentingBoundingBox = featureRepresentingBoundingBox.geometry as Polygon?
 
         assertNotNull(polygonRepresentingBoundingBox)
-        assertEquals(0, polygonRepresentingBoundingBox!!.innerLines.size.toLong())
+        assertEquals(0, polygonRepresentingBoundingBox.innerLines.size.toLong())
         assertEquals(5, polygonRepresentingBoundingBox.coordinates[0].size.toLong())
         assertEquals("TEST_ID", featureRepresentingBoundingBox.id)
         assertEquals(
@@ -503,7 +502,7 @@ class TurfMeasurementTest {
         val polygonRepresentingBoundingBox = featureRepresentingBoundingBox.geometry as Polygon?
 
         assertNotNull(polygonRepresentingBoundingBox)
-        assertEquals(0, polygonRepresentingBoundingBox!!.innerLines.size.toLong())
+        assertEquals(0, polygonRepresentingBoundingBox.innerLines.size.toLong())
         assertEquals(5, polygonRepresentingBoundingBox.coordinates[0].size.toLong())
         assertEquals(
             Point(100.0, 0.0),
@@ -531,7 +530,7 @@ class TurfMeasurementTest {
         val polygonRepresentingBoundingBox = featureRepresentingBoundingBox.geometry as Polygon?
 
         assertNotNull(polygonRepresentingBoundingBox)
-        assertEquals(0, polygonRepresentingBoundingBox!!.innerLines.size.toLong())
+        assertEquals(0, polygonRepresentingBoundingBox.innerLines.size.toLong())
         assertEquals(5, polygonRepresentingBoundingBox.coordinates[0].size.toLong())
     }
 

@@ -1,9 +1,5 @@
 package org.maplibre.turf
 
-import kotlinx.io.buffered
-import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
-import kotlinx.io.readString
 import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 
@@ -18,10 +14,7 @@ object TestUtils {
     }
 
     fun loadJsonFixture(filename: String): String {
-        val filePath = Path("src/test/resources/$filename")
-        return SystemFileSystem.source(filePath).use { rawSource ->
-            rawSource.buffered().readString()
-        }
+        return readResourceFile(filename)
     }
 
     const val DELTA: Double = 1E-10

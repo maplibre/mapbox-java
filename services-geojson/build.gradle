@@ -28,5 +28,13 @@ kotlin {
             implementation libs.kotlinx.io.core
         }
     }
+}
 
+tasks.register('copyiOSTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosX64/debugTest/resources"
+}
+
+tasks.named("iosX64Test") {
+    dependsOn "copyiOSTestResources"
 }

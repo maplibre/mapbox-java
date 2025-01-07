@@ -17,6 +17,8 @@ import org.maplibre.turf.TurfConversion.degreesToRadians
 import org.maplibre.turf.TurfConversion.lengthToRadians
 import org.maplibre.turf.TurfConversion.radiansToDegrees
 import org.maplibre.turf.TurfConversion.radiansToLength
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 import kotlin.math.abs
 import kotlin.math.asin
 import kotlin.math.atan2
@@ -24,6 +26,7 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlin.math.PI
 
 /**
  * Class contains an assortment of methods used to calculate measurements such as bearing,
@@ -454,7 +457,7 @@ object TurfMeasurement {
                 bbox(MultiPoint(points))
             }
 
-            else -> throw RuntimeException(("Unknown geometry class: " + geometry.javaClass))
+            else -> throw RuntimeException(("Unknown geometry class: " + geometry::class))
         }
     }
 
@@ -698,7 +701,7 @@ object TurfMeasurement {
     }
 
     private fun rad(num: Double): Double {
-        return num * Math.PI / 180
+        return num * PI / 180
     }
 
     /**

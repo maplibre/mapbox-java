@@ -1,6 +1,7 @@
 package org.maplibre.turf
 
 import org.maplibre.geojson.Point
+import kotlin.jvm.JvmStatic
 
 /**
  * Methods found in this class are meant to consume a set of information and classify it according

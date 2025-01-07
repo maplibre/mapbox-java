@@ -1,9 +1,5 @@
 package org.maplibre.geojson
 
-import kotlinx.io.buffered
-import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
-import kotlinx.io.readString
 import kotlinx.serialization.json.Json
 import kotlin.math.abs
 import kotlin.test.assertEquals

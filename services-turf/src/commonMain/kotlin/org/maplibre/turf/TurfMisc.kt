@@ -7,6 +7,8 @@ import org.maplibre.geojson.Point
 import org.maplibre.turf.TurfMeasurement.bearing
 import org.maplibre.turf.TurfMeasurement.destination
 import org.maplibre.turf.TurfMeasurement.distance
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 /**

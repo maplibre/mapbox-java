@@ -2,6 +2,8 @@ package org.maplibre.turf
 
 import org.maplibre.geojson.Point
 import org.maplibre.geojson.Polygon
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * Methods in this class consume one GeoJSON object and output a new object with the defined
