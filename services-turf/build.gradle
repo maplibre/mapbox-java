@@ -6,8 +6,6 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
-
     jvm()
 
     def xcf = new XCFrameworkConfig(project)
