@@ -1,6 +1,6 @@
 package org.maplibre.turf
 
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.Point
 import kotlin.jvm.JvmStatic
 
 /**

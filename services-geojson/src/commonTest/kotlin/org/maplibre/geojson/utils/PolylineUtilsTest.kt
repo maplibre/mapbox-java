@@ -1,7 +1,7 @@
 package org.maplibre.geojson.utils
 
-import org.maplibre.geojson.LineString
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.Point
 import org.maplibre.geojson.TestUtils.expectNearNumber
 import org.maplibre.geojson.TestUtils.loadJsonFixture
 import kotlin.test.Test

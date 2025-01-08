@@ -1,9 +1,9 @@
 package org.maplibre.turf
 
 import kotlinx.serialization.json.JsonPrimitive
-import org.maplibre.geojson.Feature
-import org.maplibre.geojson.LineString
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.Feature
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.Point
 import org.maplibre.turf.TurfMeasurement.bearing
 import org.maplibre.turf.TurfMeasurement.destination
 import org.maplibre.turf.TurfMeasurement.distance

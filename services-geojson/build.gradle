@@ -27,6 +27,10 @@ kotlin {
             implementation libs.kotlin.test
             implementation libs.kotlinx.io.core
         }
+
+        jvmMain.dependencies {
+            implementation libs.gson
+        }
     }
 }
 

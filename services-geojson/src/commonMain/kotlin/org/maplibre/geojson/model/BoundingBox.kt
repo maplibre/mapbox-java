@@ -1,8 +1,10 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlinx.serialization.Serializable
 import org.maplibre.geojson.serializer.BoundingBoxSerializer
+import org.maplibre.geojson.utils.json
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 
 /**
@@ -26,7 +28,7 @@ import kotlin.jvm.JvmOverloads
  * @since 3.0.0
  */
 @Serializable(with = BoundingBoxSerializer::class)
-data class BoundingBox(val southwest: Point, val northeast: Point) {
+open class BoundingBox(val southwest: Point, val northeast: Point) {
 
     /**
      * Define a new instance of this class by passing in four coordinates in the same order they would
@@ -94,4 +96,40 @@ data class BoundingBox(val southwest: Point, val northeast: Point) {
      */
     val north: Double
         get() = northeast.latitude
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as BoundingBox
+
+        if (southwest != other.southwest) return false
+        if (northeast != other.northeast) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = southwest.hashCode()
+        result = 31 * result + northeast.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "BoundingBox(southwest=$southwest, northeast=$northeast)"
+    }
+
+    companion object {
+
+        /**
+         * Create a new instance of this class by passing in a formatted valid JSON String. If you are
+         * creating a BoundingBox object from scratch it is better to use the constructor.
+         *
+         * @param jsonString a formatted valid JSON string defining a GeoJson BoundingBox
+         * @return a new instance of this class defined by the values in the JSON string
+         * @since 3.0.0
+         */
+        @JvmStatic
+        fun fromJson(jsonString: String): BoundingBox = json.decodeFromString(jsonString)
+    }
 }

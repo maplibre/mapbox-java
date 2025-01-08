@@ -3,9 +3,9 @@ package org.maplibre.turf
 import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
 import kotlin.test.Test
-import org.maplibre.geojson.Feature
-import org.maplibre.geojson.FeatureCollection
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.Feature
+import org.maplibre.geojson.model.FeatureCollection
+import org.maplibre.geojson.model.Point
 import org.maplibre.turf.TestUtils.DELTA
 import org.maplibre.turf.TestUtils.loadJsonFixture
 import org.maplibre.turf.TurfClassification.nearestPoint

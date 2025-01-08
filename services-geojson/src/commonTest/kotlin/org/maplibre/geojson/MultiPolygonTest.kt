@@ -5,9 +5,14 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.Test
-import org.maplibre.geojson.Polygon.Companion.fromOuterInner
+import org.maplibre.geojson.model.Polygon.Companion.fromOuterInner
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
+import org.maplibre.geojson.model.BoundingBox
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.MultiPolygon
+import org.maplibre.geojson.model.Point
+import org.maplibre.geojson.model.Polygon
 import kotlin.test.assertFailsWith
 
 class MultiPolygonTest {

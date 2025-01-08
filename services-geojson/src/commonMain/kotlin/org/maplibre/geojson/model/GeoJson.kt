@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 /**
  * Generic implementation for all GeoJson objects defining common traits that each GeoJson object

@@ -1,7 +1,5 @@
 package org.maplibre.geojson
 
-import kotlinx.serialization.Polymorphic
-import kotlinx.serialization.Serializable
 
 /**
  * Each of the s geometries which make up GeoJson implement this interface and consume a varying
@@ -10,10 +8,12 @@ import kotlinx.serialization.Serializable
  *
  * @param <T> a generic allowing varying dimensions for each GeoJson geometry
  * @since 3.0.0
- */
-@Serializable
-@Polymorphic
-sealed interface CoordinateContainer<T> : Geometry {
+</T> */
+@Deprecated(
+    message = "Use new common models instead.",
+    replaceWith = ReplaceWith("CoordinateContainer", "org.maplibre.geojson.model"),
+)
+interface CoordinateContainer<T> : Geometry {
 
     /**
      * the coordinates which define the geometry. Typically a list of points but for some geometry
@@ -22,5 +22,5 @@ sealed interface CoordinateContainer<T> : Geometry {
      * @return the [Point]s which make up the coordinates defining the geometry
      * @since 3.0.0
      */
-    val coordinates: T
+    fun coordinates(): T
 }

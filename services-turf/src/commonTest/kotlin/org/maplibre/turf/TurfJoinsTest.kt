@@ -5,11 +5,11 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.Test
-import org.maplibre.geojson.Feature
-import org.maplibre.geojson.FeatureCollection
-import org.maplibre.geojson.MultiPolygon
-import org.maplibre.geojson.Point
-import org.maplibre.geojson.Polygon
+import org.maplibre.geojson.model.Feature
+import org.maplibre.geojson.model.FeatureCollection
+import org.maplibre.geojson.model.MultiPolygon
+import org.maplibre.geojson.model.Point
+import org.maplibre.geojson.model.Polygon
 import org.maplibre.turf.TestUtils.loadJsonFixture
 import org.maplibre.turf.TurfJoins.inside
 import org.maplibre.turf.TurfJoins.pointsWithinPolygon

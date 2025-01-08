@@ -1,15 +1,15 @@
 package org.maplibre.turf
 
-import org.maplibre.geojson.Feature
-import org.maplibre.geojson.FeatureCollection
-import org.maplibre.geojson.Geometry
-import org.maplibre.geojson.GeometryCollection
-import org.maplibre.geojson.LineString
-import org.maplibre.geojson.MultiLineString
-import org.maplibre.geojson.MultiPoint
-import org.maplibre.geojson.MultiPolygon
-import org.maplibre.geojson.Point
-import org.maplibre.geojson.Polygon
+import org.maplibre.geojson.model.Feature
+import org.maplibre.geojson.model.FeatureCollection
+import org.maplibre.geojson.model.Geometry
+import org.maplibre.geojson.model.GeometryCollection
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.MultiLineString
+import org.maplibre.geojson.model.MultiPoint
+import org.maplibre.geojson.model.MultiPolygon
+import org.maplibre.geojson.model.Point
+import org.maplibre.geojson.model.Polygon
 import kotlin.jvm.JvmStatic
 
 /**

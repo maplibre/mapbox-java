@@ -5,9 +5,9 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.Test
-import org.maplibre.geojson.Feature
-import org.maplibre.geojson.LineString
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.Feature
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.Point
 import org.maplibre.turf.TestUtils.loadJsonFixture
 import org.maplibre.turf.TurfMeasurement.along
 import org.maplibre.turf.TurfMeasurement.distance

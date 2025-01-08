@@ -1,6 +1,6 @@
 package org.maplibre.geojson.utils
 
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.Point
 import kotlin.math.pow
 import kotlin.math.roundToLong
 import kotlin.jvm.JvmOverloads

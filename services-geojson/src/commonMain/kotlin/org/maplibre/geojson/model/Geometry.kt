@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlinx.serialization.Serializable
 import org.maplibre.geojson.utils.json

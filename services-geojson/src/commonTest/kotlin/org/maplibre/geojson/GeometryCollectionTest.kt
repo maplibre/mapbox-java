@@ -7,6 +7,10 @@ import kotlin.test.assertTrue
 import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
+import org.maplibre.geojson.model.BoundingBox
+import org.maplibre.geojson.model.GeometryCollection
+import org.maplibre.geojson.model.LineString
+import org.maplibre.geojson.model.Point
 
 class GeometryCollectionTest {
 

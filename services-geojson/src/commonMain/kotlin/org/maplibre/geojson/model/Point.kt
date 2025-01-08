@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -47,7 +47,7 @@ import kotlin.jvm.JvmStatic
  */
 @Serializable
 @SerialName("Point")
-data class Point
+open class Point
 @JvmOverloads
 constructor(
     override val coordinates: List<Double>,
@@ -128,6 +128,28 @@ constructor(
      * @since 1.0.0
      */
     override fun toJson() = json.encodeToString(this)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as Point
+
+        if (coordinates != other.coordinates) return false
+        if (bbox != other.bbox) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = coordinates.hashCode()
+        result = 31 * result + (bbox?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        return "Point(coordinates=$coordinates, bbox=$bbox)"
+    }
 
     companion object {
 

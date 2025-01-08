@@ -1,7 +1,7 @@
 package org.maplibre.turf
 
-import org.maplibre.geojson.Point
-import org.maplibre.geojson.Polygon
+import org.maplibre.geojson.model.Point
+import org.maplibre.geojson.model.Polygon
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 

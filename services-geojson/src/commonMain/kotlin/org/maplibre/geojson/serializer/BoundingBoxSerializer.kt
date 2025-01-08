@@ -6,8 +6,8 @@ import kotlinx.serialization.builtins.DoubleArraySerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import org.maplibre.geojson.BoundingBox
-import org.maplibre.geojson.Point
+import org.maplibre.geojson.model.BoundingBox
+import org.maplibre.geojson.model.Point
 
 /**
  * Internal serializer/deserializer that is converting a [BoundingBox] object into
