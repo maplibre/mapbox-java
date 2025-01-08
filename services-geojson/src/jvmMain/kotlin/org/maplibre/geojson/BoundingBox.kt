@@ -23,7 +23,7 @@ import org.maplibre.geojson.model.BoundingBox as CommonBoundingBox
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("BoundingBox", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("BoundingBox", "org.maplibre.geojson.model.BoundingBox"),
 )
 class BoundingBox internal constructor(
     southwest: Point,
@@ -97,6 +97,7 @@ class BoundingBox internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): BoundingBox = CommonBoundingBox.fromJson(json).toJvm()
 
         /**
@@ -110,6 +111,7 @@ class BoundingBox internal constructor(
          * @return a new instance of this class defined by the provided points
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromPoints(southwest: Point, northeast: Point): BoundingBox {
             return BoundingBox(southwest, northeast)
         }
@@ -126,6 +128,7 @@ class BoundingBox internal constructor(
          * @return a new instance of this class defined by the provided coordinates
          * @since 3.0.0
          */
+        @JvmStatic
         @Deprecated("As of 3.1.0, use {@link #fromLngLats} instead.")
         fun fromCoordinates(
             west: Double,
@@ -152,6 +155,7 @@ class BoundingBox internal constructor(
          * @return a new instance of this class defined by the provided coordinates
          * @since 3.0.0
          */
+        @JvmStatic
         @Deprecated("""As of 3.1.0, use {@link #fromLngLats} instead.""")
         fun fromCoordinates(
             west: Double,
@@ -176,6 +180,7 @@ class BoundingBox internal constructor(
          * @return a new instance of this class defined by the provided coordinates
          * @since 3.1.0
          */
+        @JvmStatic
         fun fromLngLats(
             west: Double,
             south: Double,
@@ -201,6 +206,7 @@ class BoundingBox internal constructor(
          * @return a new instance of this class defined by the provided coordinates
          * @since 3.1.0
          */
+        @JvmStatic
         fun fromLngLats(
             west: Double,
             south: Double,

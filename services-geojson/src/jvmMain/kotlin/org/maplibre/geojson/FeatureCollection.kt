@@ -27,7 +27,7 @@ import org.maplibre.geojson.model.FeatureCollection as CommonFeatureCollection
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("FeatureCollection", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("FeatureCollection", "org.maplibre.geojson.model.FeatureCollection"),
 )
 class FeatureCollection internal constructor(
     type: String,
@@ -84,6 +84,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): FeatureCollection = CommonFeatureCollection.fromJson(json).toJvm()
 
         /**
@@ -96,6 +97,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromFeatures(features: Array<Feature>): FeatureCollection {
             return FeatureCollection(TYPE, null, listOf(*features))
         }
@@ -109,6 +111,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromFeatures(features: List<Feature>): FeatureCollection {
             return FeatureCollection(TYPE, null, features)
         }
@@ -124,6 +127,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromFeatures(
             features: Array<Feature>,
             bbox: BoundingBox?
@@ -142,6 +146,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromFeatures(
             features: List<Feature>,
             bbox: BoundingBox?
@@ -157,6 +162,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromFeature(feature: Feature): FeatureCollection {
             val featureList = listOf(feature)
             return FeatureCollection(TYPE, null, featureList)
@@ -171,6 +177,7 @@ class FeatureCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromFeature(
             feature: Feature,
             bbox: BoundingBox?

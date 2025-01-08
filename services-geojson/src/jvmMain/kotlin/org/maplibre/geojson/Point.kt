@@ -41,7 +41,7 @@ import org.maplibre.geojson.model.Point as CommonPoint
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("Point", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("Point", "org.maplibre.geojson.model.Point"),
 )
 class Point internal constructor(
     val type: String?,
@@ -139,6 +139,7 @@ class Point internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): Point = CommonPoint.fromJson(json).toJvm()
 
         /**
@@ -153,6 +154,7 @@ class Point internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLat(longitude: Double, latitude: Double): Point {
             return Point(TYPE, null, listOf(longitude, latitude))
         }
@@ -171,6 +173,7 @@ class Point internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLat(
             longitude: Double,
             latitude: Double,
@@ -194,6 +197,7 @@ class Point internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLat(longitude: Double, latitude: Double, altitude: Double): Point {
             return Point(TYPE, null, listOf(longitude, latitude, altitude))
         }
@@ -214,6 +218,7 @@ class Point internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLat(
             longitude: Double, latitude: Double,
             altitude: Double, bbox: BoundingBox?

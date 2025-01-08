@@ -30,7 +30,7 @@ import org.maplibre.geojson.model.MultiPoint as CommonMultiPoint
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("MultiPoint", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("MultiPoint", "org.maplibre.geojson.model.MultiPoint"),
 )
 class MultiPoint internal constructor(
     type: String,
@@ -84,6 +84,7 @@ class MultiPoint internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): MultiPoint = CommonMultiPoint.fromJson(json).toJvm()
 
         /**
@@ -99,6 +100,7 @@ class MultiPoint internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<Point>): MultiPoint {
             return MultiPoint(TYPE, null, points)
         }
@@ -117,10 +119,12 @@ class MultiPoint internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<Point>, bbox: BoundingBox?): MultiPoint {
             return MultiPoint(TYPE, bbox, points)
         }
 
+        @JvmStatic
         fun fromLngLats(coordinates: Array<DoubleArray>): MultiPoint {
             val converted = ArrayList<Point>(coordinates.size)
             for (i in coordinates.indices) {

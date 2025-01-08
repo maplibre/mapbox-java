@@ -11,7 +11,7 @@ package org.maplibre.geojson
 </T> */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("CoordinateContainer", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("CoordinateContainer", "org.maplibre.geojson.model.CoordinateContainer"),
 )
 interface CoordinateContainer<T> : Geometry {
 

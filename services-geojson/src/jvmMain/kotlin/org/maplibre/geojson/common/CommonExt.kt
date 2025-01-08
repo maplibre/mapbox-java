@@ -1,6 +1,12 @@
 package org.maplibre.geojson.common
 
 import com.google.gson.JsonParser
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.JsonElement as KtxJsonElement
+import kotlinx.serialization.json.JsonObject as KtxJsonObject
+import com.google.gson.JsonElement as GsonJsonElement
+import com.google.gson.JsonObject as GsonJsonObject
 import org.maplibre.geojson.model.BoundingBox
 import org.maplibre.geojson.model.Point
 import org.maplibre.geojson.model.MultiPoint
@@ -111,4 +117,8 @@ fun BoundingBox.toJvm(): JvmBoundingBox {
         southwest.toJvm(),
         northeast.toJvm()
     )
+}
+
+fun GsonJsonObject.toKtxJsonMap(): Map<String, KtxJsonElement> {
+    return Json.parseToJsonElement(toString()).jsonObject
 }

@@ -12,7 +12,7 @@ import java.io.Serializable
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("GeoJson", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("GeoJson", "org.maplibre.geojson.model.GeoJson"),
 )
 interface GeoJson : Serializable {
     /**

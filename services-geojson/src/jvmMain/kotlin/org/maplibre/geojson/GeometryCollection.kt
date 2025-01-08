@@ -53,7 +53,7 @@ import org.maplibre.geojson.model.GeometryCollection as CommonGeometryCollection
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("GeometryCollection", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("GeometryCollection", "org.maplibre.geojson.model.GeometryCollection"),
 )
 class GeometryCollection internal constructor(
     type: String,
@@ -109,6 +109,7 @@ class GeometryCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): GeometryCollection = CommonGeometryCollection.fromJson(json).toJvm()
 
         /**
@@ -119,6 +120,7 @@ class GeometryCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometries(geometries: List<Geometry>): GeometryCollection {
             return GeometryCollection(TYPE, null, geometries)
         }
@@ -132,6 +134,7 @@ class GeometryCollection internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometries(
             geometries: List<Geometry>,
             bbox: BoundingBox?
@@ -147,6 +150,7 @@ class GeometryCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromGeometry(geometry: Geometry): GeometryCollection {
             val geometries = listOf(geometry)
             return GeometryCollection(TYPE, null, geometries)
@@ -161,6 +165,7 @@ class GeometryCollection internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromGeometry(
             geometry: Geometry,
             bbox: BoundingBox?

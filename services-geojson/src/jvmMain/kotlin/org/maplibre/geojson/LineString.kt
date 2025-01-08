@@ -45,7 +45,7 @@ import org.maplibre.geojson.model.LineString as CommonLineString
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("LineString", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("LineString", "org.maplibre.geojson.model.LineString"),
 )
 class LineString internal constructor(
     type: String,
@@ -101,6 +101,7 @@ class LineString internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): LineString = CommonLineString.fromJson(json).toJvm()
 
         /**
@@ -112,6 +113,7 @@ class LineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(multiPoint: MultiPoint): LineString {
             return LineString(TYPE, null, multiPoint.coordinates())
         }
@@ -131,6 +133,7 @@ class LineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<Point>): LineString {
             return LineString(TYPE, null, points)
         }
@@ -151,6 +154,7 @@ class LineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<Point>, bbox: BoundingBox?): LineString {
             return LineString(TYPE, bbox, points)
         }
@@ -165,10 +169,12 @@ class LineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(multiPoint: MultiPoint, bbox: BoundingBox?): LineString {
             return LineString(TYPE, bbox, multiPoint.coordinates())
         }
 
+        @JvmStatic
         fun fromLngLats(coordinates: Array<DoubleArray>): LineString {
             val converted = ArrayList<Point>(coordinates.size)
             for (coordinate in coordinates) {
@@ -191,6 +197,7 @@ class LineString internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromPolyline(polyline: String, precision: Int): LineString {
             return fromLngLats(decode(polyline, precision).map { pt -> pt.toJvm() }, null)
         }

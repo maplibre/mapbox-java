@@ -62,7 +62,7 @@ import org.maplibre.geojson.model.MultiPolygon as CommonMultiPolygon
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("MultiPolygon", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("MultiPolygon", "org.maplibre.geojson.model.MultiPolygon"),
 )
 class MultiPolygon
 internal constructor(
@@ -127,6 +127,7 @@ internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): MultiPolygon = CommonMultiPolygon.fromJson(json).toJvm()
 
         /**
@@ -139,6 +140,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromPolygons(polygons: List<Polygon>): MultiPolygon {
             val coordinates: MutableList<List<List<Point>>> = ArrayList(polygons.size)
             for (polygon in polygons) {
@@ -159,6 +161,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromPolygons(
             polygons: List<Polygon>,
             bbox: BoundingBox?
@@ -180,6 +183,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromPolygon(polygon: Polygon): MultiPolygon {
             val coordinates = Arrays.asList<List<List<Point>>>(polygon.coordinates())
             return MultiPolygon(TYPE, null, coordinates)
@@ -196,6 +200,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromPolygon(polygon: Polygon, bbox: BoundingBox?): MultiPolygon {
             val coordinates = Arrays.asList<List<List<Point>>>(polygon.coordinates())
             return MultiPolygon(TYPE, bbox, coordinates)
@@ -210,6 +215,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<List<List<Point>>>): MultiPolygon {
             return MultiPolygon(TYPE, null, points)
         }
@@ -224,6 +230,7 @@ internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(
             points: List<List<List<Point>>>,
             bbox: BoundingBox?
@@ -231,6 +238,7 @@ internal constructor(
             return MultiPolygon(TYPE, bbox, points)
         }
 
+        @JvmStatic
         fun fromLngLats(coordinates: Array<Array<Array<DoubleArray>>>): MultiPolygon {
             val converted: MutableList<List<List<Point>>> = ArrayList(coordinates.size)
             for (i in coordinates.indices) {

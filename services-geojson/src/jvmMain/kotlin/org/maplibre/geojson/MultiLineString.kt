@@ -44,7 +44,7 @@ import org.maplibre.geojson.model.MultiLineString as CommonMultiLineString
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("MultiLineString", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("MultiLineString", "org.maplibre.geojson.model.MultiLineString"),
 )
 class MultiLineString internal constructor(
     type: String,
@@ -107,6 +107,7 @@ class MultiLineString internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): MultiLineString = CommonMultiLineString.fromJson(json).toJvm()
 
         /**
@@ -119,6 +120,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLineStrings(lineStrings: List<LineString>): MultiLineString {
             val coordinates: MutableList<List<Point>> = ArrayList(lineStrings.size)
             for (lineString in lineStrings) {
@@ -139,6 +141,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLineStrings(
             lineStrings: List<LineString>,
             bbox: BoundingBox?
@@ -159,6 +162,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLineString(lineString: LineString): MultiLineString {
             val coordinates = Arrays.asList<List<Point>>(lineString.coordinates())
             return MultiLineString(TYPE, null, coordinates)
@@ -174,6 +178,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLineString(
             lineString: LineString,
             bbox: BoundingBox?
@@ -193,6 +198,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(points: List<List<Point>>): MultiLineString {
             return MultiLineString(TYPE, null, points)
         }
@@ -209,6 +215,7 @@ class MultiLineString internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(
             points: List<List<Point>>,
             bbox: BoundingBox?
@@ -216,6 +223,7 @@ class MultiLineString internal constructor(
             return MultiLineString(TYPE, bbox, points)
         }
 
+        @JvmStatic
         fun fromLngLats(coordinates: Array<Array<DoubleArray>>): MultiLineString {
             val multiLine: MutableList<List<Point>> = ArrayList(coordinates.size)
             for (i in coordinates.indices) {

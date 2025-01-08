@@ -47,7 +47,7 @@ import org.maplibre.geojson.model.Polygon as CommonPolygon
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("Polygon", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("Polygon", "org.maplibre.geojson.model.Polygon"),
 )
 class Polygon internal constructor(
     type: String,
@@ -124,6 +124,7 @@ class Polygon internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): Polygon = CommonPolygon.fromJson(json).toJvm()
 
         /**
@@ -136,6 +137,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(coordinates: List<List<Point>>): Polygon {
             return Polygon(TYPE, null, coordinates)
         }
@@ -151,6 +153,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(
             coordinates: List<List<Point>>,
             bbox: BoundingBox?
@@ -167,6 +170,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromLngLats(coordinates: Array<Array<DoubleArray>>): Polygon {
             val converted: MutableList<List<Point>> = ArrayList(coordinates.size)
             for (coordinate in coordinates) {
@@ -193,6 +197,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromOuterInner(
             outer: LineString,
             vararg inner: LineString
@@ -226,6 +231,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromOuterInner(
             outer: LineString, bbox: BoundingBox?,
             vararg inner: LineString
@@ -260,6 +266,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromOuterInner(
             outer: LineString,
             inner: List<LineString>?
@@ -295,6 +302,7 @@ class Polygon internal constructor(
          * method
          * @since 3.0.0
          */
+        @JvmStatic
         fun fromOuterInner(
             outer: LineString, bbox: BoundingBox?,
             inner: List<LineString>?

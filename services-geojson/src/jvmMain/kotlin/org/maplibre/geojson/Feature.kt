@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.maplibre.geojson.common.toCommon
 import org.maplibre.geojson.common.toJvm
+import org.maplibre.geojson.common.toKtxJsonMap
 import org.maplibre.geojson.model.Feature as CommonFeature
 
 /**
@@ -44,7 +45,7 @@ import org.maplibre.geojson.model.Feature as CommonFeature
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("Feature", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("Feature", "org.maplibre.geojson.model.Feature"),
 )
 class Feature internal constructor(
     type: String,
@@ -238,8 +239,7 @@ class Feature internal constructor(
     }
 
     override fun toJson(): String {
-        val ktxProperties = properties?.let { props -> Json.parseToJsonElement(props.toString()).jsonObject }
-        return copy(properties = ktxProperties)
+        return copy(properties = props?.toKtxJsonMap())
             .toJson()
     }
 
@@ -256,6 +256,7 @@ class Feature internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): Feature = CommonFeature.fromJson(json).toJvm()
 
         /**
@@ -266,6 +267,7 @@ class Feature internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(geometry: Geometry?): Feature {
             return Feature(TYPE, null, null, geometry, JsonObject())
         }
@@ -280,6 +282,7 @@ class Feature internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(geometry: Geometry?, bbox: BoundingBox?): Feature {
             return Feature(TYPE, bbox, null, geometry, JsonObject())
         }
@@ -294,6 +297,7 @@ class Feature internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(
             geometry: Geometry?,
             properties: JsonObject?
@@ -315,6 +319,7 @@ class Feature internal constructor(
          * method
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(
             geometry: Geometry?, properties: JsonObject?,
             bbox: BoundingBox?
@@ -335,6 +340,7 @@ class Feature internal constructor(
          * @return [Feature]
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(
             geometry: Geometry?, properties: JsonObject?,
             id: String?
@@ -356,6 +362,7 @@ class Feature internal constructor(
          * @return [Feature]
          * @since 1.0.0
          */
+        @JvmStatic
         fun fromGeometry(
             geometry: Geometry?, properties: JsonObject?,
             id: String?, bbox: BoundingBox?

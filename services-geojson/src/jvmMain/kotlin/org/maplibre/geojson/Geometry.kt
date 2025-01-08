@@ -21,7 +21,7 @@ import org.maplibre.geojson.model.Geometry as CommonGeometry
  */
 @Deprecated(
     message = "Use new common models instead.",
-    replaceWith = ReplaceWith("Geometry", "org.maplibre.geojson.model"),
+    replaceWith = ReplaceWith("Geometry", "org.maplibre.geojson.model.Geometry"),
 )
 interface Geometry : GeoJson {
 
@@ -35,6 +35,7 @@ interface Geometry : GeoJson {
          * this static factory method
          * @since 4.0.0
          */
+        @JvmStatic
         fun fromJson(json: String): Geometry {
             return when (val commonGeometry = CommonGeometry.fromJson(json)) {
                 is CommonPoint -> commonGeometry.toJvm()
