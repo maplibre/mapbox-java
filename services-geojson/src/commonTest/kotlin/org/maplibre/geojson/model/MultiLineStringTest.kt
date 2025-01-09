@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlinx.serialization.SerializationException
 import kotlin.test.assertEquals
@@ -7,10 +7,6 @@ import kotlin.test.assertNull
 import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
-import org.maplibre.geojson.model.BoundingBox
-import org.maplibre.geojson.model.LineString
-import org.maplibre.geojson.model.MultiLineString
-import org.maplibre.geojson.model.Point
 import kotlin.test.assertFailsWith
 
 class MultiLineStringTest {

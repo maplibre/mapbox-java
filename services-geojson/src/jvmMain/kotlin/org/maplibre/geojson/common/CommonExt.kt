@@ -47,13 +47,16 @@ fun GeometryCollection.toJvm(): JvmGeometryCollection {
 }
 
 fun Feature.toJvm(): JvmFeature {
-    return JvmFeature(
-        "Feature",
-        bbox?.toJvm(),
-        id,
-        geometry?.toJvm(),
-        properties?.let { props -> JsonParser.parseString(props.toString()).asJsonObject }
-    )
+    return when (this) {
+        is JvmFeature -> this // Do not convert, to keep JVM properties
+        else -> JvmFeature(
+            "Feature",
+            bbox?.toJvm(),
+            id,
+            geometry?.toJvm(),
+            properties?.let { props -> JsonParser.parseString(props.toString()).asJsonObject }
+        )
+    }
 }
 
 fun FeatureCollection.toJvm(): JvmFeatureCollection {

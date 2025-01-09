@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -8,12 +8,6 @@ import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
 import org.maplibre.geojson.TestUtils.loadJsonFixture
-import org.maplibre.geojson.model.BoundingBox
-import org.maplibre.geojson.model.Feature
-import org.maplibre.geojson.model.FeatureCollection
-import org.maplibre.geojson.model.LineString
-import org.maplibre.geojson.model.Point
-import org.maplibre.geojson.model.Polygon
 
 class FeatureCollectionTest {
 

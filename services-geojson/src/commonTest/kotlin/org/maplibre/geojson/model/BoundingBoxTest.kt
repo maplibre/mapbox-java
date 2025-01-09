@@ -1,8 +1,6 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import org.maplibre.geojson.TestUtils.DELTA
-import org.maplibre.geojson.model.BoundingBox
-import org.maplibre.geojson.model.Point
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

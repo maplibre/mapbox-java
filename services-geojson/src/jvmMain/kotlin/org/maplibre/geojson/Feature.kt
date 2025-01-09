@@ -243,6 +243,20 @@ class Feature internal constructor(
             .toJson()
     }
 
+    override fun equals(other: Any?): Boolean {
+        return copy(properties = props?.toKtxJsonMap()) == other
+    }
+
+    override fun hashCode(): Int {
+        return copy(properties = props?.toKtxJsonMap())
+            .hashCode()
+    }
+
+    override fun toString(): String {
+        return copy(properties = props?.toKtxJsonMap())
+            .toJson()
+    }
+
     companion object {
         private const val TYPE = "Feature"
 
@@ -302,10 +316,7 @@ class Feature internal constructor(
             geometry: Geometry?,
             properties: JsonObject?
         ): Feature {
-            return Feature(
-                TYPE, null, null, geometry,
-                properties ?: JsonObject()
-            )
+            return Feature(TYPE, null, null, geometry, properties ?: JsonObject())
         }
 
         /**

@@ -1,4 +1,4 @@
-package org.maplibre.geojson
+package org.maplibre.geojson.model
 
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
@@ -10,10 +10,6 @@ import kotlin.test.assertTrue
 import kotlin.test.Test
 import org.maplibre.geojson.TestUtils.DELTA
 import org.maplibre.geojson.TestUtils.compareJson
-import org.maplibre.geojson.model.BoundingBox
-import org.maplibre.geojson.model.Feature
-import org.maplibre.geojson.model.LineString
-import org.maplibre.geojson.model.Point
 
 class FeatureTest {
 
