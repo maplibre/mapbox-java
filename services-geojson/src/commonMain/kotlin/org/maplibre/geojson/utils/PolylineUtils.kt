@@ -4,6 +4,7 @@ import org.maplibre.geojson.model.Point
 import kotlin.math.pow
 import kotlin.math.roundToLong
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * Polyline utils class contains method that can decode/encode a polyline, simplify a line, and
@@ -27,6 +28,7 @@ object PolylineUtils {
      * @return a String representing a path string
      * @since 1.0.0
      */
+    @JvmStatic
     fun encode(path: List<Point>, precision: Int): String {
         var lastLat: Long = 0
         var lastLng: Long = 0
@@ -75,6 +77,7 @@ object PolylineUtils {
      *
      * @since 1.0.0
      */
+    @JvmStatic
     fun decode(encodedPath: String, precision: Int): List<Point> {
         val len = encodedPath.length
 
