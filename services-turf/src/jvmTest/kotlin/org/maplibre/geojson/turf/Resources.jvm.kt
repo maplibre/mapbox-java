@@ -7,7 +7,6 @@ import kotlinx.io.readString
 
 actual fun readResourceFile(filename: String): String {
     val filePath = Path("src/commonTest/resources/$filename")
-    print(SystemFileSystem.list(Path("src/commonTest/resources/")))
     return SystemFileSystem.source(filePath).use { rawSource ->
         rawSource.buffered().readString()
     }

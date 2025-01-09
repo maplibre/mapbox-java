@@ -57,24 +57,34 @@ object TurfMisc {
      */
     @JvmStatic
     fun lineSlice(startPt: Point, stopPt: Point, line: LineString): LineString {
-        val coordinates = line.coordinates
+        val coordinates: List<Point> = line.coordinates
 
         if (coordinates.size < 2) {
-            throw TurfException("Turf lineSlice requires a LineString made up of at least 2 coordinates.")
+            throw TurfException(
+                "Turf lineSlice requires a LineString made up of at least 2 "
+                        + "coordinates."
+            )
         } else if (startPt == stopPt) {
             throw TurfException("Start and stop points in Turf lineSlice cannot equal each other.")
         }
 
-        val ends = listOf(
-            nearestPointOnLine(startPt, coordinates),
-            nearestPointOnLine(stopPt, coordinates)
-        )
-            .sortedBy { point -> point.getIntProperty(INDEX_KEY) }
-            .map { feature -> feature.geometry as Point }
+        val startVertex = nearestPointOnLineInternal(startPt, coordinates)
+        val stopVertex = nearestPointOnLineInternal(stopPt, coordinates)
+        val ends = mutableListOf<DistancePoint>()
+        if (startVertex.index <= stopVertex.index) {
+            ends.add(startVertex)
+            ends.add(stopVertex)
+        } else {
+            ends.add(stopVertex)
+            ends.add(startVertex)
+        }
 
-        val points = listOf(ends.first()) +
-                coordinates.subList(1, coordinates.size - 1) +
-                listOf(ends.last())
+        val points =  mutableListOf<Point>()
+        points.add(ends[0].point)
+        for (i in ends[0].index + 1 until ends[1].index + 1) {
+            points.add(coordinates[i])
+        }
+        points.add(ends[1].point)
 
         return LineString(points)
     }
@@ -211,103 +221,95 @@ object TurfMisc {
     @JvmStatic
     @JvmOverloads
     fun nearestPointOnLine(
-        pt: Point,
-        coords: List<Point>,
+        point: Point,
+        coordinates: List<Point>,
         unit: TurfUnit = TurfUnit.DEFAULT
     ): Feature {
-        if (coords.size < 2) {
-            throw TurfException("Turf nearestPointOnLine requires a List of Points made up of at least 2 coordinates.")
+        val distancePoint = nearestPointOnLineInternal(point, coordinates, unit)
+        return Feature(
+            geometry = distancePoint.point,
+            properties = mapOf(
+                INDEX_KEY to JsonPrimitive(distancePoint.index),
+                DISTANCE_KEY to JsonPrimitive(distancePoint.distance),
+            )
+        )
+    }
+
+    private fun nearestPointOnLineInternal(
+        point: Point,
+        coordinates: List<Point>,
+        units: TurfUnit = TurfUnit.KILOMETERS
+    ): DistancePoint {
+        if (coordinates.size < 2) {
+            throw TurfException(
+                "Turf nearestPointOnLine requires a List of Points "
+                        + "made up of at least 2 coordinates."
+            )
         }
 
-        var closestPt = Feature(
-            Point(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
-            mapOf(DISTANCE_KEY to JsonPrimitive(Double.POSITIVE_INFINITY))
+        var closestPt = DistancePoint(
+            point = Point(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
+            distance = Double.POSITIVE_INFINITY,
+            index = 0,
         )
 
-        for (i in 0 until coords.size - 1) {
-            val start = Feature(
-                coords[i],
-                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i], unit)))
+        for (i in 0 until coordinates.size - 1) {
+            val start = DistancePoint(
+                point = coordinates[i],
+                TurfMeasurement.distance(point, coordinates[i], units),
+                index = -1,
             )
-            val startPoint = start.geometry as Point
-
-            val stop = Feature(
-                coords[i + 1],
-                mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, coords[i + 1], unit)))
-            )
-            val stopPoint = stop.geometry as Point
-
-            // perpendicular
-            val heightDistance = max(
-                start.getDoubleProperty(DISTANCE_KEY)!!,
-                stop.getDoubleProperty(DISTANCE_KEY)!!
+            val stop = DistancePoint(
+                point = coordinates[i + 1],
+                TurfMeasurement.distance(point, coordinates[i + 1], units),
+                index = -1,
             )
 
-            val direction = bearing(startPoint, stopPoint)
-
-            val perpendicularPt1Feature = Feature(
-                destination(pt, heightDistance, direction + 90, unit)
+            //perpendicular
+            val heightDistance: Double = max(
+                start.distance,
+                stop.distance
             )
-            val perpendicularPt1Point = perpendicularPt1Feature.geometry as Point
-
-            val perpendicularPt2Feature = Feature(
-                destination(pt, heightDistance, direction - 90, unit)
+            val direction = TurfMeasurement.bearing(
+                start.point,
+                stop.point
             )
-            val perpendicularPt2Point = perpendicularPt2Feature.geometry as Point
+            val perpendicularPt1 =
+                TurfMeasurement.destination(point, heightDistance, direction + 90, units)
+            val perpendicularPt2 =
+                TurfMeasurement.destination(point, heightDistance, direction - 90, units)
 
             val intersect = lineIntersects(
-                perpendicularPt1Point.longitude,
-                perpendicularPt1Point.latitude,
-                perpendicularPt2Point.longitude,
-                perpendicularPt2Point.latitude,
-                startPoint.longitude,
-                startPoint.latitude,
-                stopPoint.longitude,
-                stopPoint.latitude
+                perpendicularPt1.longitude,
+                perpendicularPt1.latitude,
+                perpendicularPt2.longitude,
+                perpendicularPt2.latitude,
+                start.point.longitude,
+                start.point.latitude,
+                stop.point.longitude,
+                stop.point.latitude
             )
 
-            val intersectPtFeature = intersect?.let { lineIntersects ->
-                val intersectionPoint = Point(
-                    lineIntersects.horizontalIntersection!!,
-                    lineIntersects.verticalIntersection!!
-                )
-
-                Feature(
-                    intersectionPoint,
-                    mapOf(DISTANCE_KEY to JsonPrimitive(distance(pt, intersectionPoint, unit)))
+            var intersectDistancePoint: DistancePoint? = null
+            if (intersect != null) {
+                val intersectPoint = Point(longitude = intersect.horizontalIntersection!!, latitude = intersect.verticalIntersection!!)
+                intersectDistancePoint = DistancePoint(
+                    point = intersectPoint,
+                    distance = TurfMeasurement.distance(point, intersectPoint, units),
+                    index = -1,
                 )
             }
 
-            var closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
-            val startFeatureDistance = start.getDoubleProperty(DISTANCE_KEY)!!
-            if (startFeatureDistance < closestFeatureDistance) {
-                closestPt = start.copy(
-                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
-                        start.properties ?: emptyMap()
-                    )
-                )
+            if (start.distance < closestPt.distance) {
+                closestPt = start.copy(index = i)
             }
 
-            closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
-            val stopFeatureDistance = stop.getDoubleProperty(DISTANCE_KEY)!!
-            if (stopFeatureDistance < closestFeatureDistance) {
-                closestPt = stop.copy(
-                    properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
-                        stop.properties ?: emptyMap()
-                    )
-                )
+            if (stop.distance < closestPt.distance) {
+                closestPt = stop.copy(index = i)
             }
 
-            closestFeatureDistance = closestPt.getDoubleProperty(DISTANCE_KEY)!!
-            intersectPtFeature?.let { intersectPoint ->
-                val intersectFeatureDistance = intersectPoint.getDoubleProperty(DISTANCE_KEY)!!
-                if (intersectFeatureDistance < closestFeatureDistance) {
-                    closestPt = intersectPoint.copy(
-                        properties = mapOf(INDEX_KEY to JsonPrimitive(i)).plus(
-                            intersectPoint.properties ?: emptyMap()
-                        )
-                    )
-                }
+            if (intersectDistancePoint != null && (intersectDistancePoint.distance < closestPt.distance)) {
+                closestPt = intersectDistancePoint.copy(index = i)
             }
         }
 
@@ -375,5 +377,11 @@ object TurfMisc {
         val verticalIntersection: Double? = null,
         val onLine1: Boolean,
         val onLine2: Boolean
+    )
+
+    private data class DistancePoint(
+        val point: Point,
+        val distance: Double,
+        val index: Int,
     )
 }
