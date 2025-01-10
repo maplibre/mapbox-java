@@ -39,12 +39,12 @@ interface Geometry : GeoJson {
         fun fromJson(json: String): Geometry {
             return when (val commonGeometry = CommonGeometry.fromJson(json)) {
                 is CommonPoint -> commonGeometry.toJvm()
-                is LineString -> TODO()
-                is MultiLineString -> TODO()
-                is MultiPoint -> TODO()
-                is MultiPolygon -> TODO()
-                is Polygon -> TODO()
-                is GeometryCollection -> TODO()
+                is LineString -> commonGeometry.toJvm()
+                is MultiLineString -> commonGeometry.toJvm()
+                is MultiPoint -> commonGeometry.toJvm()
+                is MultiPolygon -> commonGeometry.toJvm()
+                is Polygon -> commonGeometry.toJvm()
+                is GeometryCollection -> commonGeometry.toJvm()
             }
         }
     }
