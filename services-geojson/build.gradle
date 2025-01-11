@@ -3,9 +3,12 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
+    id("maven-publish")
 }
 
 kotlin {
+    jvmToolchain(17)
+
     jvm()
 
     def xcf = new XCFrameworkConfig(project)
