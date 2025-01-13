@@ -43,4 +43,13 @@ tasks.named("iosX64Test") {
     dependsOn "copyiOSTestResources"
 }
 
+tasks.register('copyiOSArmTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosSimulatorArm64/debugTest/resources"
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn "copyiOSArmTestResources"
+}
+
 apply from: "${rootDir}/gradle/publish.gradle"
