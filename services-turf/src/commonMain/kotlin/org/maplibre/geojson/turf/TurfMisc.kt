@@ -228,7 +228,7 @@ object TurfMisc {
         val distancePoint = nearestPointOnLineInternal(point, coordinates, unit)
         return Feature(
             geometry = distancePoint.point,
-            properties = mapOf(
+            properties = mutableMapOf(
                 INDEX_KEY to JsonPrimitive(distancePoint.index),
                 DISTANCE_KEY to JsonPrimitive(distancePoint.distance),
             )

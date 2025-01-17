@@ -1,5 +1,6 @@
 package org.maplibre.geojson.model
 
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.test.assertEquals
@@ -120,7 +121,7 @@ class FeatureTest {
 
     @Test
     fun point_feature_toJson() {
-        val properties = mapOf(
+        val properties: MutableMap<String, JsonElement> = mutableMapOf(
             "name" to JsonPrimitive("Dinagat Islands")
         )
         val geo = Feature(
@@ -138,7 +139,7 @@ class FeatureTest {
 
     @Test
     fun linestring_feature_toJson() {
-        val properties = mapOf(
+        val properties: MutableMap<String, JsonElement> = mutableMapOf(
             "name" to JsonPrimitive("Dinagat Islands")
         )
 
@@ -185,7 +186,7 @@ class FeatureTest {
         )
 
         val line = LineString(points)
-        val properties = mapOf(
+        val properties: MutableMap<String, JsonElement> = mutableMapOf(
             "key" to JsonPrimitive("value")
         )
 

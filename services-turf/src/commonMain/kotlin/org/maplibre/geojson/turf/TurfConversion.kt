@@ -157,7 +157,7 @@ object TurfConversion {
      */
     @JvmStatic
     @JvmOverloads
-    fun polygonToLine(feature: Feature, properties: Map<String, JsonElement>? = null): Feature {
+    fun polygonToLine(feature: Feature, properties: MutableMap<String, JsonElement>? = null): Feature {
         return (feature.geometry as? Polygon)?.let { polygon ->
             polygonToLine(
                 polygon,
@@ -177,7 +177,7 @@ object TurfConversion {
      */
     @JvmStatic
     @JvmOverloads
-    fun polygonToLine(polygon: Polygon, properties: Map<String, JsonElement>? = null): Feature? {
+    fun polygonToLine(polygon: Polygon, properties: MutableMap<String, JsonElement>? = null): Feature? {
         return coordsToLine(polygon.coordinates, properties)
     }
 
@@ -196,7 +196,7 @@ object TurfConversion {
     @JvmOverloads
     fun polygonToLine(
         multiPolygon: MultiPolygon,
-        properties: Map<String, JsonElement>? = null
+        properties: MutableMap<String, JsonElement>? = null
     ): FeatureCollection {
         val features = multiPolygon.coordinates
             .mapNotNull { polygonCoordinates -> coordsToLine(polygonCoordinates, properties) }
@@ -220,7 +220,7 @@ object TurfConversion {
     @JvmOverloads
     fun multiPolygonToLine(
         feature: Feature,
-        properties: Map<String, JsonElement>? = null
+        properties: MutableMap<String, JsonElement>? = null
     ): FeatureCollection {
         return (feature.geometry as? MultiPolygon)?.let { multiPolygon ->
             polygonToLine(
@@ -233,7 +233,7 @@ object TurfConversion {
 
     private fun coordsToLine(
         coordinates: List<List<Point>>,
-        properties: Map<String, JsonElement>?
+        properties: MutableMap<String, JsonElement>?
     ): Feature? {
         return when {
             coordinates.isEmpty() ->

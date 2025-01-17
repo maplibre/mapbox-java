@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
@@ -59,7 +60,7 @@ open class Feature
 @JvmOverloads
 constructor(
     val geometry: Geometry? = null,
-    val properties: Map<String, JsonElement>? = null,
+    var properties: MutableMap<String, JsonElement>? = null,
     val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJson {
@@ -71,7 +72,7 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getStringProperty(key: String?): String? {
+    fun getStringProperty(key: String): String? {
         return properties?.get(key)?.jsonPrimitive?.contentOrNull
     }
 
@@ -82,7 +83,7 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getIntProperty(key: String?): Int? {
+    fun getIntProperty(key: String): Int? {
         return properties?.get(key)?.jsonPrimitive?.intOrNull
     }
 
@@ -93,7 +94,7 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getLongProperty(key: String?): Long? {
+    fun getLongProperty(key: String): Long? {
         return properties?.get(key)?.jsonPrimitive?.longOrNull
     }
 
@@ -104,7 +105,7 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getFloatProperty(key: String?): Float? {
+    fun getFloatProperty(key: String): Float? {
         return properties?.get(key)?.jsonPrimitive?.floatOrNull
     }
 
@@ -115,7 +116,7 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getDoubleProperty(key: String?): Double? {
+    fun getDoubleProperty(key: String): Double? {
         return properties?.get(key)?.jsonPrimitive?.doubleOrNull
     }
 
@@ -126,8 +127,81 @@ constructor(
      * @return the value of the member, null if it doesn't exist
      * @since 1.0.0
      */
-    fun getBooleanProperty(key: String?): Boolean? {
+    fun getBooleanProperty(key: String): Boolean? {
         return properties?.get(key)?.jsonPrimitive?.booleanOrNull
+    }
+
+    /**
+     * Convenience method to add a String member.
+     *
+     * @param key   name of the member
+     * @param value the String value associated with the member
+     * @since 1.0.0
+     */
+    fun addProperty(key: String, value: String) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Convenience method to add a Integer member.
+     *
+     * @param key   name of the member
+     * @param value the Int value associated with the member
+     */
+    fun addProperty(key: String, value: Int) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Convenience method to add a Long member.
+     *
+     * @param key   name of the member
+     * @param value the Long value associated with the member
+     */
+    fun addProperty(key: String, value: Long) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Convenience method to add a Float member.
+     *
+     * @param key   name of the member
+     * @param value the Float value associated with the member
+     */
+    fun addProperty(key: String, value: Float) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Convenience method to add a Double member.
+     *
+     * @param key   name of the member
+     * @param value the Double value associated with the member
+     */
+    fun addProperty(key: String, value: Double) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Convenience method to add a Boolean member.
+     *
+     * @param key   name of the member
+     * @param value the Boolean value associated with the member
+     * @since 1.0.0
+     */
+    fun addProperty(key: String, value: Boolean) {
+        createPropertiesIfNecessary()[key] = JsonPrimitive(value)
+    }
+
+    /**
+     * Get properties or create a new empty property map if it is null.
+     */
+    private fun createPropertiesIfNecessary(): MutableMap<String, JsonElement> {
+        if (properties == null) {
+            properties = mutableMapOf()
+        }
+
+        return properties!!
     }
 
     /**
@@ -141,7 +215,7 @@ constructor(
 
     fun copy(
         geometry: Geometry? = this.geometry,
-        properties: Map<String, JsonElement>? = this.properties,
+        properties: MutableMap<String, JsonElement>? = this.properties,
         id: String? = this.id,
         bbox: BoundingBox? = this.bbox
     ): Feature {

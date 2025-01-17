@@ -167,7 +167,7 @@ object TurfConversion {
     @JvmStatic
     @JvmOverloads
     fun polygonToLine(feature: Feature, properties: GsonJsonObject? = null): Feature? {
-        return CommonTurfConversion.polygonToLine(feature, properties?.toKtxJsonMap()).toJvm()
+        return CommonTurfConversion.polygonToLine(feature, properties?.toKtxJsonMap()?.toMutableMap()).toJvm()
     }
 
     /**
@@ -196,7 +196,7 @@ object TurfConversion {
     fun polygonToLine(
         polygon: Polygon, properties: GsonJsonObject?
     ): Feature? {
-        return CommonTurfConversion.polygonToLine(polygon, properties?.toKtxJsonMap())?.toJvm()
+        return CommonTurfConversion.polygonToLine(polygon, properties?.toKtxJsonMap()?.toMutableMap())?.toJvm()
     }
 
     /**
@@ -216,7 +216,7 @@ object TurfConversion {
         multiPolygon: MultiPolygon,
         properties: GsonJsonObject? = null
     ): FeatureCollection {
-        return CommonTurfConversion.polygonToLine(multiPolygon, properties?.toKtxJsonMap()).toJvm()
+        return CommonTurfConversion.polygonToLine(multiPolygon, properties?.toKtxJsonMap()?.toMutableMap()).toJvm()
     }
 
     /**
@@ -237,7 +237,7 @@ object TurfConversion {
         feature: Feature,
         properties: GsonJsonObject? = null
     ): FeatureCollection {
-        return CommonTurfConversion.multiPolygonToLine(feature, properties?.toKtxJsonMap()).toJvm()
+        return CommonTurfConversion.multiPolygonToLine(feature, properties?.toKtxJsonMap()?.toMutableMap()).toJvm()
     }
 
     /**

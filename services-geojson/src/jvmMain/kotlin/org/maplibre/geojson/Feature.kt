@@ -239,21 +239,21 @@ class Feature internal constructor(
     }
 
     override fun toJson(): String {
-        return copy(properties = props?.toKtxJsonMap())
+        return copy(properties = props?.toKtxJsonMap()?.toMutableMap())
             .toJson()
     }
 
     override fun equals(other: Any?): Boolean {
-        return copy(properties = props?.toKtxJsonMap()) == other
+        return copy(properties = props?.toKtxJsonMap()?.toMutableMap()) == other
     }
 
     override fun hashCode(): Int {
-        return copy(properties = props?.toKtxJsonMap())
+        return copy(properties = props?.toKtxJsonMap()?.toMutableMap())
             .hashCode()
     }
 
     override fun toString(): String {
-        return copy(properties = props?.toKtxJsonMap())
+        return copy(properties = props?.toKtxJsonMap()?.toMutableMap())
             .toJson()
     }
 

@@ -500,7 +500,7 @@ object TurfMeasurement {
                         Point(boundingBox.west, boundingBox.south)
                     )
                 )
-            ), properties, id
+            ), properties?.toMutableMap(), id
         )
     }
 
@@ -532,7 +532,7 @@ object TurfMeasurement {
                         Point(bbox[0], bbox[1])
                     )
                 )
-            ), properties, id
+            ), properties?.toMutableMap(), id
         )
     }
 
@@ -747,7 +747,7 @@ object TurfMeasurement {
         val finalCenterLatitude = (ext[1] + ext[3]) / 2
         return Feature(
             Point(finalCenterLongitude, finalCenterLatitude),
-            properties, id
+            properties?.toMutableMap(), id
         )
     }
 }
