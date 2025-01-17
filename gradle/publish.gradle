@@ -1,4 +1,3 @@
-apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -6,25 +5,18 @@ apply from: file("${rootDir}/gradle/artifact-settings.gradle")
 apply from: file("${rootDir}/gradle/publish-root.gradle")
 
 afterEvaluate {
+    // Define group & version for Kotlin Multiplatform artifacts
+    group = project.ext.mapLibreArtifactGroupId
+    version = project.ext.versionName
+
     publishing {
         publications {
             release(MavenPublication) {
                 groupId project.ext.mapLibreArtifactGroupId
                 artifactId project.ext.mapLibreArtifactId
-
-                from components.java
-
                 version project.ext.versionName
 
                 project.logger.info("Publishing project with version: ${versionName}")
-
-                artifact sourcesJar {
-                    archiveClassifier.set("sources")
-                }
-
-                artifact javadocJar {
-                    archiveClassifier.set("javadoc")
-                }
 
                 pom {
                     name = project.ext.mapLibreArtifactTitle
@@ -65,12 +57,7 @@ afterEvaluate {
     }
 }
 
-tasks.withType(Javadoc) {
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('docencoding', 'UTF-8')
-    options.addStringOption('charset', 'UTF-8')
-}
-
 signing {
+    required { project.ext["signing.keyId"] != null }
     sign publishing.publications
 }

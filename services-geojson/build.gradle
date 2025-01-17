@@ -1,12 +1,71 @@
-apply plugin: 'java-library'
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
-dependencies {
-  // Gson
-  api libs.gson
-
-  // Annotations
-  compileOnly libs.supportAnnotation
-
-  // Test Dependencies
-  testImplementation libs.okhttp3Mockwebserver
+plugins {
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlinx.serialization)
+    id("maven-publish")
+    alias(libs.plugins.kotlin.cocoapods)
 }
+
+kotlin {
+    jvmToolchain(17)
+
+    jvm()
+
+    def xcf = new XCFrameworkConfig(project)
+    [iosX64(), iosArm64(), iosSimulatorArm64()].forEach { target ->
+        target.binaries.framework { framework ->
+            baseName = "maplibre-geojson"
+            xcf.add(framework)
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api libs.kotlinx.serialization.json
+        }
+
+        commonTest.dependencies {
+            implementation libs.kotlin.test
+            implementation libs.kotlinx.io.core
+        }
+
+        jvmMain.dependencies {
+            api libs.gson
+        }
+    }
+
+    cocoapods {
+        version = project.findProperty("versionName") ?: "SNAPSHOT"
+        summary = "MapLibre GeoJSON library"
+        homepage = "https://github.com/maplibre/maplibre-java/"
+
+        name = "MapLibreGeoJson"
+
+        framework {
+            baseName = "MapLibreGeoJson"
+            isStatic = false
+            transitiveExport = false
+        }
+    }
+}
+
+tasks.register('copyiOSTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosX64/debugTest/resources"
+}
+
+tasks.named("iosX64Test") {
+    dependsOn "copyiOSTestResources"
+}
+
+tasks.register('copyiOSArmTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosSimulatorArm64/debugTest/resources"
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn "copyiOSArmTestResources"
+}
+
+apply from: "${rootDir}/gradle/publish.gradle"

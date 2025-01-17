@@ -26,3 +26,6 @@ obj
 #MacOS
 .DS_Store
 /.java-version
+
+# Kotlin
+.kotlin

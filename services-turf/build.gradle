@@ -1,8 +1,72 @@
-apply plugin: 'java-library'
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
-dependencies {
-  api project(":services-geojson")
-
-  // Annotations
-  compileOnly libs.supportAnnotation
+plugins {
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlin.cocoapods)
 }
+
+kotlin {
+    jvmToolchain(17)
+
+    jvm()
+
+    def xcf = new XCFrameworkConfig(project)
+    [iosX64(), iosArm64(), iosSimulatorArm64()].forEach { target ->
+        target.binaries.framework { framework ->
+            baseName = "maplibre-turf"
+            xcf.add(framework)
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api project(":services-geojson")
+        }
+
+        commonTest.dependencies {
+            implementation libs.kotlin.test
+            implementation libs.kotlinx.io.core
+        }
+
+        jvmMain.dependencies {
+            api libs.gson
+        }
+    }
+
+    cocoapods {
+        version = project.findProperty("versionName") ?: "SNAPSHOT"
+        summary = "MapLibre GeoJSON Turf library"
+        homepage = "https://github.com/maplibre/maplibre-java/"
+
+        name = "MapLibreGeoJsonTurf"
+
+        framework {
+            baseName = "MapLibreGeoJsonTurf"
+            isStatic = false
+
+            transitiveExport = false
+            export(project(":services-geojson"))
+        }
+    }
+}
+
+tasks.register('copyiOSTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosX64/debugTest/resources"
+}
+
+tasks.named("iosX64Test") {
+    dependsOn "copyiOSTestResources"
+}
+
+tasks.register('copyiOSArmTestResources', Copy) {
+    from "src/commonTest/resources"
+    into "build/bin/iosSimulatorArm64/debugTest/resources"
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn "copyiOSArmTestResources"
+}
+
+apply from: "${rootDir}/gradle/publish.gradle"

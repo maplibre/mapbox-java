@@ -40,7 +40,7 @@ jobs:
 
       - name: Gradle Build and Test
         run: |
-          ./gradlew build test --info --stacktrace
+          ./gradlew build --info --stacktrace
 
       - name: Release (GitHub)
         if: env.make_release
