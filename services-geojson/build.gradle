@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
     id("maven-publish")
+    alias(libs.plugins.kotlin.cocoapods)
 }
 
 kotlin {
@@ -31,6 +32,20 @@ kotlin {
 
         jvmMain.dependencies {
             api libs.gson
+        }
+    }
+
+    cocoapods {
+        version = project.findProperty("versionName") ?: "SNAPSHOT"
+        summary = "MapLibre GeoJSON library"
+        homepage = "https://github.com/maplibre/maplibre-java/"
+
+        name = "MapLibreGeoJson"
+
+        framework {
+            baseName = "MapLibreGeoJson"
+            isStatic = false
+            transitiveExport = false
         }
     }
 }

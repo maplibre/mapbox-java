@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlin.cocoapods)
 }
 
 kotlin {
@@ -30,6 +31,22 @@ kotlin {
 
         jvmMain.dependencies {
             api libs.gson
+        }
+    }
+
+    cocoapods {
+        version = project.findProperty("versionName") ?: "SNAPSHOT"
+        summary = "MapLibre GeoJSON Turf library"
+        homepage = "https://github.com/maplibre/maplibre-java/"
+
+        name = "MapLibreGeoJsonTurf"
+
+        framework {
+            baseName = "MapLibreGeoJsonTurf"
+            isStatic = false
+
+            transitiveExport = false
+            export(project(":services-geojson"))
         }
     }
 }

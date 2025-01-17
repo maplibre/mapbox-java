@@ -5,6 +5,10 @@ apply from: file("${rootDir}/gradle/artifact-settings.gradle")
 apply from: file("${rootDir}/gradle/publish-root.gradle")
 
 afterEvaluate {
+    // Define group & version for Kotlin Multiplatform artifacts
+    group = project.ext.mapLibreArtifactGroupId
+    version = project.ext.versionName
+
     publishing {
         publications {
             release(MavenPublication) {
